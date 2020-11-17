@@ -33,3 +33,7 @@ hs_err_pid*
 
 *.classpath
 *.project
+
+
+APDescription.txt
+MTPs-Main-Container.txt
