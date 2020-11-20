@@ -6,7 +6,7 @@ public class SystemContract implements java.io.Serializable {
 
 	private int providerId;
 	private int trackingId;
-	private int id;
+	private int systemContractId;
 	private String name;
 	private String description;
 	private Date date;
@@ -17,7 +17,7 @@ public class SystemContract implements java.io.Serializable {
 	}
 
 	public int getId() {
-		return id;
+		return systemContractId;
 	}
 
 	public int getTrackingId() {
@@ -44,9 +44,6 @@ public class SystemContract implements java.io.Serializable {
 		this.providerId = providerId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public void setTrackingId(int trackingId) {
 		this.trackingId = trackingId;

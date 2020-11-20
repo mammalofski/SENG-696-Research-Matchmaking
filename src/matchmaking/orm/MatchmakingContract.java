@@ -7,7 +7,7 @@ public class MatchmakingContract implements java.io.Serializable {
 	private int projectId;
 	private int clientId;
 	private int providerId;
-	private int Id;
+	private int matchmakingContractId;
 	private float amount;
 	private String description;
 	private boolean acceptedByClient;
@@ -27,7 +27,7 @@ public class MatchmakingContract implements java.io.Serializable {
 	}
 
 	public int getId() {
-		return Id;
+		return matchmakingContractId;
 	}
 
 	public float getAmount() {
@@ -54,9 +54,6 @@ public class MatchmakingContract implements java.io.Serializable {
 		this.projectId = projectId;
 	}
 
-	public void setId(int id) {
-		this.Id = id;
-	}
 
 	public void setClientId(int clientId) {
 		this.clientId = clientId;

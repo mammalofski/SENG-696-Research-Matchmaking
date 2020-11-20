@@ -11,12 +11,17 @@ public class Notification implements java.io.Serializable {
 	private String title;
 	private Date date;
 	private Boolean hasSeen;
+	private int notificationId;
+	
+	public int getId() {
+		return notificationId;
+	}
 
 	public int getSystemContractId() {
 		return systemContractId;
 	}
 
-	public int getBid_Id() {
+	public int getBidId() {
 		return bidId;
 	}
 

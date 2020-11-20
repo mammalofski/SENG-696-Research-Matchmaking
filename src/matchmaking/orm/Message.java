@@ -7,14 +7,14 @@ public class Message implements java.io.Serializable {
 	private int chatroomId;
 	private int recieverId;
 	private int senderId;
-	private int id;
+	private int messageId;
 	private String body;
 	private Date date;
 	private String recieved;
 	private String seen;
 
 	public int getId() {
-		return id;
+		return messageId;
 	}
 
 	public int getRecieverId() {

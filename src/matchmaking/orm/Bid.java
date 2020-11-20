@@ -2,17 +2,17 @@ package matchmaking.orm;
 
 public class Bid implements java.io.Serializable {
 
+	private int bidId;
 	private int projectId;
 	private int clientId;
-	private int id;
 	private float amount;
 
 	public int getProjectId() {
 		return projectId;
 	}
 
-	public int getId() {
-		return id;
+	public int getId (){
+		return bidId;
 	}
 
 	public int getClientId() {
@@ -27,9 +27,7 @@ public class Bid implements java.io.Serializable {
 		this.projectId = projectId;
 	}
 
-	public void setBidId(int id) {
-		this.id= id;
-	}
+	
 	public void setClientId(int clientId) {
 		this.clientId= clientId;
 	}

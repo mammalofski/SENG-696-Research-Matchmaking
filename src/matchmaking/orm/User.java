@@ -2,7 +2,7 @@ package matchmaking.orm;
 
 public class User implements java.io.Serializable {
 
-	private int id;
+	private int userId;
 	private int userType;
 	private String name;
 	private String email;
@@ -17,7 +17,7 @@ public class User implements java.io.Serializable {
 	private String cv;
 
 	public int getId() {
-		return id;
+		return userId;
 	}
 
 	public int getuserType() {
@@ -70,10 +70,6 @@ public class User implements java.io.Serializable {
 
 	public void setUserType(int userType) {
 		this.userType = userType;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public void setName(String name) {

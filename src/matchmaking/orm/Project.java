@@ -4,39 +4,29 @@ public class Project implements java.io.Serializable {
 
 	private int projectId;
 	private int clientId;
-	private int bidId;
-	private int id;
+	private int providerId; //?
 	private String name;
 	private String description;
 	private int progress;
 	private int state;
 
-	public int getProjectId() {
-		return projectId;
-	}
-
 	public int getId() {
-		return id;
+		return projectId;
 	}
 
 	public int getClientId() {
 		return clientId;
 	}
 
-	public int getBidId() {
-		return bidId;
+	public int getProviderIdId() {
+		return providerId;
 	}
 
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
+
+	public void setProviderId(int providerId) {
+		this.providerId= providerId;
 	}
 
-	public void setBidId(int bidId) {
-		this.bidId= bidId;
-	}
-	public void setId(int id) {
-		this.id= id;
-	}
 	public void setClientId(int clientId) {
 		this.clientId= clientId;
 	}

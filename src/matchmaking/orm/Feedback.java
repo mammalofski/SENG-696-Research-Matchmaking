@@ -10,6 +10,11 @@ public class Feedback implements java.io.Serializable {
 	private float rate;
 	private String comment;
 	private Date date;
+	private int feedbackId;
+	
+	public int getId () {
+		return feedbackId;
+	}
 
 	public int getProjectId() {
 		return projectId;
