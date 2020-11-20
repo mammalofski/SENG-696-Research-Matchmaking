@@ -16,12 +16,19 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Hashtable;
 
 public class MatchmakerAgent extends Agent {
 	Connection conn = DataBase.getConnection();
-
+private Hashtable catalogue;
+	private UserGUI myGui;
 	protected void setup() {
 		System.out.println("starting to connecto to db");
+		catalogue = new Hashtable();
+		myGui = new UserGUI(this);
+		myGui.showGui();
+		myGui = new MatchmackingAgentGUI(this);
+		myGui.showGui();
 		try {
 			Statement statement = conn.createStatement();
 			System.out.println("created statement");
@@ -95,6 +102,14 @@ public class MatchmakerAgent extends Agent {
 		);
 		// Make this agent terminate
 		// doDelete();
+	}
+	public void updateCatalogue(final String title, final String price) {
+		addBehaviour(new OneShotBehaviour() {
+			public void action() {
+				catalogue.put(10, 20);
+				System.out.println(title + " inserted into catalogue. Price = " + price);
+			}
+		});
 	}
 
 }
