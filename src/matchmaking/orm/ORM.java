@@ -26,30 +26,36 @@ public class ORM {
 //		return null;
 //	}
 
-	public ArrayList<User> serializeUser () {
+//	public ArrayList<?> serialize (Class <?> cls) {
+//		
+//		return null;
+//	}
+
+	public ArrayList<User> serializeUser() {
 		System.out.println("in serializeUser");
+		Boolean validated;
 		User tempUser;
 		ArrayList<User> users = new ArrayList<User>();
 		try {
-			System.out.println("in serializeUser try");
 			Statement statement = conn.createStatement();
-			System.out.println("in serializeUser after statement");
-//			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			ResultSet qs = statement.executeQuery("select * from user");
-			System.out.println("in serializeUser after query");
 			while (qs.next()) {
-				tempUser = new User(qs.getInt("userId"), "", 0, "", "", "", false, 0, 0, "", "", "", "");
+				validated = qs.getInt("validated") > 0 ? true : false;
+				tempUser = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
+						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
+						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
+						qs.getString("logo"), qs.getString("website"), qs.getString("cv"));
 				users.add(tempUser);
-				System.out.println("the user's id is : " + tempUser.getId());
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("in serializeUser in catch");
 			e.printStackTrace();
 		}
 		return users;
-		
+
 	}
 
 }
