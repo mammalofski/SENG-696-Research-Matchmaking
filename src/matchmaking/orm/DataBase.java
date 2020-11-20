@@ -20,8 +20,8 @@ public class DataBase {
 		Connection connection = null;
 
 		try {
-			// db parameters
-			String url = "jdbc:sqlite:/home/mammalofski/eclipse/SENG-696-Research-Matchmaking/mysqlite.db";
+			String currentDirectory = System.getProperty("user.dir");
+			String url = "jdbc:sqlite:" + currentDirectory + "/mysqlite.db";
 			// create a connection to the database
 			connection = DriverManager.getConnection(url);
 

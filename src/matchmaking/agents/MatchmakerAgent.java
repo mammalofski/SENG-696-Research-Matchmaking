@@ -28,17 +28,17 @@ public class MatchmakerAgent extends Agent {
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			
 
-			statement.executeUpdate("drop table if exists person");
-			statement.executeUpdate("create table person (id integer, name string)");
-			statement.executeUpdate("insert into person values(1, 'leo')");
-			statement.executeUpdate("insert into person values(2, 'yui')");
+//			statement.executeUpdate("drop table if exists person");
+//			statement.executeUpdate("create table person (id integer, name string)");
+//			statement.executeUpdate("insert into person values(1, 'leo')");
+//			statement.executeUpdate("insert into person values(2, 'yui')");
 			System.out.println("after executing stuff");
-			ResultSet rs = statement.executeQuery("select * from person");
-			while (rs.next()) {
-				// read the result set
-				System.out.println("name = " + rs.getString("name"));
-				System.out.println("id = " + rs.getInt("id"));
-			}
+//			ResultSet rs = statement.executeQuery("select * from person");
+//			while (rs.next()) {
+//				// read the result set
+//				System.out.println("name = " + rs.getString("name"));
+//				System.out.println("id = " + rs.getInt("id"));
+//			}
 		} catch (SQLException e) {
 			// if the error message is "out of memory",
 			// it probably means no database file is found
