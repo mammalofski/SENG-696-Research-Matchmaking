@@ -1,5 +1,8 @@
 package matchmaking.agents;
 
+import matchmaking.orm.ORM;
+import matchmaking.orm.User;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -16,44 +19,52 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class MatchmakerAgent extends Agent {
-	Connection conn = DataBase.getConnection();
+//	Connection conn = DataBase.getConnection();
 
 	protected void setup() {
 		System.out.println("starting to connecto to db");
-		try {
-			Statement statement = conn.createStatement();
-			System.out.println("created statement");
-			statement.setQueryTimeout(30); // set timeout to 30 sec.
+		ORM orm = new ORM();
+		ArrayList<User> users = orm.serializeUser();
+		System.out.println("here are the user: " + users);
+//		try {
+			
+//			Statement statement = conn.createStatement();
+//			System.out.println("created statement");
+//			statement.setQueryTimeout(30); // set timeout to 30 sec.
+//			
 			
 
 //			statement.executeUpdate("drop table if exists person");
 //			statement.executeUpdate("create table person (id integer, name string)");
 //			statement.executeUpdate("insert into person values(1, 'leo')");
 //			statement.executeUpdate("insert into person values(2, 'yui')");
-			System.out.println("after executing stuff");
+//			System.out.println("after executing stuff");
 //			ResultSet rs = statement.executeQuery("select * from person");
 //			while (rs.next()) {
 //				// read the result set
 //				System.out.println("name = " + rs.getString("name"));
 //				System.out.println("id = " + rs.getInt("id"));
 //			}
-		} catch (SQLException e) {
-			// if the error message is "out of memory",
-			// it probably means no database file is found
-			System.out.println("in catch");
-			System.out.println(e);
-			System.err.println(e.getMessage());
-		} finally {
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException e) {
-				// connection close failed.
-				System.err.println(e.getMessage());
-			}
-		}
+//			statement.executeUpdate("drop table if exists person");
+//			System.out.println("working with dg completed and table removed");
+//		} catch (SQLException e) {
+//			// if the error message is "out of memory",
+//			// it probably means no database file is found
+//			System.out.println("in catch");
+//			System.out.println(e);
+//			System.err.println(e.getMessage());
+//		} finally {
+//			try {
+//				if (conn != null)
+//					conn.close();
+//			} catch (SQLException e) {
+//				// connection close failed.
+//				System.err.println(e.getMessage());
+//			}
+//		}
 
 		System.out.println("in agent matchmaker's setup");
 		// System.out.println("Hello World! My name is " + getLocalName());

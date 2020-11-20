@@ -10,11 +10,54 @@ public class User implements java.io.Serializable {
 	private String password;
 	private Boolean validated;
 	private int accountType;
-	private int hourlycompensation;
-	private String specialKeyword;
+	private int hourlyCompensation;
+	private String specialKeywords;
 	private String logo;
 	private String website;
 	private String cv;
+
+//	public User (int userId, String name, int userType, String email, String userName, String password, 
+//			Boolean validated, int accountType, int hourlyCompensation, String specialKeywords, 
+//			String logo, String website, String cv) {
+//		userId = userId;
+//		userType = userType;
+//		name = name;
+//		email = email;
+//		userName = userName;
+//		password = password;
+//		validated = validated;
+//		accountType = accountType;
+//		hourlyCompensation = hourlyCompensation;
+//		specialKeywords = specialKeywords;
+//		logo = logo;
+//		website = website;
+//		cv = cv;
+//	}
+
+//	public User(int int1, Object name2, int userType2, Object email2, Object userName2, Object password2,
+//			Object validated2, int accountType2, int hourlyCompensation2, Object specialKeywords2, Object logo2,
+//			Object website2, Object cv2) {
+//		// TODO Auto-generated constructor stub
+//	}
+
+
+	public User(int userId1, String name2, int userType2, String email2, String userName2, String password2, Boolean validated2,
+			int accountType2, int hourlyCompensation2, String specialKeywords2, String logo2, String website2,
+			String cv2) {
+		userId = userId1;
+		userType = userType2;
+		name = name2;
+		email = email2;
+		userName = userName2;
+		password = password2;
+		validated = validated2;
+		accountType = accountType2;
+		hourlyCompensation = hourlyCompensation2;
+		specialKeywords = specialKeywords2;
+		logo = logo2;
+		website = website2;
+		cv = cv2;
+	}
 
 	public int getId() {
 		return userId;
@@ -49,11 +92,11 @@ public class User implements java.io.Serializable {
 	}
 
 	public int gethourlyCompensation() {
-		return hourlycompensation;
+		return hourlyCompensation;
 	}
 
 	public String getSpecialKeyword() {
-		return specialKeyword;
+		return specialKeywords;
 	}
 
 	public String getLogo() {
@@ -97,11 +140,11 @@ public class User implements java.io.Serializable {
 	}
 
 	public void setHourlyCompensation(int hourlyCompensation) {
-		this.hourlycompensation = hourlycompensation;
+		this.hourlyCompensation = hourlyCompensation;
 	}
 
-	public void setSpecialKeyword(String specialKeyboard) {
-		this.specialKeyword = specialKeyboard;
+	public void setSpecialKeyword(String specialKeyboards) {
+		this.specialKeywords = specialKeyboards;
 	}
 
 	public void setLogo(String logo) {
