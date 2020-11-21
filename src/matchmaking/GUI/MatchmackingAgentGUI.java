@@ -5,6 +5,7 @@ import matchmaking.orm.User;
 import matchmaking.GUI.UserViewModel;
 import matchmaking.orm.DataBase;
 import matchmaking.agents.MatchmakerAgent;
+import matchmaking.agents.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,7 +20,7 @@ import java.awt.GridBagLayout;
 import javax.swing.*;
 
 public class MatchmackingAgentGUI extends JFrame {
-	private MatchmakerAgent myAgent;
+	private SystemAgent myAgent;
 
 	private JTextField titleField, priceField;
 	CardLayout card;
@@ -27,11 +28,11 @@ public class MatchmackingAgentGUI extends JFrame {
 	Container c;
 	private   JTextField nameTxt;
 
-	public MatchmackingAgentGUI(MatchmakerAgent matchmackerAgent) {
+	public MatchmackingAgentGUI(SystemAgent systemAgent) {
 
-		super(matchmackerAgent.getLocalName());
+		super(systemAgent.getLocalName());
 
-		myAgent = matchmackerAgent;
+		myAgent = systemAgent;
 		Connection conn = DataBase.getConnection();
 
 		// Creating the Frame

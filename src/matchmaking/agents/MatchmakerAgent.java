@@ -29,15 +29,15 @@ public class MatchmakerAgent extends Agent {
 	private MatchmackingAgentGUI myGui;
 
 	protected void setup() {
-		System.out.println("starting to connecto to db");
-		ORM orm = new ORM();
-		ArrayList<User> users = orm.serializeUser();
-		System.out.println("here are the user: " + users);
+		//System.out.println("starting to connecto to db");
+		//ORM orm = new ORM();
+		//ArrayList<User> users = orm.serializeUser();
+		//System.out.println("here are the user: " + users);
 		catalogue = new Hashtable();
 //		myGui = new UserGUI(this);
 //		myGui.showGui();
-		myGui = new MatchmackingAgentGUI(this);
-		myGui.showGui();
+		//myGui = new MatchmackingAgentGUI(this);
+		//myGui.showGui();
 //		try {
 //			Statement statement = conn.createStatement();
 //			System.out.println("created statement");
@@ -86,26 +86,18 @@ public class MatchmakerAgent extends Agent {
 				send(msg);
 				System.out.println("sent the message in matchmaker agent");
 
-				Connection conn = null;
-				try {
-					// db parameters
-					String url = "jdbc:sqlite:/home/mammalofski/eclipse/SENG-696-Research-Matchmaking/sql.db";
-					// create a connection to the database
-					conn = DriverManager.getConnection(url);
-
-					System.out.println("Connection to SQLite has been established.");
-
-				} catch (SQLException e) {
-					System.out.println(e.getMessage());
-				} finally {
-					try {
-						if (conn != null) {
-							conn.close();
-						}
-					} catch (SQLException ex) {
-						System.out.println(ex.getMessage());
-					}
-				}
+				/*
+				 * Connection conn = null; try { // db parameters String url =
+				 * "jdbc:sqlite:/home/mammalofski/eclipse/SENG-696-Research-Matchmaking/sql.db";
+				 * // create a connection to the database conn =
+				 * DriverManager.getConnection(url);
+				 * 
+				 * System.out.println("Connection to SQLite has been established.");
+				 * 
+				 * } catch (SQLException e) { System.out.println(e.getMessage()); } finally {
+				 * try { if (conn != null) { conn.close(); } } catch (SQLException ex) {
+				 * System.out.println(ex.getMessage()); } }
+				 */
 			}
 		}
 
