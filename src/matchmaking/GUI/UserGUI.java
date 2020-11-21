@@ -1,9 +1,11 @@
-package matchmaking.agents.GUI;
+package matchmaking.GUI;
 
 import jade.core.AID;
 import jade.util.leap.*;
 import jade.util.leap.List;
-import orm.User;
+import matchmaking.orm.User;
+import matchmaking.agents.MatchmakerAgent;
+import matchmaking.GUI.UserViewModel;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -24,19 +26,20 @@ class UserGUI extends Frame implements ActionListener {
 
 		setLayout(new FlowLayout());
 
-		User user = new User();
-		Class user_cls = user.getClass();
-		Field[] fields = user_cls.getDeclaredFields();
+//		User user = new User();
+//		UserViewModel user = new UserViewModel();
+//		Class user_cls = user.getClass();
+//		Field[] fields = user_cls.getDeclaredFields();
 
-		System.out.printf("%d fields:%n", fields.length);
-		for (Field field : fields) {
-			if (field.getName() != "id") {
-				var name = field.getName();
-				var type = field.getType();
-				add(new Label(name));
-				add(new TextField(name));
-			}
-		}
+//		System.out.printf("%d fields:%n", fields.length);
+//		for (Field field : fields) {
+//			if (field.getName() != "id") {
+//				String name = field.getName();
+////				var type = field.getType();
+//				add(new Label(name));
+//				add(new TextField(name));
+//			}
+//		}
 
 		/*
 		 * lblCount = new Label("Name"); add(lblCount);

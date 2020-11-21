@@ -1,9 +1,10 @@
-package matchmaking.agents;
+package matchmaking.GUI;
 
 import jade.core.AID;
-import orm.User;
-import matchmaking.agents.UserViewModel;
+import matchmaking.orm.User;
+import matchmaking.GUI.UserViewModel;
 import matchmaking.orm.DataBase;
+import matchmaking.agents.MatchmakerAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,15 +18,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
 
-class MatchmackingAgentGUI extends JFrame {
+public class MatchmackingAgentGUI extends JFrame {
 	private MatchmakerAgent myAgent;
 
 	private JTextField titleField, priceField;
 	CardLayout card;
 	JButton b1, b2, b3;
 	Container c;
+	private   JTextField nameTxt;
 
-	MatchmackingAgentGUI(MatchmakerAgent matchmackerAgent) {
+	public MatchmackingAgentGUI(MatchmakerAgent matchmackerAgent) {
 
 		super(matchmackerAgent.getLocalName());
 
@@ -75,39 +77,14 @@ class MatchmackingAgentGUI extends JFrame {
 				try {
 
 					System.out.println("show gui has runned");
-					try {
-						Statement statement = conn.createStatement();
-
-						statement.setQueryTimeout(30);
-
-						statement.executeUpdate("drop table if exists person");
-						statement.executeUpdate("create table person (id integer, name string)");
-						statement.executeUpdate("insert into person values(1, 'leo')");
-						statement.executeUpdate("insert into person values(2, 'yui')");
-
-						ResultSet rs = statement.executeQuery("select * from person");
-						while (rs.next()) {
-							System.out.println("name = " + rs.getString("name"));
-							System.out.println("id = " + rs.getInt("id"));
-						}
-					} catch (SQLException e) {
-						System.out.println("in catch");
-						System.out.println(e);
-						System.err.println(e.getMessage());
-					} finally {
-						try {
-							if (conn != null)
-								conn.close();
-						} catch (SQLException e) {
-							System.err.println(e.getMessage());
-						}
-					}
+					saveUser();
 
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(MatchmackingAgentGUI.this, "Invalid values. " + e.getMessage(),
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
+
 		});
 
 		panel.add(save);
@@ -115,26 +92,25 @@ class MatchmackingAgentGUI extends JFrame {
 
 		JPanel p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(5, 2));
-		UserViewModel user = new UserViewModel();
-		Class user_cls = user.getClass();
-		Field[] fields = user_cls.getDeclaredFields();
-
-		System.out.printf("%d fields:%n", fields.length);
-		for (Field field : fields) {
-			if (field.getName() != "id") {
-				var name = field.getName();
-				var type = field.getType();
-				p.add(new JLabel(name));
-				p.add(new JTextField(20));
-
-			}
-		}
-
+		
+		JLabel name=new JLabel("name");
+		nameTxt=new JTextField(20);
+		p.add(name);
+		p.add(nameTxt);
+		
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
 		frame.getContentPane().add(BorderLayout.NORTH, mb);
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
+	}
+
+	private void saveUser () {
+		String name = nameTxt.getText().trim();
+		System.out.println("name is :" + name);
+		User user = new User(0, name, 1, "email", "username", "pass", false, 1, 1, "keywords", "logo", "website", "cv");
+		user.createUser();
+		
 	}
 
 	public void showGui() {

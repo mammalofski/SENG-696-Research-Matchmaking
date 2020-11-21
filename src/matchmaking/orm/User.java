@@ -1,5 +1,11 @@
 package matchmaking.orm;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.sql.Connection;
+
 public class User implements java.io.Serializable {
 
 	private int userId;
@@ -57,6 +63,53 @@ public class User implements java.io.Serializable {
 		logo = logo2;
 		website = website2;
 		cv = cv2;
+	}
+	
+	public ArrayList<User> serializeUser() {
+		System.out.println("in serializeUser");
+		Connection conn = DataBase.getConnection();
+		Boolean validated;
+		User tempUser;
+		ArrayList<User> users = new ArrayList<User>();
+		try {
+			Statement statement = conn.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			ResultSet qs = statement.executeQuery("select * from user");
+			while (qs.next()) {
+				validated = qs.getInt("validated") > 0 ? true : false;
+				tempUser = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
+						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
+						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
+						qs.getString("logo"), qs.getString("website"), qs.getString("cv"));
+				users.add(tempUser);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("in serializeUser in catch");
+			e.printStackTrace();
+		}
+		return users;
+
+	}
+	
+	public void createUser () {
+		System.out.println("in creating user");
+		Connection conn = DataBase.getConnection();
+		try {
+			String query = "insert into user ";
+			query += "(userType, name, email, userName, password, validated, accountType, hourlyCompensation, specialKeyword, logo, website, cv)";
+			query += " values ('"+ userType + "', '" + name + "', '" + email + "', '" + userName + "', '" + password + "', '" + 
+			validated + "', '" + accountType + "', '" + hourlyCompensation + "', '" + specialKeywords + "', '" + logo + "', '" + 
+					website + "', '" + cv + "')";
+			Statement statement = conn.createStatement();
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	public int getId() {
