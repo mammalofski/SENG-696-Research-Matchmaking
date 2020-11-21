@@ -19,23 +19,29 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Hashtable;
 import java.util.ArrayList;
 
 public class MatchmakerAgent extends Agent {
-//	Connection conn = DataBase.getConnection();
-
+	Connection conn = DataBase.getConnection();
+private Hashtable catalogue;
+	private UserGUI myGui;
 	protected void setup() {
 		System.out.println("starting to connecto to db");
 		ORM orm = new ORM();
 		ArrayList<User> users = orm.serializeUser();
 		System.out.println("here are the user: " + users);
 //		try {
-			
-//			Statement statement = conn.createStatement();
-//			System.out.println("created statement");
-//			statement.setQueryTimeout(30); // set timeout to 30 sec.
-//			
-			
+		catalogue = new Hashtable();
+		myGui = new UserGUI(this);
+		myGui.showGui();
+		myGui = new MatchmackingAgentGUI(this);
+		myGui.showGui();
+		try {
+			Statement statement = conn.createStatement();
+			System.out.println("created statement");
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+
 
 //			statement.executeUpdate("drop table if exists person");
 //			statement.executeUpdate("create table person (id integer, name string)");
@@ -106,6 +112,14 @@ public class MatchmakerAgent extends Agent {
 		);
 		// Make this agent terminate
 		// doDelete();
+	}
+	public void updateCatalogue(final String title, final String price) {
+		addBehaviour(new OneShotBehaviour() {
+			public void action() {
+				catalogue.put(10, 20);
+				System.out.println(title + " inserted into catalogue. Price = " + price);
+			}
+		});
 	}
 
 }
