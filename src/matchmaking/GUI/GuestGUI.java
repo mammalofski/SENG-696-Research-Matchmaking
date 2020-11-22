@@ -5,11 +5,13 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -78,6 +80,21 @@ public class GuestGUI extends JFrame {
 		//p.add(advanceSearch);
 		JButton search = new JButton("search");
 		p.add(search);
+		
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					System.out.println("hit the search button");
+					
+					
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(GuestGUI.this, "Invalid values. " + e.getMessage(),
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+		});
 		
 
 		// Adding Components to the frame.

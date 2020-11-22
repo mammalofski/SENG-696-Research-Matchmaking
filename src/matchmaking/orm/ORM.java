@@ -45,7 +45,7 @@ public class ORM {
 				tempUser = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
 						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
 						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
-						qs.getString("logo"), qs.getString("website"), qs.getString("cv"));
+						qs.getString("logo"), qs.getString("website"), qs.getString("cv"), true);
 				users.add(tempUser);
 			}
 

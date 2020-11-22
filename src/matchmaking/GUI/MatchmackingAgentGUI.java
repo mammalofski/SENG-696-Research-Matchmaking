@@ -109,7 +109,7 @@ public class MatchmackingAgentGUI extends JFrame {
 	private void saveUser () {
 		String name = nameTxt.getText().trim();
 		System.out.println("name is :" + name);
-		User user = new User(0, name, 1, "email", "username", "pass", false, 1, 1, "keywords", "logo", "website", "cv");
+		User user = new User(name, 1, "email", "username", "pass", false, 1, 1, "keywords", "logo", "website", "cv");
 		user.createUser();
 		
 	}

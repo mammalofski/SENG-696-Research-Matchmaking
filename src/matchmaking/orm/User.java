@@ -21,7 +21,7 @@ public class User implements java.io.Serializable {
 	private String logo;
 	private String website;
 	private String cv;
-
+	private Boolean connectedToDB;
 //	public User (int userId, String name, int userType, String email, String userName, String password, 
 //			Boolean validated, int accountType, int hourlyCompensation, String specialKeywords, 
 //			String logo, String website, String cv) {
@@ -47,9 +47,28 @@ public class User implements java.io.Serializable {
 //	}
 
 
-	public User(int userId1, String name2, int userType2, String email2, String userName2, String password2, Boolean validated2,
+	public User(String name2, int userType2, String email2, String userName2, String password2, Boolean validated2,
 			int accountType2, int hourlyCompensation2, String specialKeywords2, String logo2, String website2,
 			String cv2) {
+		userId = 0;
+		userType = userType2;
+		name = name2;
+		email = email2;
+		userName = userName2;
+		password = password2;
+		validated = validated2;
+		accountType = accountType2;
+		hourlyCompensation = hourlyCompensation2;
+		specialKeywords = specialKeywords2;
+		logo = logo2;
+		website = website2;
+		cv = cv2;
+		connectedToDB = false;
+	}
+	
+	public User(int userId1, String name2, int userType2, String email2, String userName2, String password2, Boolean validated2,
+			int accountType2, int hourlyCompensation2, String specialKeywords2, String logo2, String website2,
+			String cv2, Boolean connectedToDB1) {
 		userId = userId1;
 		userType = userType2;
 		name = name2;
@@ -63,6 +82,7 @@ public class User implements java.io.Serializable {
 		logo = logo2;
 		website = website2;
 		cv = cv2;
+		connectedToDB = connectedToDB1;
 	}
 	
 	public ArrayList<User> serializeUser() {
@@ -80,7 +100,7 @@ public class User implements java.io.Serializable {
 				tempUser = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
 						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
 						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
-						qs.getString("logo"), qs.getString("website"), qs.getString("cv"));
+						qs.getString("logo"), qs.getString("website"), qs.getString("cv"), true);
 				users.add(tempUser);
 			}
 
@@ -96,20 +116,16 @@ public class User implements java.io.Serializable {
 	public void createUser () {
 		System.out.println("in creating user");
 		Connection conn = DataBase.getConnection();
-		try {
+		try (Statement statement = conn.createStatement()) {
 			String query = "insert into user ";
 			query += "(userType, name, email, userName, password, validated, accountType, hourlyCompensation, specialKeyword, logo, website, cv)";
 			query += " values ('"+ userType + "', '" + name + "', '" + email + "', '" + userName + "', '" + password + "', '" + 
 			validated + "', '" + accountType + "', '" + hourlyCompensation + "', '" + specialKeywords + "', '" + logo + "', '" + 
 					website + "', '" + cv + "')";
-			Statement statement = conn.createStatement();
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 	public int getId() {

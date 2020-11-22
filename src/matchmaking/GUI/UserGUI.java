@@ -51,7 +51,6 @@ public class UserGUI extends JFrame {
 				frame1.setVisible(true);
 			}
 		});
-		;
 
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
@@ -63,7 +62,7 @@ public class UserGUI extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				try {
 
-					System.out.println("show gui has runned");
+					System.out.println("hit the save button");
 					saveUser();
 
 				} catch (Exception e) {
@@ -148,16 +147,30 @@ public class UserGUI extends JFrame {
 		frame.setVisible(true);
 	}
 
-	private void saveUser () {
-		/*
-		 * String name = nameTxt.getText().trim(); System.out.println("name is :" +
-		 * name); User user = new User(0, name, 1, "email", "username", "pass", false,
-		 * 1, 1, "keywords", "logo", "website", "cv"); user.createUser();
-		 */
-		 ///if user registered
-		SystemContractGUI systemContractGUI=new SystemContractGUI();
-		systemContractGUI.showGui();
+	private void saveUser() {
+
+		String name = nameTxt.getText().trim();
+		int userType = Integer.parseInt(userTypeTxt.getText().trim());
+		String userName = userNameTxt.getText().trim();
+		String password = passwordTxt.getText().trim();
+		String email = emailTxt.getText().trim();
+		int accountType = Integer.parseInt(accountTypeTxt.getText().trim());
+		int hourlyCompensation = Integer.parseInt(hourlyCompensationTxt.getText().trim());
+		String specialKeywords = specialKeywordsTxt.getText().trim();
+		String website = websiteTxt.getText().trim();
+		String logo = logoTxt.getText().trim();
+		String cv = cvTxt.getText().trim();
 		
+		System.out.println("this is being saved, name :" + name);
+		User user = new User(name, userType, email, userName, password, false, accountType, hourlyCompensation, 
+				specialKeywords, logo, website, cv);
+		
+		user.createUser();
+
+		/// if user registered
+		SystemContractGUI systemContractGUI = new SystemContractGUI();
+		systemContractGUI.showGui();
+
 	}
 
 	public void showGui() {
