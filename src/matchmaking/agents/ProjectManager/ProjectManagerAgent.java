@@ -1,4 +1,4 @@
-package matchmaking.agents;
+package matchmaking.agents.ProjectManager;
 
 import javax.swing.JOptionPane;
 

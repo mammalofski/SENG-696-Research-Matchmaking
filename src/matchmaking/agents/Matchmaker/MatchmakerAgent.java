@@ -1,8 +1,9 @@
-package matchmaking.agents;
+package matchmaking.agents.Matchmaker;
 
 import matchmaking.orm.ORM;
 import matchmaking.orm.User;
-import matchmaking.GUI.*;
+import matchmaking.agents.System.GUI.*;
+import matchmaking.agents.System.GUI.MatchmackingAgentGUI;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

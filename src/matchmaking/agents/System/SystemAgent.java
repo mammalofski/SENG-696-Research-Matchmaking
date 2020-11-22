@@ -1,10 +1,10 @@
-package matchmaking.agents;
+package matchmaking.agents.System;
 
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import matchmaking.GUI.StartingPointGUI;
+import matchmaking.agents.System.GUI.StartingPointGUI;
 
 
 public class SystemAgent extends Agent {

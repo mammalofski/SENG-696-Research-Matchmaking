@@ -1,4 +1,4 @@
-package matchmaking.GUI;
+package matchmaking.agents.System.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import matchmaking.agents.SystemAgent;
+import matchmaking.agents.System.SystemAgent;
 import matchmaking.orm.DataBase;
 import matchmaking.orm.User;
 

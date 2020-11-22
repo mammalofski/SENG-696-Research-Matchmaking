@@ -1,4 +1,4 @@
-package matchmaking.GUI;
+package matchmaking.agents.System.GUI;
 
 public class UserViewModel {
 	public String name;

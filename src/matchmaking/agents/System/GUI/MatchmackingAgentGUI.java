@@ -1,11 +1,10 @@
-package matchmaking.GUI;
+package matchmaking.agents.System.GUI;
 
 import jade.core.AID;
 import matchmaking.orm.User;
-import matchmaking.GUI.UserViewModel;
 import matchmaking.orm.DataBase;
-import matchmaking.agents.MatchmakerAgent;
-import matchmaking.agents.SystemAgent;
+import matchmaking.agents.Matchmaker.MatchmakerAgent;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
