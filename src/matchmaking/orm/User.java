@@ -127,6 +127,29 @@ public class User implements java.io.Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	public static ArrayList<User> serializeUsers(ResultSet qs) {
+		System.out.println("in serializeUser");
+		Boolean validated;
+		User tempUser;
+		ArrayList<User> users = new ArrayList<User>();
+		try {
+			while (qs.next()) {
+				validated = qs.getInt("validated") > 0 ? true : false;
+				tempUser = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
+						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
+						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
+						qs.getString("logo"), qs.getString("website"), qs.getString("cv"), true);
+				users.add(tempUser);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("in serializeUser in catch");
+			e.printStackTrace();
+		}
+		return users;
+	}
 
 	public int getId() {
 		return userId;

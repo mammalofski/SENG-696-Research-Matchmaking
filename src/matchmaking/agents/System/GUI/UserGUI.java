@@ -11,6 +11,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class UserGUI extends JFrame {
+//	private user;
 	
 
 	

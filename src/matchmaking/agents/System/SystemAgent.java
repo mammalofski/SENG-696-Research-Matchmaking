@@ -8,11 +8,15 @@ import matchmaking.agents.System.GUI.StartingPointGUI;
 
 
 public class SystemAgent extends Agent {
+	
+	private SystemContract systemContract;
 	 
 	
 	private StartingPointGUI myGui;
 
 	protected void setup() {
+		
+		systemContract = new SystemContract();
 		
 
 		myGui = new StartingPointGUI(this);

@@ -1,12 +1,18 @@
 package matchmaking.agents.System.GUI;
 
 import java.awt.BorderLayout;
+import java.util.*;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import jade.lang.acl.ACLMessage;
+import matchmaking.agents.System.SystemAgent;
+import jade.core.AID;
+import jade.core.Agent;
+import matchmaking.orm.Constants;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,10 +25,17 @@ import javax.swing.JTextField;
 
 public class GuestGUI extends JFrame {
 	private JTextField nameTxt, emailTxt, hourlyCompensationTxt, specialKeywordsTxt, websiteTxt;
+	private AID myAgentAID;
+	private SystemAgent myAgent;
 
-	public GuestGUI() {
+	public GuestGUI(SystemAgent agent) {
 
 		System.out.println("This is guset GUI");
+		
+		myAgent = agent;
+		myAgentAID = new AID("SystemAgent", AID.ISLOCALNAME);
+		System.out.println("system agent's aid is " + myAgentAID);
+//		myAgent = localContainer.acquireLocalAgent(aid);
 
 		// Creating the Frame
 		JFrame frame = new JFrame("Guest");
@@ -56,24 +69,24 @@ public class GuestGUI extends JFrame {
 		
 		
 
-		JLabel email = new JLabel("email");
+		JLabel emailLabel = new JLabel("email");
 		emailTxt = new JTextField(20);
-		p.add(email);
+		p.add(emailLabel);
 		p.add(emailTxt);
 
-		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
-		hourlyCompensationTxt = new JTextField(20);
-		p.add(hourlyCompensation);
-		p.add(hourlyCompensationTxt);
+//		JLabel hourlyCompensationLabel = new JLabel("hourlyCompensation");
+//		hourlyCompensationTxt = new JTextField(20);
+//		p.add(hourlyCompensationLabel);
+//		p.add(hourlyCompensationTxt);
 
-		JLabel specialKeywords = new JLabel("specialKeywords");
+		JLabel specialKeywordsLabel = new JLabel("specialKeywords");
 		specialKeywordsTxt = new JTextField(20);
-		p.add(specialKeywords);
+		p.add(specialKeywordsLabel);
 		p.add(specialKeywordsTxt);
 
-		JLabel website = new JLabel("website");
+		JLabel websiteLabel = new JLabel("website");
 		websiteTxt = new JTextField(20);
-		p.add(website);
+		p.add(websiteLabel);
 		p.add(websiteTxt);
 		
 		//JLabel advanceSearch = new JLabel("Advance Search");
@@ -83,24 +96,45 @@ public class GuestGUI extends JFrame {
 		
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				try {
-					System.out.println("hit the search button");
-					
-					
-
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(GuestGUI.this, "Invalid values. " + e.getMessage(),
-							"Error", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-
-		});
+				search();
+		}});
 		
 
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
+	}
+	
+	private void search() {
+		try {
+			System.out.println("hit the search button");
+			String email = emailTxt.getText().trim();
+//			String jourlyCompensation = jourlyCompensationTxt.getText().trim();
+			String specialKeywords = specialKeywordsTxt.getText().trim();
+			String website = websiteTxt.getText().trim();
+//			String requestBody = "body: {user=guest, email=" + email + ", specialKeywords=" + specialKeywords + ", website=" + website + "}";;
+			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("email", email);
+			requestBody.put("specialKeywords", specialKeywords);
+			requestBody.put("website", website);
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.SEARCH);;
+//			String messageText = Constants.GUEST + " " + requestBody;
+//			msg.setContent(messageText);
+			msg.setContentObject(requestBody);
+			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+			myAgent.send(msg);
+			System.out.println("sent the message to matchmaker");
+			
+			
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(GuestGUI.this, "Invalid values. " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	
+		
 	}
 
 	public void showGui() {

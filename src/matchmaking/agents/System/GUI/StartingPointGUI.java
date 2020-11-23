@@ -52,7 +52,7 @@ public class StartingPointGUI extends JFrame {
 		
 		guest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				GuestGUI guestGUI=new GuestGUI();
+				GuestGUI guestGUI=new GuestGUI(myAgent);
 				guestGUI.showGui();
 			}
 
