@@ -46,7 +46,6 @@ public class User implements java.io.Serializable {
 //		// TODO Auto-generated constructor stub
 //	}
 
-
 	public User(String name2, int userType2, String email2, String userName2, String password2, Boolean validated2,
 			int accountType2, int hourlyCompensation2, String specialKeywords2, String logo2, String website2,
 			String cv2) {
@@ -65,10 +64,10 @@ public class User implements java.io.Serializable {
 		cv = cv2;
 		connectedToDB = false;
 	}
-	
-	public User(int userId1, String name2, int userType2, String email2, String userName2, String password2, Boolean validated2,
-			int accountType2, int hourlyCompensation2, String specialKeywords2, String logo2, String website2,
-			String cv2, Boolean connectedToDB1) {
+
+	public User(int userId1, String name2, int userType2, String email2, String userName2, String password2,
+			Boolean validated2, int accountType2, int hourlyCompensation2, String specialKeywords2, String logo2,
+			String website2, String cv2, Boolean connectedToDB1) {
 		userId = userId1;
 		userType = userType2;
 		name = name2;
@@ -84,7 +83,7 @@ public class User implements java.io.Serializable {
 		cv = cv2;
 		connectedToDB = connectedToDB1;
 	}
-	
+
 	public ArrayList<User> serializeUser() {
 		System.out.println("in serializeUser");
 		Connection conn = DataBase.getConnection();
@@ -112,22 +111,22 @@ public class User implements java.io.Serializable {
 		return users;
 
 	}
-	
-	public void createUser () {
+
+	public void createUser() {
 		System.out.println("in creating user");
 		Connection conn = DataBase.getConnection();
 		try (Statement statement = conn.createStatement()) {
 			String query = "insert into user ";
 			query += "(userType, name, email, userName, password, validated, accountType, hourlyCompensation, specialKeyword, logo, website, cv)";
-			query += " values ('"+ userType + "', '" + name + "', '" + email + "', '" + userName + "', '" + password + "', '" + 
-			validated + "', '" + accountType + "', '" + hourlyCompensation + "', '" + specialKeywords + "', '" + logo + "', '" + 
-					website + "', '" + cv + "')";
+			query += " values ('" + userType + "', '" + name + "', '" + email + "', '" + userName + "', '" + password
+					+ "', '" + validated + "', '" + accountType + "', '" + hourlyCompensation + "', '" + specialKeywords
+					+ "', '" + logo + "', '" + website + "', '" + cv + "')";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static ArrayList<User> serializeUsers(ResultSet qs) {
 		System.out.println("in serializeUser");
 		Boolean validated;
@@ -149,6 +148,26 @@ public class User implements java.io.Serializable {
 			e.printStackTrace();
 		}
 		return users;
+	}
+
+	public void updateProfile() {
+		Connection conn = DataBase.getConnection();
+		try (Statement statement = conn.createStatement()) {
+			String query = "update user set ";
+			query += "name='" + name + "', ";
+			query += "email='" + email + "', ";
+			query += "hourlyCompensation=" + hourlyCompensation + ", ";
+			query += "specialKeyword='" + specialKeywords + "', ";
+			query += "website='" + website + "', ";
+			query += "accountType=" + accountType + " ";
+			query += "where userId=" + userId;
+			statement.executeUpdate(query);
+			System.out.println("updated user: " + name);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public int getId() {

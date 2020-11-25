@@ -3,6 +3,7 @@ package matchmaking.agents.System.GUI;
 import jade.core.AID;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
+import matchmaking.agents.System.Profiler;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,8 +20,14 @@ public class UserGUI extends JFrame {
 	
 	JCheckBox isPremium;
 	JFrame paymentFrame;
-	public UserGUI() {
-
+	User user;
+	JTextField nameTxt, userTypeTxt, specialKeywordsTxt, emailTxt, hourlyCompensationTxt, websiteTxt;
+	Profiler profiler;
+	
+	
+	public UserGUI(User user1) {
+		user = user1;
+		profiler = new Profiler();
 		// Creating the Frame
 		JFrame frame = new JFrame("UserGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +71,7 @@ public class UserGUI extends JFrame {
 
 		JButton cancel = new JButton("cancel");
 		JButton validate = new JButton("validate");
+		JButton updateProfileBtn = new JButton("update profile");
 
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -75,40 +83,93 @@ public class UserGUI extends JFrame {
 				System.out.println("validateUser");
 			}
 		});
+		updateProfileBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				System.out.println("update profile");
+				user.setName(nameTxt.getText().trim());
+				user.setEmail(emailTxt.getText().trim());
+				user.setHourlyCompensation(Integer.parseInt(hourlyCompensationTxt.getText().trim()));
+				user.setSpecialKeyword(specialKeywordsTxt.getText().trim());
+				user.setWebsite(websiteTxt.getText().trim());
+				user.setAccountType(isPremium.isSelected() ? 1 : 0);
+				profiler.updateProfile(user);
+			}
+		});
 		
 		panel.add(validate);
+		panel.add(updateProfileBtn);
 		panel.add(cancel);
+		
+		
 
 		JPanel p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
-
+		
+		
 		JLabel name = new JLabel("name");
-		JLabel getUserName = new JLabel("Ali");
+		nameTxt = new JTextField(20);
+		nameTxt.setText(user.getName());
 		p.add(name);
-		p.add(getUserName);
+		p.add(nameTxt);
+
+		JLabel userType = new JLabel("userType");
+		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType()));
+//		userTypeTxt.setText(Integer.toString(user.getuserType()));
+		p.add(userType);
+		p.add(userTypeLabel);
+
+
+		JLabel email = new JLabel("email");
+		emailTxt = new JTextField(20);
+		emailTxt.setText(user.getEmail());
+		p.add(email);
+		p.add(emailTxt);
+
+		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
+		hourlyCompensationTxt = new JTextField(20);
+		hourlyCompensationTxt.setText(Integer.toString(user.gethourlyCompensation()));
+		p.add(hourlyCompensation);
+		p.add(hourlyCompensationTxt);
+
+		JLabel specialKeywords = new JLabel("specialKeywords");
+		specialKeywordsTxt = new JTextField(20);
+		specialKeywordsTxt.setText(user.getSpecialKeyword());
+		p.add(specialKeywords);
+		p.add(specialKeywordsTxt);
+
+		JLabel website = new JLabel("website");
+		websiteTxt = new JTextField(20);
+		websiteTxt.setText(user.getWebsite());
+		p.add(website);
+		p.add(websiteTxt);
+
+//		JLabel name = new JLabel("name");
+//		JLabel getUserName = new JLabel("Ali");
+//		p.add(name);
+//		p.add(getUserName);
 
 		
 
-		JLabel email = new JLabel("email");
-		JLabel getEmail = new JLabel("ali_abdoli@gmail.com");
-		p.add(email);
-		p.add(getEmail);
-
-		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
-		JLabel getHourlyCompensation = new JLabel("5");
-		p.add(hourlyCompensation);
-		p.add(getHourlyCompensation);
-
-		JLabel specialKeywords = new JLabel("specialKeywords");
-		JLabel getSpecialKeywords = new JLabel("c#");
-		p.add(specialKeywords);
-		p.add(getSpecialKeywords);
-
-		JLabel website = new JLabel("website");
-		JLabel getWebsite = new JLabel("www.worldmeters.com");
-		p.add(website);
-		p.add(getWebsite);
-
+//		JLabel email = new JLabel("email");
+//		JLabel getEmail = new JLabel("ali_abdoli@gmail.com");
+//		p.add(email);
+//		p.add(getEmail);
+//
+//		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
+//		JLabel getHourlyCompensation = new JLabel("5");
+//		p.add(hourlyCompensation);
+//		p.add(getHourlyCompensation);
+//
+//		JLabel specialKeywords = new JLabel("specialKeywords");
+//		JLabel getSpecialKeywords = new JLabel("c#");
+//		p.add(specialKeywords);
+//		p.add(getSpecialKeywords);
+//
+//		JLabel website = new JLabel("website");
+//		JLabel getWebsite = new JLabel("www.worldmeters.com");
+//		p.add(website);
+//		p.add(getWebsite);
+//
 		JLabel logo = new JLabel("logo");
 		p.add(logo);
 		ImageIcon image = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
@@ -198,4 +259,5 @@ public class UserGUI extends JFrame {
 		setLocation(centerX - getWidth() / 2, centerY - getHeight() / 2);
 		super.setVisible(true);
 	}
+	
 }
