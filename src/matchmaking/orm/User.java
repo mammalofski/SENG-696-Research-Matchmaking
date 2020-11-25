@@ -169,6 +169,18 @@ public class User implements java.io.Serializable {
 		}
 
 	}
+	
+	public void validate() {
+		this.validated = true;
+		Connection conn = DataBase.createConnection();
+		try (Statement statement = conn.createStatement()) {
+			statement.executeUpdate("update user set validated=1 where userId=" + userId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	public int getId() {
 		return userId;
@@ -245,6 +257,7 @@ public class User implements java.io.Serializable {
 	public void setValidated(Boolean validated) {
 		this.validated = validated;
 	}
+	
 
 	public void setAccountType(int accountType) {
 		this.accountType = accountType;

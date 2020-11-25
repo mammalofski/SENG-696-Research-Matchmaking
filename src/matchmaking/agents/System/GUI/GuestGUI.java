@@ -35,6 +35,7 @@ public class GuestGUI extends JFrame {
 	private SystemAgent myAgent;
 	private ACLMessage msg, reply;
 	private MessageTemplate template;
+	private JPanel panel;
 
 	public GuestGUI(SystemAgent agent) {
 
@@ -51,17 +52,17 @@ public class GuestGUI extends JFrame {
 		frame.setSize(600, 1200);
 
 		// Creating the panel at bottom and adding components
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 
-		String data[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
-				{ "3", "Sachin", "c@gmail.com", "java" } };
-
-		String column[] = { "ID", "Name", "Email", "SpecialKeywords" };
-		JTable jt = new JTable(data, column);
-		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
-		//jt.setBounds(30, 40, 200, 300);
-		JScrollPane sp = new JScrollPane(jt);
-		panel.add(sp);
+//		String data[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
+//				{ "3", "Sachin", "c@gmail.com", "java" } };
+//
+//		String column[] = { "ID", "Name", "Email", "SpecialKeywords" };
+//		JTable jt = new JTable(data, column);
+//		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+//		//jt.setBounds(30, 40, 200, 300);
+//		JScrollPane sp = new JScrollPane(jt);
+//		panel.add(sp);
 
 		JPanel p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(7, 2));
@@ -139,8 +140,9 @@ public class GuestGUI extends JFrame {
 					MessageTemplate.MatchConversationId(Constants.SEARCH));
 			msg = myAgent.blockingReceive(template);
 			if (msg != null) {
-				requestBody = (Hashtable) msg.getContentObject();
+//				ArrayList = msg.getContentObject();
 				ArrayList<User> users = (ArrayList<User>) msg.getContentObject();
+				showInGUI(users);
 				return users;
 			}
 
@@ -153,7 +155,7 @@ public class GuestGUI extends JFrame {
 	}
 
 	private void showInGUI(ArrayList<User> users) {
-		
+
 //		String data[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
 //				{ "3", "Sachin", "c@gmail.com", "java" } };
 //		String data[][];
@@ -163,6 +165,28 @@ public class GuestGUI extends JFrame {
 //		// jt.setBounds(30, 40, 200, 300);
 //		JScrollPane sp = new JScrollPane(jt);
 //		panel.add(sp);
+		String column[] = { "Index", "Name", "Email", "SpecialKeywords", "website", "isPremium" };
+		System.out.println("before null");
+//		String[][] = new data[][];
+		String[][] data = new String[6][]; // OK
+		System.out.println("after null");
+		User tmpUser;
+		for (int i = 0; i < users.size(); i++) {
+			System.out.println("1");
+			tmpUser = users.get(i);
+			String rowData[] = {Integer.toString(i), tmpUser.getName(), tmpUser.getEmail(), tmpUser.getSpecialKeyword(), tmpUser.getWebsite(), Integer.toString(tmpUser.getAccountType())};
+			for (int j=0; j < rowData.length; j++) {
+				System.out.println("2");
+				data[i][j] = rowData[j];
+			}
+//			data.add();
+		}
+
+		JTable jt = new JTable(data, column);
+		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+		// jt.setBounds(30, 40, 200, 300);
+		JScrollPane sp = new JScrollPane(jt);
+		panel.add(sp);
 
 	}
 

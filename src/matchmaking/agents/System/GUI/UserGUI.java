@@ -81,8 +81,29 @@ public class UserGUI extends JFrame {
 		validate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("validateUser");
+				user.validate();
+				JFrame validationFrame = new JFrame("Validation");
+				validationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				validationFrame.setSize(300, 100);
+				
+				JLabel validationLabel = new JLabel("are you validted? please be honest :)");
+				JButton validationBtn = new JButton("validate");
+				
+				validationBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent ev) {
+						user.validate();
+						validationFrame.dispose();						
+					}
+				});
+				validationFrame.add(validationLabel);
+				validationFrame.add(validationBtn);
+				
+				validationFrame.getContentPane().add(BorderLayout.SOUTH, validationBtn);
+				validationFrame.getContentPane().add(BorderLayout.CENTER, validationLabel);
+				
 			}
 		});
+		
 		updateProfileBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("update profile");
