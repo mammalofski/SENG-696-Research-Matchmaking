@@ -5,7 +5,7 @@ import matchmaking.orm.User;
 import matchmaking.agents.System.GUI.*;
 import matchmaking.agents.System.GUI.MatchmackingAgentGUI;
 import java.util.*;
-
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -57,13 +57,20 @@ public class MatchmakerAgent extends Agent {
 							// if user is searching in providers
 							switch (msg.getConversationId()) {
 							case Constants.SEARCH:
+								// search between users
 								ArrayList<User> users = searchEngine.searchUser(requestBody);
 								System.out.println("searched users are" + users);
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(users);
+								myAgent.send(reply);
 								// send reply
 								break;
 							}
 
-						} catch (UnreadableException e) {
+						} catch (UnreadableException | IOException e) {
 							e.printStackTrace();
 						}
 

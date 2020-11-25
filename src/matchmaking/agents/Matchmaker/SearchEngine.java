@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.sql.Connection;
-
+	
 import matchmaking.orm.Constants;
 import matchmaking.orm.User;
 
@@ -29,9 +29,13 @@ public class SearchEngine {
 			query = "select * from user";
 			if (!requestBody.isEmpty()) {
 				query += " where ";
+				String name = (String) requestBody.get("name");
 				String email = (String) requestBody.get("email");
 				String specialKeywords = (String) requestBody.get("specialKeywords");
 				String website = (String) requestBody.get("website");
+				if (name.length() != 0) {
+					query += "name='" + name + "' and";
+				} 
 				if (email.length() != 0) {
 					query += "email='" + email + "' and";
 				} 

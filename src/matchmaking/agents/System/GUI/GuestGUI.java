@@ -8,11 +8,17 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import jade.lang.acl.MessageTemplate;
+
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import matchmaking.agents.System.SystemAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import matchmaking.orm.Constants;
+import matchmaking.orm.User;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,11 +33,13 @@ public class GuestGUI extends JFrame {
 	private JTextField nameTxt, emailTxt, hourlyCompensationTxt, specialKeywordsTxt, websiteTxt;
 	private AID myAgentAID;
 	private SystemAgent myAgent;
+	private ACLMessage msg, reply;
+	private MessageTemplate template;
 
 	public GuestGUI(SystemAgent agent) {
 
 		System.out.println("This is guset GUI");
-		
+
 		myAgent = agent;
 		myAgentAID = new AID("SystemAgent", AID.ISLOCALNAME);
 		System.out.println("system agent's aid is " + myAgentAID);
@@ -44,16 +52,13 @@ public class GuestGUI extends JFrame {
 
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel();
-		 
-		
 
-		String data[][] = { { "1", "Amit", "A@gmail.com", "c#"}, 
-				{ "2", "Jai", "b@gmail.com" , "javascript"}, 
-				{ "3", "Sachin", "c@gmail.com" , "java"} };
-		
-		String column[] = {"ID",  "Name", "Email", "SpecialKeywords"};
+		String data[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
+				{ "3", "Sachin", "c@gmail.com", "java" } };
+
+		String column[] = { "ID", "Name", "Email", "SpecialKeywords" };
 		JTable jt = new JTable(data, column);
-		//jt.setBounds(30, 40, 200, 300);
+		// jt.setBounds(30, 40, 200, 300);
 		JScrollPane sp = new JScrollPane(jt);
 		panel.add(sp);
 
@@ -64,10 +69,6 @@ public class GuestGUI extends JFrame {
 		nameTxt = new JTextField(20);
 		p.add(name);
 		p.add(nameTxt);
-		
-		
-		
-		
 
 		JLabel emailLabel = new JLabel("email");
 		emailTxt = new JTextField(20);
@@ -88,55 +89,82 @@ public class GuestGUI extends JFrame {
 		websiteTxt = new JTextField(20);
 		p.add(websiteLabel);
 		p.add(websiteTxt);
-		
-		//JLabel advanceSearch = new JLabel("Advance Search");
-		//p.add(advanceSearch);
+
+		// JLabel advanceSearch = new JLabel("Advance Search");
+		// p.add(advanceSearch);
 		JButton search = new JButton("search");
 		p.add(search);
-		
+
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				search();
-		}});
-		
+				ArrayList<User> usersResult = search();
+//				showInGUI(userResults);
+			}
+		});
 
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
 	}
-	
-	private void search() {
+
+	private ArrayList<User> search() {
+
 		try {
 			System.out.println("hit the search button");
+			String name = nameTxt.getText().trim();
 			String email = emailTxt.getText().trim();
 //			String jourlyCompensation = jourlyCompensationTxt.getText().trim();
 			String specialKeywords = specialKeywordsTxt.getText().trim();
 			String website = websiteTxt.getText().trim();
 //			String requestBody = "body: {user=guest, email=" + email + ", specialKeywords=" + specialKeywords + ", website=" + website + "}";;
 			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("name", name);
 			requestBody.put("email", email);
 			requestBody.put("specialKeywords", specialKeywords);
 			requestBody.put("website", website);
-			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-			msg.setConversationId(Constants.SEARCH);;
+			msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.SEARCH);
+			;
 //			String messageText = Constants.GUEST + " " + requestBody;
 //			msg.setContent(messageText);
 			msg.setContentObject(requestBody);
 			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
 			myAgent.send(msg);
 			System.out.println("sent the message to matchmaker");
-			
-			
+
+			// wait for the response
+			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+					MessageTemplate.MatchConversationId(Constants.SEARCH));
+			msg = myAgent.blockingReceive(template);
+			if (msg != null) {
+				requestBody = (Hashtable) msg.getContentObject();
+				ArrayList<User> users = (ArrayList<User>) msg.getContentObject();
+				return users;
+			}
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(GuestGUI.this, "Invalid values. " + e.getMessage(),
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(GuestGUI.this, "Invalid values. " + e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
-	
-		
+		return null;
+
 	}
 
+	private void showInGUI(ArrayList<User> users) {
+		
+//		String data[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
+//				{ "3", "Sachin", "c@gmail.com", "java" } };
+//		String data[][];
+//
+//		String column[] = { "ID", "Name", "Email", "SpecialKeywords" };
+//		JTable jt = new JTable(data, column);
+//		// jt.setBounds(30, 40, 200, 300);
+//		JScrollPane sp = new JScrollPane(jt);
+//		panel.add(sp);
+		
+	}
+	
 	public void showGui() {
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
