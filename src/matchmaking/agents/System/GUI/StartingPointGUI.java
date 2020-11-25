@@ -32,14 +32,11 @@ public class StartingPointGUI extends JFrame {
 		super(systemAgent.getLocalName());
 
 		myAgent = systemAgent;
-		
 
 		// Creating the Frame
 		JFrame frame = new JFrame("Starting Point");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 100);
-
-		
 
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
@@ -48,11 +45,10 @@ public class StartingPointGUI extends JFrame {
 		JButton user = new JButton("User");
 		panel.add(guest);
 		panel.add(user);
-		
-		
+
 		guest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				GuestGUI guestGUI=new GuestGUI(myAgent);
+				GuestGUI guestGUI = new GuestGUI(myAgent);
 				guestGUI.showGui();
 			}
 
@@ -60,27 +56,23 @@ public class StartingPointGUI extends JFrame {
 
 		user.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			UserGUI userGui=new	UserGUI();
-			userGui.showGui();	
+				SignInGUI signInGUI = new SignInGUI();
+				signInGUI.showGui();
 			}
 
 		});
-		
 
 		JPanel p = new JPanel();
-		
-		JLabel name=new JLabel("Are you a User or a Guest?");
+
+		JLabel name = new JLabel("Are you a User or a Guest?");
 		p.add(name);
-		
-		
+
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
-	
+
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
 	}
-
-	
 
 	public void showGui() {
 		pack();
@@ -91,4 +83,3 @@ public class StartingPointGUI extends JFrame {
 		super.setVisible(true);
 	}
 }
-
