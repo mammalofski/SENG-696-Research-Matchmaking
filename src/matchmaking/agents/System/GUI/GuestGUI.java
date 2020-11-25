@@ -53,6 +53,7 @@ public class GuestGUI extends JFrame {
 		
 		String column[] = {"ID",  "Name", "Email", "SpecialKeywords"};
 		JTable jt = new JTable(data, column);
+		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 		//jt.setBounds(30, 40, 200, 300);
 		JScrollPane sp = new JScrollPane(jt);
 		panel.add(sp);

@@ -1,26 +1,25 @@
 package matchmaking.agents.System.GUI;
 
 import jade.core.AID;
-import matchmaking.orm.User;
+import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
-import matchmaking.orm.DataBase;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 
 public class UserGUI extends JFrame {
 //	private user;
-	
 
 	
-	private   JTextField nameTxt,userTypeTxt,userNameTxt,passwordTxt,accountTypeTxt, 
-	emailTxt, hourlyCompensationTxt, specialKeywordsTxt, websiteTxt,logoTxt,cvTxt;
-
+	JCheckBox isPremium;
+	JFrame paymentFrame;
 	public UserGUI() {
-
-		
 
 		// Creating the Frame
 		JFrame frame = new JFrame("UserGUI");
@@ -37,141 +36,158 @@ public class UserGUI extends JFrame {
 		mb.add(m2);
 		mb.add(m3);
 		mb.add(m4);
-		JMenuItem m11 = new JMenuItem("show Profile");
-		m1.add(m11);
-		m11.addActionListener(new ActionListener() {
+		JMenuItem m22 = new JMenuItem("Show User List");
+		m2.add(m22);
+		m22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("menu item has clicked");
 				JFrame frame1 = new JFrame("My First GUI");
 				frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame1.setSize(300, 300);
-				JButton button1 = new JButton("Button 1");
-				JButton button2 = new JButton("Button 2");
-				frame1.getContentPane().add(button1);
-				frame1.getContentPane().add(button2);
+				frame1.setSize(400, 400);
+				JLabel ReyhaneLable=new JLabel("test");
+				JTable table = new JTable(new CustomJTable()); 
+		        //JScrollPane scrollPane = new JScrollPane(table);
+		        table.setFillsViewportHeight(true); 
+		        table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+		        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+		        table.getColumn("Button1").setCellRenderer(buttonRenderer);
+		        table.getColumn("Button2").setCellRenderer(buttonRenderer);
+				frame1.getContentPane().add(table);
 				frame1.setVisible(true);
+				frame1.getContentPane().add(BorderLayout.NORTH, ReyhaneLable);
+				frame1.getContentPane().add(BorderLayout.CENTER, table);
 			}
 		});
 
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
 
-		JButton save = new JButton("save");
-		JButton cancel = new JButton("validate");
+		JButton cancel = new JButton("cancel");
+		JButton validate = new JButton("validate");
 
-		save.addActionListener(new ActionListener() {
+		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				try {
-
-					System.out.println("hit the save button");
-					saveUser();
-
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(UserGUI.this, "Invalid values. " + e.getMessage(),
-							"Error", JOptionPane.ERROR_MESSAGE);
-				}
+				frame.dispose();
 			}
-
 		});
-
-		panel.add(save);
+		validate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				System.out.println("validateUser");
+			}
+		});
+		
+		panel.add(validate);
 		panel.add(cancel);
 
 		JPanel p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
-		
-		JLabel name=new JLabel("name");
-		nameTxt=new JTextField(20);
+
+		JLabel name = new JLabel("name");
+		JLabel getUserName = new JLabel("Ali");
 		p.add(name);
-		p.add(nameTxt);
+		p.add(getUserName);
+
 		
-		JLabel userType = new JLabel("userType");
-		userTypeTxt = new JTextField(20);
-		p.add(userType);
-		p.add(userTypeTxt);
-		
-		
-		JLabel userName = new JLabel("userName");
-		userNameTxt = new JTextField(20);
-		p.add(userName);
-		p.add(userNameTxt);
-		
-		
-		JLabel password = new JLabel("password");
-		passwordTxt = new JTextField(20);
-		p.add(password);
-		p.add(passwordTxt);
-		
-		JLabel accountType = new JLabel("accountType");
-		accountTypeTxt = new JTextField(20);
-		p.add(accountType);
-		p.add(accountTypeTxt);
-		
-		
+
 		JLabel email = new JLabel("email");
-		emailTxt = new JTextField(20);
+		JLabel getEmail = new JLabel("ali_abdoli@gmail.com");
 		p.add(email);
-		p.add(emailTxt);
+		p.add(getEmail);
 
 		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
-		hourlyCompensationTxt = new JTextField(20);
+		JLabel getHourlyCompensation = new JLabel("5");
 		p.add(hourlyCompensation);
-		p.add(hourlyCompensationTxt);
+		p.add(getHourlyCompensation);
 
 		JLabel specialKeywords = new JLabel("specialKeywords");
-		specialKeywordsTxt = new JTextField(20);
+		JLabel getSpecialKeywords = new JLabel("c#");
 		p.add(specialKeywords);
-		p.add(specialKeywordsTxt);
+		p.add(getSpecialKeywords);
 
 		JLabel website = new JLabel("website");
-		websiteTxt = new JTextField(20);
+		JLabel getWebsite = new JLabel("www.worldmeters.com");
 		p.add(website);
-		p.add(websiteTxt);
-		
-		
-		
+		p.add(getWebsite);
+
 		JLabel logo = new JLabel("logo");
-		logoTxt = new JTextField(20);
 		p.add(logo);
-		p.add(logoTxt);
-		
-		
+		ImageIcon image = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
+		JLabel imageLabel = new JLabel(image);
+		imageLabel.setBounds(10, 10, 10, 10);
+		imageLabel.setVisible(true);
+		p.add(imageLabel);
+
 		JLabel cv = new JLabel("cv");
-		cvTxt = new JTextField(20);
 		p.add(cv);
-		p.add(cvTxt);
+
+		JButton showCv = new JButton("showCv");
+		p.add(showCv);
+
+		showCv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				JFrame frame = new JFrame("cv");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(300, 300);
+
+				JPanel panel = new JPanel();
+
+				frame.getContentPane().add(BorderLayout.CENTER, panel);
+
+				frame.setVisible(true);
+				ImageIcon image1 = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
+				JLabel imageLabel1 = new JLabel(image1);
+				// imageLabel1.setBounds(10, 10, 10, 10);
+				imageLabel1.setVisible(true);
+				panel.add(imageLabel1);
+				JScrollPane scrollableTextArea = new JScrollPane(imageLabel1);
+
+				scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+				frame.getContentPane().add(scrollableTextArea);
+			}
+
+		});
+
+		JLabel accountType = new JLabel("accountType");
+		isPremium = new JCheckBox("isPremium");
+		isPremium.setBounds(100, 100, 50, 50);
+		p.add(accountType);
+		p.add(isPremium);
+
+		isPremium.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getSource() == isPremium)
+				{
+					if(e.getStateChange() == 1 ) {
+						// Creating the Frame
+						paymentFrame = new JFrame("PaymentGate");
+						paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						paymentFrame.setSize(300, 100);
+
+						// Creating the panel at bottom and adding components
+						JPanel panel = new JPanel(); // the panel is not visible in output
+
+
+						JLabel name = new JLabel("please pay the premium cost.");
+						panel.add(name);
+
+						paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
+						paymentFrame.setVisible(true);
+					}else {
+						paymentFrame.dispose();
+					}
+				}
+					
+			}
+		});
+		
 		
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
 		frame.getContentPane().add(BorderLayout.NORTH, mb);
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
-	}
-
-	private void saveUser() {
-
-		String name = nameTxt.getText().trim();
-		int userType = Integer.parseInt(userTypeTxt.getText().trim());
-		String userName = userNameTxt.getText().trim();
-		String password = passwordTxt.getText().trim();
-		String email = emailTxt.getText().trim();
-		int accountType = Integer.parseInt(accountTypeTxt.getText().trim());
-		int hourlyCompensation = Integer.parseInt(hourlyCompensationTxt.getText().trim());
-		String specialKeywords = specialKeywordsTxt.getText().trim();
-		String website = websiteTxt.getText().trim();
-		String logo = logoTxt.getText().trim();
-		String cv = cvTxt.getText().trim();
-		
-		System.out.println("this is being saved, name :" + name);
-		User user = new User(name, userType, email, userName, password, false, accountType, hourlyCompensation, 
-				specialKeywords, logo, website, cv);
-		
-		user.createUser();
-
-		/// if user registered
-		SystemContractGUI systemContractGUI = new SystemContractGUI();
-		systemContractGUI.showGui();
-
 	}
 
 	public void showGui() {
