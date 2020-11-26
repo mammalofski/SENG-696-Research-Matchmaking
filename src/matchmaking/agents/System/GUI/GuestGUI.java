@@ -156,8 +156,8 @@ public class GuestGUI extends JFrame {
 
 	private void showInGUI(ArrayList<User> users) {
 
-//		String data[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
-//				{ "3", "Sachin", "c@gmail.com", "java" } };
+		String data2[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
+				{ "3", "Sachin", "c@gmail.com", "java" } };
 //		String data[][];
 //
 //		String column[] = { "ID", "Name", "Email", "SpecialKeywords" };
@@ -165,23 +165,24 @@ public class GuestGUI extends JFrame {
 //		// jt.setBounds(30, 40, 200, 300);
 //		JScrollPane sp = new JScrollPane(jt);
 //		panel.add(sp);
+		int lenUsers = users.size();
 		String column[] = { "Index", "Name", "Email", "SpecialKeywords", "website", "isPremium" };
-		System.out.println("before null");
 //		String[][] = new data[][];
-		String[][] data = new String[6][]; // OK
-		System.out.println("after null");
+		String[][] data = new String[lenUsers][6];
 		User tmpUser;
-		for (int i = 0; i < users.size(); i++) {
-			System.out.println("1");
+		String isPremium;
+		for (int i = 0; i < lenUsers; i++) {
+//			System.out.println("1");
 			tmpUser = users.get(i);
-			String rowData[] = {Integer.toString(i), tmpUser.getName(), tmpUser.getEmail(), tmpUser.getSpecialKeyword(), tmpUser.getWebsite(), Integer.toString(tmpUser.getAccountType())};
+			isPremium = tmpUser.getAccountType() == 1 ? "premium" : "free";
+			String rowData[] = {Integer.toString(i), tmpUser.getName(), tmpUser.getEmail(), tmpUser.getSpecialKeyword(), tmpUser.getWebsite(), isPremium};
+			System.out.println(rowData);
 			for (int j=0; j < rowData.length; j++) {
-				System.out.println("2");
+//				System.out.println("2");
 				data[i][j] = rowData[j];
 			}
-//			data.add();
 		}
-
+		
 		JTable jt = new JTable(data, column);
 		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 		// jt.setBounds(30, 40, 200, 300);
