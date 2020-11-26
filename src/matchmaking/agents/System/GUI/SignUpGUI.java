@@ -73,10 +73,10 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		p.add(password);
 		p.add(passwordTxt);
 
-		JLabel accountType = new JLabel("accountType");
-		accountTypeTxt = new JTextField(20);
-		p.add(accountType);
-		p.add(accountTypeTxt);
+//		JLabel accountType = new JLabel("accountType");
+//		accountTypeTxt = new JTextField(20);
+//		p.add(accountType);
+//		p.add(accountTypeTxt);
 
 		JLabel email = new JLabel("email");
 		emailTxt = new JTextField(20);
@@ -180,16 +180,16 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		String userName = userNameTxt.getText().trim();
 		String password = passwordTxt.getText().trim();
 		String email = emailTxt.getText().trim();
-		int accountType = Integer.parseInt(accountTypeTxt.getText().trim());
+//		int accountType = Integer.parseInt(accountTypeTxt.getText().trim());
 		int hourlyCompensation = Integer.parseInt(hourlyCompensationTxt.getText().trim());
 		String specialKeywords = specialKeywordsTxt.getText().trim();
 		String website = websiteTxt.getText().trim();
-		String logo = logoTxt.getText().trim();
-		String cv = cvTxt.getText().trim();
+//		String logo = logoTxt.getText().trim();
+//		String cv = cvTxt.getText().trim();
 
 		System.out.println("this is being saved, name :" + name);
-		User user = new User(name, userType, email, userName, password, false, accountType, hourlyCompensation,
-				specialKeywords, logo, website, cv);
+		User user = new User(name, userType, email, userName, password, false, 0, hourlyCompensation,
+				specialKeywords, "", website, "");
 
 		user.createUser();
 		
@@ -197,7 +197,7 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		userGUI.showGui();
 
 		/// if user registered
-		SystemContractGUI systemContractGUI = new SystemContractGUI();
+		SystemContractGUI systemContractGUI = new SystemContractGUI(user);
 		systemContractGUI.showGui();
 
 	}

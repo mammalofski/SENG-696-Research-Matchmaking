@@ -181,6 +181,17 @@ public class User implements java.io.Serializable {
 		}
 		
 	}
+	
+	public void downgradeToClient() {
+		this.userType = 0;
+		Connection conn = DataBase.createConnection();
+		try (Statement statement = conn.createStatement()) {
+			statement.executeUpdate("update user set userType=0 where userId=" + userId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public int getId() {
 		return userId;

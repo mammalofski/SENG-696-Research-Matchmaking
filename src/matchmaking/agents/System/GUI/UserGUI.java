@@ -23,6 +23,7 @@ public class UserGUI extends JFrame {
 	User user;
 	JTextField nameTxt, userTypeTxt, specialKeywordsTxt, emailTxt, hourlyCompensationTxt, websiteTxt;
 	Profiler profiler;
+	JPanel p;
 	
 	
 	public UserGUI(User user1) {
@@ -113,6 +114,7 @@ public class UserGUI extends JFrame {
 				user.setSpecialKeyword(specialKeywordsTxt.getText().trim());
 				user.setWebsite(websiteTxt.getText().trim());
 				user.setAccountType(isPremium.isSelected() ? 1 : 0);
+				System.out.println("in update profile acc type is " + isPremium.isSelected());
 				profiler.updateProfile(user);
 			}
 		});
@@ -123,7 +125,7 @@ public class UserGUI extends JFrame {
 		
 		
 
-		JPanel p = new JPanel(); // the panel is not visible in output
+		p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
 		
 		
@@ -233,6 +235,8 @@ public class UserGUI extends JFrame {
 
 		JLabel accountType = new JLabel("accountType");
 		isPremium = new JCheckBox("isPremium");
+		Boolean isPremiumAccount = user.getAccountType() == 1;
+		isPremium.setSelected(isPremiumAccount);
 		isPremium.setBounds(100, 100, 50, 50);
 		p.add(accountType);
 		p.add(isPremium);
@@ -279,6 +283,13 @@ public class UserGUI extends JFrame {
 		int centerY = (int) screenSize.getHeight() / 2;
 		setLocation(centerX - getWidth() / 2, centerY - getHeight() / 2);
 		super.setVisible(true);
+	}
+	
+	public void downgradeToClient() {
+		// this method does not work yet!
+		// this has to downgrade the user in UserGui after disagreeing with the contract
+		JLabel userTypeLabel = new JLabel("1");
+		p.add(userTypeLabel);
 	}
 	
 }

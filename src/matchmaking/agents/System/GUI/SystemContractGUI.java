@@ -27,7 +27,7 @@ import matchmaking.orm.User;
 public class SystemContractGUI extends JFrame {
 	
 
-	public SystemContractGUI() {
+	public SystemContractGUI(User user) {
 
 		
 		
@@ -58,6 +58,8 @@ public class SystemContractGUI extends JFrame {
 		disagree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 frame.dispose();
+				 // if the provider does not agree with the contract terms, he/she has to be downgraded to Client user Type
+				 user.downgradeToClient();
 			}
 
 		});
