@@ -15,20 +15,17 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
 public class UserGUI extends JFrame {
-//	private user;
-
-	
+	private User user;
 	JCheckBox isPremium;
 	JFrame paymentFrame;
-	User user;
 	JTextField nameTxt, userTypeTxt, specialKeywordsTxt, emailTxt, hourlyCompensationTxt, websiteTxt;
 	Profiler profiler;
 	JPanel p;
-	
-	
-	//public UserGUI(User user1) {
-	public UserGUI() {
-		//user = user1;
+
+	public UserGUI(User user1) {
+//	public UserGUI() {
+		System.out.println("point 0: the user is " + user1);
+		user = user1;
 		profiler = new Profiler();
 		// Creating the Frame
 		JFrame frame = new JFrame("UserGUI");
@@ -49,19 +46,18 @@ public class UserGUI extends JFrame {
 		m2.add(m22);
 		m22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				
-				SearchUserGUI searchUserGUI=new SearchUserGUI();
+
+				SearchUserGUI searchUserGUI = new SearchUserGUI();
 				searchUserGUI.showGui();
 			}
 		});
 
-		
 		JMenuItem m33 = new JMenuItem("Show Bids List");
 		m3.add(m33);
 		m33.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				
-				BidsListGUI bidsListGUI=new BidsListGUI();
+
+				BidsListGUI bidsListGUI = new BidsListGUI();
 				bidsListGUI.showGui();
 			}
 		});
@@ -70,8 +66,8 @@ public class UserGUI extends JFrame {
 		m4.add(m41);
 		m41.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				
-				ChatRoomGUI chatRoomGUI=new ChatRoomGUI();
+
+				ChatRoomGUI chatRoomGUI = new ChatRoomGUI();
 				chatRoomGUI.showGui();
 			}
 		});
@@ -80,12 +76,14 @@ public class UserGUI extends JFrame {
 		m4.add(m42);
 		m42.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				
-				ProjectProgressGUI projectProgressGUI=new ProjectProgressGUI();
+
+				ProjectProgressGUI projectProgressGUI = new ProjectProgressGUI();
 				projectProgressGUI.showGui();
 			}
 		});
 		
+		System.out.println("point 1");
+
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
 
@@ -105,25 +103,25 @@ public class UserGUI extends JFrame {
 				JFrame validationFrame = new JFrame("Validation");
 				validationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				validationFrame.setSize(300, 100);
-				
+
 				JLabel validationLabel = new JLabel("are you validted? please be honest :)");
 				JButton validationBtn = new JButton("validate");
-				
+
 				validationBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ev) {
 						user.validate();
-						validationFrame.dispose();						
+						validationFrame.dispose();
 					}
 				});
 				validationFrame.add(validationLabel);
 				validationFrame.add(validationBtn);
-				
+
 				validationFrame.getContentPane().add(BorderLayout.SOUTH, validationBtn);
 				validationFrame.getContentPane().add(BorderLayout.CENTER, validationLabel);
-				
+
 			}
 		});
-		
+
 		updateProfileBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("update profile");
@@ -138,133 +136,137 @@ public class UserGUI extends JFrame {
 			}
 		});
 		
+		System.out.println("point 1.25");
+
 		panel.add(validate);
 		panel.add(updateProfileBtn);
 		panel.add(cancel);
 		
-		
+		System.out.println("point 1.26");
 
 		p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
+
+		JLabel name = new JLabel("name");
+		nameTxt = new JTextField(20);
+		nameTxt.setText(user.getName());
+		p.add(name);
+		p.add(nameTxt);
 		
-		/*
-		 * JLabel name = new JLabel("name"); nameTxt = new JTextField(20);
-		 * nameTxt.setText(user.getName()); p.add(name); p.add(nameTxt);
-		 * 
-		 * JLabel userType = new JLabel("userType"); JLabel userTypeLabel = new
-		 * JLabel(Integer.toString(user.getuserType())); //
-		 * userTypeTxt.setText(Integer.toString(user.getuserType())); p.add(userType);
-		 * p.add(userTypeLabel);
-		 * 
-		 * 
-		 * JLabel email = new JLabel("email"); emailTxt = new JTextField(20);
-		 * emailTxt.setText(user.getEmail()); p.add(email); p.add(emailTxt);
-		 * 
-		 * JLabel hourlyCompensation = new JLabel("hourlyCompensation");
-		 * hourlyCompensationTxt = new JTextField(20);
-		 * hourlyCompensationTxt.setText(Integer.toString(user.gethourlyCompensation()))
-		 * ; p.add(hourlyCompensation); p.add(hourlyCompensationTxt);
-		 * 
-		 * JLabel specialKeywords = new JLabel("specialKeywords"); specialKeywordsTxt =
-		 * new JTextField(20); specialKeywordsTxt.setText(user.getSpecialKeyword());
-		 * p.add(specialKeywords); p.add(specialKeywordsTxt);
-		 * 
-		 * JLabel website = new JLabel("website"); websiteTxt = new JTextField(20);
-		 * websiteTxt.setText(user.getWebsite()); p.add(website); p.add(websiteTxt);
-		 */
-
-//		JLabel name = new JLabel("name");
-//		JLabel getUserName = new JLabel("Ali");
-//		p.add(name);
-//		p.add(getUserName);
-
+		System.out.println("point 1.27");
 		
+		System.out.println("point 1.275 " + user.getuserType());
 
-//		JLabel email = new JLabel("email");
-//		JLabel getEmail = new JLabel("ali_abdoli@gmail.com");
-//		p.add(email);
-//		p.add(getEmail);
+		JLabel userType = new JLabel("userType");
+		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType())); 
+//		userTypeTxt.setText(Integer.toString(user.getuserType()));
+		p.add(userType);
+		p.add(userTypeLabel);
+		
+		System.out.println("point 1.28");
+
+		JLabel email = new JLabel("email");
+		emailTxt = new JTextField(20);
+		emailTxt.setText(user.getEmail());
+		p.add(email);
+		p.add(emailTxt);
+		
+		System.out.println("point 1.3");
+
+		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
+		hourlyCompensationTxt = new JTextField(20);
+		hourlyCompensationTxt.setText(Integer.toString(user.gethourlyCompensation()));
+		p.add(hourlyCompensation);
+		p.add(hourlyCompensationTxt);
+
+		JLabel specialKeywords = new JLabel("specialKeywords");
+		specialKeywordsTxt = new JTextField(20);
+		specialKeywordsTxt.setText(user.getSpecialKeyword());
+		p.add(specialKeywords);
+		p.add(specialKeywordsTxt);
+
+		JLabel website = new JLabel("website");
+		websiteTxt = new JTextField(20);
+		websiteTxt.setText(user.getWebsite());
+		p.add(website);
+		p.add(websiteTxt);
+
+//		JLabel logo = new JLabel("logo");
+//		p.add(logo);
+//		ImageIcon image = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
+//		JLabel imageLabel = new JLabel(image);
+//		imageLabel.setBounds(10, 10, 10, 10);
+//		imageLabel.setVisible(true);
+//		p.add(imageLabel);
 //
-//		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
-//		JLabel getHourlyCompensation = new JLabel("5");
-//		p.add(hourlyCompensation);
-//		p.add(getHourlyCompensation);
+//		JLabel cv = new JLabel("cv");
+//		p.add(cv);
 //
-//		JLabel specialKeywords = new JLabel("specialKeywords");
-//		JLabel getSpecialKeywords = new JLabel("c#");
-//		p.add(specialKeywords);
-//		p.add(getSpecialKeywords);
+//		JButton showCv = new JButton("showCv");
+//		p.add(showCv);
+		
+		System.out.println("point 1.5");
+
+//		showCv.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent ev) {
+//				JFrame frame = new JFrame("cv");
+//				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				frame.setSize(300, 300);
 //
-//		JLabel website = new JLabel("website");
-//		JLabel getWebsite = new JLabel("www.worldmeters.com");
-//		p.add(website);
-//		p.add(getWebsite);
+//				JPanel panel = new JPanel();
 //
-		JLabel logo = new JLabel("logo");
-		p.add(logo);
-		ImageIcon image = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
-		JLabel imageLabel = new JLabel(image);
-		imageLabel.setBounds(10, 10, 10, 10);
-		imageLabel.setVisible(true);
-		p.add(imageLabel);
+//				frame.getContentPane().add(BorderLayout.CENTER, panel);
+//
+//				frame.setVisible(true);
+//				ImageIcon image1 = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
+//				JLabel imageLabel1 = new JLabel(image1);
+//				// imageLabel1.setBounds(10, 10, 10, 10);
+//				imageLabel1.setVisible(true);
+//				panel.add(imageLabel1);
+//				JScrollPane scrollableTextArea = new JScrollPane(imageLabel1);
+//
+//				scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//				scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//
+//				frame.getContentPane().add(scrollableTextArea);
+//			}
+//
+//		});
 
-		JLabel cv = new JLabel("cv");
-		p.add(cv);
+		JLabel accountType = new JLabel("accountType");
+		isPremium = new JCheckBox("isPremium");
+		Boolean isPremiumAccount = user.getAccountType() == 1;
+		isPremium.setSelected(isPremiumAccount);
+		isPremium.setBounds(100, 100, 50, 50);
+		p.add(accountType);
+		p.add(isPremium);
+		
+		System.out.println("point 2");
 
-		JButton showCv = new JButton("showCv");
-		p.add(showCv);
+		isPremium.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getSource() == isPremium) {
+					if (e.getStateChange() == 1) { // Creating the
+						JFrame paymentFrame = new JFrame("PaymentGate");
+						paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						paymentFrame.setSize(300, 100);
 
-		showCv.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				JFrame frame = new JFrame("cv");
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(300, 300);
+						// Creating the panel at bottom and adding components
+						JPanel panel = new JPanel(); // the panel is not visible in output
 
-				JPanel panel = new JPanel();
+						JLabel name = new JLabel("please pay the premium cost.");
+						panel.add(name);
 
-				frame.getContentPane().add(BorderLayout.CENTER, panel);
+						paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
+						paymentFrame.setVisible(true);
+					} else {
+						paymentFrame.dispose();
+					}
+				}
 
-				frame.setVisible(true);
-				ImageIcon image1 = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
-				JLabel imageLabel1 = new JLabel(image1);
-				// imageLabel1.setBounds(10, 10, 10, 10);
-				imageLabel1.setVisible(true);
-				panel.add(imageLabel1);
-				JScrollPane scrollableTextArea = new JScrollPane(imageLabel1);
-
-				scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-				scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-				frame.getContentPane().add(scrollableTextArea);
 			}
-
 		});
 
-		/*
-		 * JLabel accountType = new JLabel("accountType"); isPremium = new
-		 * JCheckBox("isPremium"); Boolean isPremiumAccount = user.getAccountType() ==
-		 * 1; isPremium.setSelected(isPremiumAccount); isPremium.setBounds(100, 100, 50,
-		 * 50); p.add(accountType); p.add(isPremium);
-		 * 
-		 * isPremium.addItemListener(new ItemListener() { public void
-		 * itemStateChanged(ItemEvent e) { if (e.getSource() == isPremium) {
-		 * if(e.getStateChange() == 1 ) { // Creating the Frame paymentFrame = new
-		 * JFrame("PaymentGate");
-		 * paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 * paymentFrame.setSize(300, 100);
-		 * 
-		 * // Creating the panel at bottom and adding components JPanel panel = new
-		 * JPanel(); // the panel is not visible in output
-		 * 
-		 * 
-		 * JLabel name = new JLabel("please pay the premium cost."); panel.add(name);
-		 * 
-		 * paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
-		 * paymentFrame.setVisible(true); }else { paymentFrame.dispose(); } }
-		 * 
-		 * } });
-		 */
-		
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
 		frame.getContentPane().add(BorderLayout.NORTH, mb);
@@ -273,6 +275,7 @@ public class UserGUI extends JFrame {
 	}
 
 	public void showGui() {
+		System.out.println("point 3 in show gui");
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int centerX = (int) screenSize.getWidth() / 2;
@@ -280,12 +283,12 @@ public class UserGUI extends JFrame {
 		setLocation(centerX - getWidth() / 2, centerY - getHeight() / 2);
 		super.setVisible(true);
 	}
-	
+
 	public void downgradeToClient() {
 		// this method does not work yet!
 		// this has to downgrade the user in UserGui after disagreeing with the contract
 		JLabel userTypeLabel = new JLabel("1");
 		p.add(userTypeLabel);
 	}
-	
+
 }

@@ -25,12 +25,13 @@ public class Profiler {
 			User user;
 			ResultSet qs = statement.executeQuery("select * from user where username='" + username + "' and password='" + password + "'");
 			while (qs.next()) {
-				System.out.println("found a user in sign in " + qs);
+				
 				Boolean validated = qs.getInt("validated") > 0 ? true : false;
 				user = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
 						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
 						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
 						qs.getString("logo"), qs.getString("website"), qs.getString("cv"), true);
+				System.out.println("found a user in sign in " + qs + " the name is " + user.getName());
 				return user;
 			}
 			return null;
