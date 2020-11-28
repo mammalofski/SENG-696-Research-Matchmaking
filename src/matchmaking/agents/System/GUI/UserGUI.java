@@ -24,7 +24,6 @@ public class UserGUI extends JFrame {
 
 	public UserGUI(User user1) {
 //	public UserGUI() {
-		System.out.println("point 0: the user is " + user1);
 		user = user1;
 		profiler = new Profiler();
 		// Creating the Frame
@@ -82,7 +81,6 @@ public class UserGUI extends JFrame {
 			}
 		});
 		
-		System.out.println("point 1");
 
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
@@ -136,14 +134,10 @@ public class UserGUI extends JFrame {
 			}
 		});
 		
-		System.out.println("point 1.25");
-
 		panel.add(validate);
 		panel.add(updateProfileBtn);
 		panel.add(cancel);
 		
-		System.out.println("point 1.26");
-
 		p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
 
@@ -153,17 +147,12 @@ public class UserGUI extends JFrame {
 		p.add(name);
 		p.add(nameTxt);
 		
-		System.out.println("point 1.27");
-		
-		System.out.println("point 1.275 " + user.getuserType());
-
 		JLabel userType = new JLabel("userType");
 		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType())); 
 //		userTypeTxt.setText(Integer.toString(user.getuserType()));
 		p.add(userType);
 		p.add(userTypeLabel);
 		
-		System.out.println("point 1.28");
 
 		JLabel email = new JLabel("email");
 		emailTxt = new JTextField(20);
@@ -171,7 +160,6 @@ public class UserGUI extends JFrame {
 		p.add(email);
 		p.add(emailTxt);
 		
-		System.out.println("point 1.3");
 
 		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
 		hourlyCompensationTxt = new JTextField(20);
@@ -205,7 +193,6 @@ public class UserGUI extends JFrame {
 //		JButton showCv = new JButton("showCv");
 //		p.add(showCv);
 		
-		System.out.println("point 1.5");
 
 //		showCv.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent ev) {
@@ -237,28 +224,39 @@ public class UserGUI extends JFrame {
 		isPremium = new JCheckBox("isPremium");
 		Boolean isPremiumAccount = user.getAccountType() == 1;
 		isPremium.setSelected(isPremiumAccount);
-		isPremium.setBounds(100, 100, 50, 50);
+//		isPremium.setBounds(100, 100, 50, 50);
 		p.add(accountType);
 		p.add(isPremium);
 		
-		System.out.println("point 2");
+		
+		JFrame paymentFrame = new JFrame("PaymentGate");
 
 		isPremium.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getSource() == isPremium) {
 					if (e.getStateChange() == 1) { // Creating the
-						JFrame paymentFrame = new JFrame("PaymentGate");
+						
 						paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						paymentFrame.setSize(300, 100);
 
 						// Creating the panel at bottom and adding components
 						JPanel panel = new JPanel(); // the panel is not visible in output
-
+						
 						JLabel name = new JLabel("please pay the premium cost.");
 						panel.add(name);
-
+						
+						JButton paymentBtn = new JButton("Pay");
+						panel.add(paymentBtn);
+						
 						paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
 						paymentFrame.setVisible(true);
+						
+						paymentBtn.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent ev) {
+								paymentFrame.dispose();
+							}
+						});
+
 					} else {
 						paymentFrame.dispose();
 					}
@@ -275,7 +273,6 @@ public class UserGUI extends JFrame {
 	}
 
 	public void showGui() {
-		System.out.println("point 3 in show gui");
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int centerX = (int) screenSize.getWidth() / 2;
