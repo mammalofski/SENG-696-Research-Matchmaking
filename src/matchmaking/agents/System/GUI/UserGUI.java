@@ -26,8 +26,9 @@ public class UserGUI extends JFrame {
 	JPanel p;
 	
 	
-	public UserGUI(User user1) {
-		user = user1;
+	//public UserGUI(User user1) {
+	public UserGUI() {
+		//user = user1;
 		profiler = new Profiler();
 		// Creating the Frame
 		JFrame frame = new JFrame("UserGUI");
@@ -48,25 +49,43 @@ public class UserGUI extends JFrame {
 		m2.add(m22);
 		m22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				System.out.println("menu item has clicked");
-				JFrame frame1 = new JFrame("My First GUI");
-				frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame1.setSize(400, 400);
-				JLabel ReyhaneLable=new JLabel("test");
-				JTable table = new JTable(new CustomJTable()); 
-		        //JScrollPane scrollPane = new JScrollPane(table);
-		        table.setFillsViewportHeight(true); 
-		        table.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
-		        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-		        table.getColumn("Button1").setCellRenderer(buttonRenderer);
-		        table.getColumn("Button2").setCellRenderer(buttonRenderer);
-				frame1.getContentPane().add(table);
-				frame1.setVisible(true);
-				frame1.getContentPane().add(BorderLayout.NORTH, ReyhaneLable);
-				frame1.getContentPane().add(BorderLayout.CENTER, table);
+				
+				SearchUserGUI searchUserGUI=new SearchUserGUI();
+				searchUserGUI.showGui();
 			}
 		});
 
+		
+		JMenuItem m33 = new JMenuItem("Show Bids List");
+		m3.add(m33);
+		m33.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				
+				BidsListGUI bidsListGUI=new BidsListGUI();
+				bidsListGUI.showGui();
+			}
+		});
+
+		JMenuItem m41 = new JMenuItem("Show chat room");
+		m4.add(m41);
+		m41.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				
+				ChatRoomGUI chatRoomGUI=new ChatRoomGUI();
+				chatRoomGUI.showGui();
+			}
+		});
+
+		JMenuItem m42 = new JMenuItem("Show project progress");
+		m4.add(m42);
+		m42.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				
+				ProjectProgressGUI projectProgressGUI=new ProjectProgressGUI();
+				projectProgressGUI.showGui();
+			}
+		});
+		
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
 
@@ -128,43 +147,31 @@ public class UserGUI extends JFrame {
 		p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
 		
-		
-		JLabel name = new JLabel("name");
-		nameTxt = new JTextField(20);
-		nameTxt.setText(user.getName());
-		p.add(name);
-		p.add(nameTxt);
-
-		JLabel userType = new JLabel("userType");
-		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType()));
-//		userTypeTxt.setText(Integer.toString(user.getuserType()));
-		p.add(userType);
-		p.add(userTypeLabel);
-
-
-		JLabel email = new JLabel("email");
-		emailTxt = new JTextField(20);
-		emailTxt.setText(user.getEmail());
-		p.add(email);
-		p.add(emailTxt);
-
-		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
-		hourlyCompensationTxt = new JTextField(20);
-		hourlyCompensationTxt.setText(Integer.toString(user.gethourlyCompensation()));
-		p.add(hourlyCompensation);
-		p.add(hourlyCompensationTxt);
-
-		JLabel specialKeywords = new JLabel("specialKeywords");
-		specialKeywordsTxt = new JTextField(20);
-		specialKeywordsTxt.setText(user.getSpecialKeyword());
-		p.add(specialKeywords);
-		p.add(specialKeywordsTxt);
-
-		JLabel website = new JLabel("website");
-		websiteTxt = new JTextField(20);
-		websiteTxt.setText(user.getWebsite());
-		p.add(website);
-		p.add(websiteTxt);
+		/*
+		 * JLabel name = new JLabel("name"); nameTxt = new JTextField(20);
+		 * nameTxt.setText(user.getName()); p.add(name); p.add(nameTxt);
+		 * 
+		 * JLabel userType = new JLabel("userType"); JLabel userTypeLabel = new
+		 * JLabel(Integer.toString(user.getuserType())); //
+		 * userTypeTxt.setText(Integer.toString(user.getuserType())); p.add(userType);
+		 * p.add(userTypeLabel);
+		 * 
+		 * 
+		 * JLabel email = new JLabel("email"); emailTxt = new JTextField(20);
+		 * emailTxt.setText(user.getEmail()); p.add(email); p.add(emailTxt);
+		 * 
+		 * JLabel hourlyCompensation = new JLabel("hourlyCompensation");
+		 * hourlyCompensationTxt = new JTextField(20);
+		 * hourlyCompensationTxt.setText(Integer.toString(user.gethourlyCompensation()))
+		 * ; p.add(hourlyCompensation); p.add(hourlyCompensationTxt);
+		 * 
+		 * JLabel specialKeywords = new JLabel("specialKeywords"); specialKeywordsTxt =
+		 * new JTextField(20); specialKeywordsTxt.setText(user.getSpecialKeyword());
+		 * p.add(specialKeywords); p.add(specialKeywordsTxt);
+		 * 
+		 * JLabel website = new JLabel("website"); websiteTxt = new JTextField(20);
+		 * websiteTxt.setText(user.getWebsite()); p.add(website); p.add(websiteTxt);
+		 */
 
 //		JLabel name = new JLabel("name");
 //		JLabel getUserName = new JLabel("Ali");
@@ -233,41 +240,30 @@ public class UserGUI extends JFrame {
 
 		});
 
-		JLabel accountType = new JLabel("accountType");
-		isPremium = new JCheckBox("isPremium");
-		Boolean isPremiumAccount = user.getAccountType() == 1;
-		isPremium.setSelected(isPremiumAccount);
-		isPremium.setBounds(100, 100, 50, 50);
-		p.add(accountType);
-		p.add(isPremium);
-
-		isPremium.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getSource() == isPremium)
-				{
-					if(e.getStateChange() == 1 ) {
-						// Creating the Frame
-						paymentFrame = new JFrame("PaymentGate");
-						paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						paymentFrame.setSize(300, 100);
-
-						// Creating the panel at bottom and adding components
-						JPanel panel = new JPanel(); // the panel is not visible in output
-
-
-						JLabel name = new JLabel("please pay the premium cost.");
-						panel.add(name);
-
-						paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
-						paymentFrame.setVisible(true);
-					}else {
-						paymentFrame.dispose();
-					}
-				}
-					
-			}
-		});
-		
+		/*
+		 * JLabel accountType = new JLabel("accountType"); isPremium = new
+		 * JCheckBox("isPremium"); Boolean isPremiumAccount = user.getAccountType() ==
+		 * 1; isPremium.setSelected(isPremiumAccount); isPremium.setBounds(100, 100, 50,
+		 * 50); p.add(accountType); p.add(isPremium);
+		 * 
+		 * isPremium.addItemListener(new ItemListener() { public void
+		 * itemStateChanged(ItemEvent e) { if (e.getSource() == isPremium) {
+		 * if(e.getStateChange() == 1 ) { // Creating the Frame paymentFrame = new
+		 * JFrame("PaymentGate");
+		 * paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 * paymentFrame.setSize(300, 100);
+		 * 
+		 * // Creating the panel at bottom and adding components JPanel panel = new
+		 * JPanel(); // the panel is not visible in output
+		 * 
+		 * 
+		 * JLabel name = new JLabel("please pay the premium cost."); panel.add(name);
+		 * 
+		 * paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
+		 * paymentFrame.setVisible(true); }else { paymentFrame.dispose(); } }
+		 * 
+		 * } });
+		 */
 		
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);

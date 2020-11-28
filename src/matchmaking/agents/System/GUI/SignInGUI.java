@@ -63,15 +63,16 @@ public class SignInGUI extends JFrame {
 					System.out.println("hit the signIn button");
 					String username = userNameTxt.getText().trim();
 					String password = passwordTxt.getText().trim();
-					User user = profiler.signIn(username, password);
-					if (user != null) {
+					//User user = profiler.signIn(username, password);
+					//if (user != null) {
 						System.out.println("User has logged in");
-						UserGUI userGui=new UserGUI(user);
+						UserGUI userGui=new UserGUI();
+					//	UserGUI userGui=new UserGUI(user);
 						userGui.showGui();
-					} else {
-						System.out.println("User not found, wrong username or password");
+					//} else {
+					//	System.out.println("User not found, wrong username or password");
 						// TODO: show something to the pool user 
-					}
+					//}
 					
 
 				} catch (Exception e) {

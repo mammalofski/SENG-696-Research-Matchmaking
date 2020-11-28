@@ -1,25 +1,26 @@
 package matchmaking.agents.System.GUI;
 
+import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 public class CustomJTable extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
-	private static final String[] COLUMN_NAMES = new String[] { "Id", "Stuff", "Button1", "Button2" };
-	private static final Class<?>[] COLUMN_TYPES = new Class<?>[] { Integer.class, String.class, JButton.class,
-			JButton.class };
+	private static final String[] COLUMN_NAMES = new String[] { "Id", "clientName", "projectName", "amount", "Place a bid" };
+	private static final Class<?>[] COLUMN_TYPES = new Class<?>[] { Integer.class, String.class, String.class,
+			String.class, JButton.class };
 
 	@Override
 	public int getColumnCount() {
 		return COLUMN_NAMES.length;
 	}
-	
-	
 
 	@Override
 	public int getRowCount() {
@@ -36,6 +37,29 @@ public class CustomJTable extends AbstractTableModel {
 		return COLUMN_TYPES[columnIndex];
 	}
 
+	public boolean isCellEditable(int row, int col) {
+
+		if (col > 3) {
+
+			String data = "true";
+			setValueAt(data, row, col);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Don't need to implement this method unless your table's data can change.
+	 */
+	public void setValueAt(Object value, int row, int col) {
+		System.out.println("value : " + value);
+
+		BidGUI bidGUI = new BidGUI();
+		bidGUI.showGui();
+
+	}
+
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex) {
 		/* Adding components */
@@ -45,20 +69,20 @@ public class CustomJTable extends AbstractTableModel {
 		case 1:
 			return "Text for " + rowIndex;
 		case 2: // fall through
-			/* Adding button and creating click listener */
-		case 3:
+			return "Text for " + rowIndex;
+		case 3: // fall through
+			return "Text for " + rowIndex;
+		case 4:
 			final JButton button = new JButton(COLUMN_NAMES[columnIndex]);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(button),
-							"Button clicked for row " + rowIndex);
-				}
-			});
+			/*
+			 * button.addActionListener(new ActionListener() { public void
+			 * actionPerformed(ActionEvent ev) { BidsListGUI bidsListGUI=new BidsListGUI();
+			 * bidsListGUI.showGui(); } });
+			 */
 			return button;
 		default:
 			return "Error";
 		}
 	}
+
 }
-
-

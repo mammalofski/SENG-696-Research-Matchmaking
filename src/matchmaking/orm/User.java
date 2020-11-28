@@ -150,25 +150,7 @@ public class User implements java.io.Serializable {
 		return users;
 	}
 
-	public void updateProfile() {
-		Connection conn = DataBase.getConnection();
-		try (Statement statement = conn.createStatement()) {
-			String query = "update user set ";
-			query += "name='" + name + "', ";
-			query += "email='" + email + "', ";
-			query += "hourlyCompensation=" + hourlyCompensation + ", ";
-			query += "specialKeyword='" + specialKeywords + "', ";
-			query += "website='" + website + "', ";
-			query += "accountType=" + accountType + " ";
-			query += "where userId=" + userId;
-			statement.executeUpdate(query);
-			System.out.println("updated user: " + name);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+	
 	
 	public void validate() {
 		this.validated = true;
@@ -292,6 +274,26 @@ public class User implements java.io.Serializable {
 
 	public void setCv(String cv) {
 		this.cv = cv;
+	}
+
+	public void updateProfile() {
+		Connection conn = DataBase.getConnection();
+		try (Statement statement = conn.createStatement()) {
+			String query = "update user set ";
+			query += "name='" + name + "', ";
+			query += "email='" + email + "', ";
+			query += "hourlyCompensation=" + hourlyCompensation + ", ";
+			query += "specialKeyword='" + specialKeywords + "', ";
+			query += "website='" + website + "', ";
+			query += "accountType=" + accountType + " ";
+			query += "where userId=" + userId;
+			statement.executeUpdate(query);
+			System.out.println("updated user: " + name);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

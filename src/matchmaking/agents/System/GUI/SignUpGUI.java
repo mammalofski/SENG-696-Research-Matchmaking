@@ -193,7 +193,7 @@ public class SignUpGUI extends JFrame implements ActionListener {
 
 		user.createUser();
 		
-		UserGUI userGUI=new UserGUI(user);
+		UserGUI userGUI=new UserGUI();
 		userGUI.showGui();
 
 		/// if user registered
