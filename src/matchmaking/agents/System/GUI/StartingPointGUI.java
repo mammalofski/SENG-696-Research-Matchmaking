@@ -56,7 +56,7 @@ public class StartingPointGUI extends JFrame {
 
 		user.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignInGUI signInGUI = new SignInGUI();
+				SignInGUI signInGUI = new SignInGUI(systemAgent);
 				signInGUI.showGui();
 			}
 

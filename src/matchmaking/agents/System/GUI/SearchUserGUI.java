@@ -2,6 +2,7 @@
 package matchmaking.agents.System.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.*;
 
 import java.awt.Dimension;
@@ -37,23 +38,26 @@ public class SearchUserGUI extends JFrame {
 
 	private ACLMessage msg, reply;
 	private MessageTemplate template;
-	
-	public SearchUserGUI() {
+
+	private SystemAgent systemAgent;
+	private JFrame frame;
+	private JPanel p;
+	private User user;
+
+	public SearchUserGUI(SystemAgent agent, User user1) {
 
 		System.out.println("This is Search User GUI");
-
+		user = user1;
 		myAgentAID = new AID("SystemAgent", AID.ISLOCALNAME);
+		systemAgent = agent;
 		System.out.println("system agent's aid is " + myAgentAID);
 
 		// Creating the Frame
-		JFrame frame = new JFrame("SearchUserGUI");
+		frame = new JFrame("SearchUserGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 1200);
 
-	
-		
-
-		JPanel p = new JPanel(); // the panel is not visible in output
+		p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(7, 2));
 
 		JLabel name = new JLabel("name");
@@ -86,97 +90,114 @@ public class SearchUserGUI extends JFrame {
 		JButton search = new JButton("search");
 		p.add(search);
 
+		frame.getContentPane().add(BorderLayout.CENTER, p);
+		frame.setVisible(true);
+
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				ArrayList<User> usersResult = search();
-//				showInGUI(userResults);
+				System.out.println("passing users to showInGUI");
+				showInGUI(usersResult);
 			}
 		});
 
-		JTable table = new JTable(new CustomJTable());
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
-
-		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-		table.getColumn("Place a bid").setCellRenderer(buttonRenderer);
-
-		
-		JPanel panel = new JPanel();
-		panel.add(table);
-		// Adding Components to the frame.
-		frame.getContentPane().add(BorderLayout.SOUTH, panel);
-		frame.getContentPane().add(BorderLayout.CENTER, p);
-		frame.setVisible(true);
+//		JTable table = new JTable(new CustomJTable());
+//		JScrollPane scrollPane = new JScrollPane(table);
+//		table.setFillsViewportHeight(true);
+//
+//		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+//		table.getColumn("Place a bid").setCellRenderer(buttonRenderer);
+//
+//		JPanel panel = new JPanel();
+//		panel.add(table);
+//		// Adding Components to the frame.
+//		frame.getContentPane().add(BorderLayout.SOUTH, panel);
+//		frame.getContentPane().add(BorderLayout.CENTER, p);
+//		frame.setVisible(true);
 	}
 
 	private ArrayList<User> search() {
 
-		/*
-		 * try { System.out.println("hit the search button"); String name =
-		 * nameTxt.getText().trim(); String email = emailTxt.getText().trim(); // String
-		 * jourlyCompensation = jourlyCompensationTxt.getText().trim(); String
-		 * specialKeywords = specialKeywordsTxt.getText().trim(); String website =
-		 * websiteTxt.getText().trim(); // String requestBody =
-		 * "body: {user=guest, email=" + email + ", specialKeywords=" + specialKeywords
-		 * + ", website=" + website + "}";; Hashtable<String, String> requestBody = new
-		 * Hashtable<String, String>(); requestBody.put("name", name);
-		 * requestBody.put("email", email); requestBody.put("specialKeywords",
-		 * specialKeywords); requestBody.put("website", website); msg = new
-		 * ACLMessage(ACLMessage.REQUEST); msg.setConversationId(Constants.SEARCH); ; //
-		 * String messageText = Constants.GUEST + " " + requestBody; //
-		 * msg.setContent(messageText); msg.setContentObject(requestBody);
-		 * msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
-		 * myAgent.send(msg); System.out.println("sent the message to matchmaker");
-		 * 
-		 * // wait for the response template =
-		 * MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.
-		 * ACCEPT_PROPOSAL), MessageTemplate.MatchConversationId(Constants.SEARCH)); msg
-		 * = myAgent.blockingReceive(template); if (msg != null) { // ArrayList =
-		 * msg.getContentObject(); ArrayList<User> users = (ArrayList<User>)
-		 * msg.getContentObject(); showInGUI(users); return users; }
-		 * 
-		 * } catch (Exception e) { JOptionPane.showMessageDialog(GuestGUI.this,
-		 * "Invalid values. " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
-		 */
+		try {
+			System.out.println("hit the search button");
+			String name = nameTxt.getText().trim();
+			String email = emailTxt.getText().trim(); //
+			String hourlyCompensation = hourlyCompensationTxt.getText().trim();
+			String specialKeywords = specialKeywordsTxt.getText().trim();
+			String website = websiteTxt.getText().trim(); //
+			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("name", name);
+			requestBody.put("email", email);
+			requestBody.put("specialKeywords", specialKeywords);
+			requestBody.put("website", website);
+			msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.SEARCH);
+			String messageText = Constants.GUEST + " " + requestBody; //
+			msg.setContent(messageText);
+			msg.setContentObject(requestBody);
+			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+			systemAgent.send(msg);
+			System.out.println("sent the message to matchmaker");
+
+			// wait for the response
+			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+					MessageTemplate.MatchConversationId(Constants.SEARCH));
+			msg = systemAgent.blockingReceive(template);
+			if (msg != null) { //
+				ArrayList<User> users = (ArrayList<User>) msg.getContentObject();
+//				showInGUI(users);
+				return users;
+			}
+
+		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(GuestGUI.this, "Invalid values. " + e.getMessage(), "Error",
+//					JOptionPane.ERROR_MESSAGE);
+		}
+
 		return null;
 
 	}
 
 	private void showInGUI(ArrayList<User> users) {
 
-		String data2[][] = { { "1", "Amit", "A@gmail.com", "c#" }, { "2", "Jai", "b@gmail.com", "javascript" },
-				{ "3", "Sachin", "c@gmail.com", "java" } };
-//		String data[][];
-//
-//		String column[] = { "ID", "Name", "Email", "SpecialKeywords" };
-//		JTable jt = new JTable(data, column);
-//		// jt.setBounds(30, 40, 200, 300);
-//		JScrollPane sp = new JScrollPane(jt);
-//		panel.add(sp);
 		int lenUsers = users.size();
 		String column[] = { "Index", "Name", "Email", "SpecialKeywords", "website", "isPremium" };
-//		String[][] = new data[][];
 		String[][] data = new String[lenUsers][6];
 		User tmpUser;
 		String isPremium;
 		for (int i = 0; i < lenUsers; i++) {
-//			System.out.println("1");
 			tmpUser = users.get(i);
-			isPremium = tmpUser.getAccountType() == 1 ? "premium" : "free";
-			String rowData[] = { Integer.toString(i), tmpUser.getName(), tmpUser.getEmail(),
-					tmpUser.getSpecialKeyword(), tmpUser.getWebsite(), isPremium };
+			isPremium = tmpUser.getAccountType() == 1 ? "true" : "false";
+			String rowData[] = { Integer.toString(tmpUser.getId()), tmpUser.getEmail(), tmpUser.getName(),
+					tmpUser.getSpecialKeyword(), Integer.toString(tmpUser.gethourlyCompensation()), isPremium };
 			System.out.println(rowData);
 			for (int j = 0; j < rowData.length; j++) {
-//				System.out.println("2");
 				data[i][j] = rowData[j];
 			}
 		}
 
-		JTable jt = new JTable(data, column);
-		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
+		JTable table = new JTable(new CustomJTable(data, systemAgent, user));
+		JScrollPane scrollPane = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
+		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+		table.getColumn("Place a bid").setCellRenderer(buttonRenderer);
+
+		JPanel panel = new JPanel();
+		panel.add(table);
+		// Adding Components to the frame.
+		frame.getContentPane().add(BorderLayout.SOUTH, panel);
+//		table.setData(data);
+
+//		CustomJTable table = new CustomJTable();
+//		JScrollPane scrollPane = new JScrollPane(table);
+//		table.setFillsViewportHeight(true);
+//		table.setData(data);
+
+//		JTable jt = new JTable(data, column);
+//		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 		// jt.setBounds(30, 40, 200, 300);
-		JScrollPane sp = new JScrollPane(jt);
-		//panel.add(sp);
+//		JScrollPane sp = new JScrollPane(table);
+//		 panel.add(sp);
 
 	}
 

@@ -1,24 +1,36 @@
 package matchmaking.agents.System.GUI;
 
 import jade.core.AID;
+import jade.lang.acl.ACLMessage;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
 import matchmaking.agents.System.Profiler;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.Hashtable;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
 public class BidGUI extends JFrame {
+	
+	private int userId;
+	private ACLMessage msg, reply;
+	Hashtable<String, String> requestBody = new Hashtable<String, String>();
+	SystemAgent systemAgent;
+	private User clientUser;
 
 	JTextField amountTxt;
-	public BidGUI() {
-		
+	public BidGUI(int userId1, SystemAgent agent, User user1) {
+		userId = userId1; // this is the provider
+		clientUser = user1;  // this is the client placing bid
+		systemAgent = agent;
 		JFrame frame = new JFrame("BidGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 100);
@@ -37,7 +49,24 @@ public class BidGUI extends JFrame {
 		
 		placeABid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				System.out.println("Sace the bid");
+				
+				try {
+					System.out.println("Sace the bid");
+					String biddingAmount = amountTxt.getText().trim();
+					requestBody.put("userId", Integer.toString(userId));
+					requestBody.put("biddingAmount", biddingAmount);
+					requestBody.put("clientId", Integer.toString(clientUser.getId()));
+					msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setConversationId(Constants.PLACE_BID);
+					msg.setContentObject(requestBody);
+					msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+					systemAgent.send(msg);
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				
 			}
 		});

@@ -4,6 +4,7 @@ import jade.core.AID;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
 import matchmaking.agents.System.Profiler;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,10 +19,12 @@ public class SignInGUI extends JFrame {
 	private   JTextField nameTxt,userTypeTxt,userNameTxt,passwordTxt,accountTypeTxt, 
 	emailTxt, hourlyCompensationTxt, specialKeywordsTxt, websiteTxt,logoTxt,cvTxt;
 	private Profiler profiler;
+	
+	SystemAgent systemAgent;
 
-	public SignInGUI() {
+	public SignInGUI(SystemAgent agent) {
 		profiler = new Profiler();
-
+		systemAgent = agent;
 		// Creating the Frame
 		JFrame frame = new JFrame("SignInGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +71,7 @@ public class SignInGUI extends JFrame {
 					if (user != null) {
 						System.out.println("User has logged in");
 //						UserGUI userGui=new UserGUI();
-						UserGUI userGui=new UserGUI(user);
+						UserGUI userGui=new UserGUI(user, systemAgent);
 						userGui.showGui();
 					} else {
 						System.out.println("User not found, wrong username or password");
@@ -88,7 +91,7 @@ public class SignInGUI extends JFrame {
 				try {
 
 					System.out.println("hit the signIn button");
-					SignUpGUI signUpGUI=new SignUpGUI();
+					SignUpGUI signUpGUI=new SignUpGUI(systemAgent);
 					signUpGUI.showGui();
 
 				} catch (Exception e) {

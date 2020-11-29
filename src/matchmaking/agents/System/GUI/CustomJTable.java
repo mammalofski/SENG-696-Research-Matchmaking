@@ -11,20 +11,38 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
+import matchmaking.agents.System.SystemAgent;
+import matchmaking.orm.User;
+
 public class CustomJTable extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
-	private static final String[] COLUMN_NAMES = new String[] { "Id", "clientName", "projectName", "amount", "Place a bid" };
-	private static final Class<?>[] COLUMN_TYPES = new Class<?>[] { Integer.class, String.class, String.class,
-			String.class, JButton.class };
+	private static String[] COLUMN_NAMES = new String[] { "index", "email", "clientName", "specialKeywords",
+			"hourlyCompensation", "isPremium", "Place a bid" };
+	private static Class<?>[] COLUMN_TYPES = new Class<?>[] { Integer.class, String.class, String.class, String.class,
+			Integer.class, Boolean.class, JButton.class };
+	private String[][] data;
+	private SystemAgent systemAgent;
+	private User user;
+	
+	CustomJTable(String[][] data1, SystemAgent agent, User user1) {
+		super();
+		data = data1;
+		systemAgent = agent;
+		user = user1;
+	}
 
 	@Override
 	public int getColumnCount() {
 		return COLUMN_NAMES.length;
 	}
 
+	public void setData(String[][] data1) {
+		data = data1;
+	}
+
 	@Override
 	public int getRowCount() {
-		return 4;
+		return data.length;
 	}
 
 	@Override
@@ -39,10 +57,10 @@ public class CustomJTable extends AbstractTableModel {
 
 	public boolean isCellEditable(int row, int col) {
 
-		if (col > 3) {
+		if (col > 5) {
 
-			String data = "true";
-			setValueAt(data, row, col);
+			String data1 = "true";
+			setValueAt(data1, row, col);
 			return true;
 		} else {
 			return false;
@@ -55,7 +73,7 @@ public class CustomJTable extends AbstractTableModel {
 	public void setValueAt(Object value, int row, int col) {
 		System.out.println("value : " + value);
 
-		BidGUI bidGUI = new BidGUI();
+		BidGUI bidGUI = new BidGUI(Integer.parseInt(data[row][0]), systemAgent, user);
 		bidGUI.showGui();
 
 	}
@@ -63,26 +81,39 @@ public class CustomJTable extends AbstractTableModel {
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex) {
 		/* Adding components */
+
+//		if (columnIndex == 0) {
+//			return rowIndex;
+//		} else if (columnIndex < 7) {
+//			return data[rowIndex][columnIndex];
+//		} else if (columnIndex == 7) {
+//			final JButton button = new JButton(COLUMN_NAMES[columnIndex]);
+//			return button;
+//		} else {
+//			return "Error";
+//		}
+
 		switch (columnIndex) {
 		case 0:
 			return rowIndex;
 		case 1:
-			return "Text for " + rowIndex;
-		case 2: // fall through
-			return "Text for " + rowIndex;
-		case 3: // fall through
-			return "Text for " + rowIndex;
+			return data[rowIndex][columnIndex];
+		case 2:
+			return data[rowIndex][columnIndex];
+		case 3:
+			return data[rowIndex][columnIndex];
 		case 4:
+			return Integer.parseInt(data[rowIndex][columnIndex]);
+		case 5:
+			return data[rowIndex][columnIndex] == "1";
+		case 6:
 			final JButton button = new JButton(COLUMN_NAMES[columnIndex]);
-			/*
-			 * button.addActionListener(new ActionListener() { public void
-			 * actionPerformed(ActionEvent ev) { BidsListGUI bidsListGUI=new BidsListGUI();
-			 * bidsListGUI.showGui(); } });
-			 */
 			return button;
 		default:
-			return "Error";
+			return "";
+
 		}
+
 	}
 
 }

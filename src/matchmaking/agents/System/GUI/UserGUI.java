@@ -4,6 +4,7 @@ import jade.core.AID;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
 import matchmaking.agents.System.Profiler;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -21,10 +22,12 @@ public class UserGUI extends JFrame {
 	JTextField nameTxt, userTypeTxt, specialKeywordsTxt, emailTxt, hourlyCompensationTxt, websiteTxt;
 	Profiler profiler;
 	JPanel p;
+	private SystemAgent systemAgent;
 
-	public UserGUI(User user1) {
+	public UserGUI(User user1, SystemAgent agent) {
 //	public UserGUI() {
 		user = user1;
+		systemAgent = agent;
 		profiler = new Profiler();
 		// Creating the Frame
 		JFrame frame = new JFrame("UserGUI");
@@ -46,7 +49,7 @@ public class UserGUI extends JFrame {
 		m22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 
-				SearchUserGUI searchUserGUI = new SearchUserGUI();
+				SearchUserGUI searchUserGUI = new SearchUserGUI(systemAgent, user);
 				searchUserGUI.showGui();
 			}
 		});

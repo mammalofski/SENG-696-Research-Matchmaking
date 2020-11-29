@@ -3,6 +3,7 @@ package matchmaking.agents.System.GUI;
 import jade.core.AID;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,9 +18,11 @@ public class SignUpGUI extends JFrame implements ActionListener {
 
 	private JTextField nameTxt, userTypeTxt, userNameTxt, passwordTxt, accountTypeTxt, emailTxt, hourlyCompensationTxt,
 			specialKeywordsTxt, websiteTxt, logoTxt, cvTxt;
+	
+	private SystemAgent systemAgent;
 
-	public SignUpGUI() {
-
+	public SignUpGUI(SystemAgent agent) {
+		systemAgent = agent;
 		// Creating the Frame
 		JFrame frame = new JFrame("SignUpGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -193,7 +196,7 @@ public class SignUpGUI extends JFrame implements ActionListener {
 
 		user.createUser();
 		
-		UserGUI userGUI=new UserGUI(user);
+		UserGUI userGUI=new UserGUI(user, systemAgent);
 		userGUI.showGui();
 
 		/// if user registered

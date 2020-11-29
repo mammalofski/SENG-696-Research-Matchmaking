@@ -33,10 +33,12 @@ public class MatchmakerAgent extends Agent {
 	private Hashtable catalogue;
 	private MatchmackingAgentGUI myGui;
 	private SearchEngine searchEngine;
+	private BiddingSystem biddingSystem;
 
 	protected void setup() {
 		System.out.println("in agent matchmaker's setup");
 		conn = DataBase.getConnection();
+		biddingSystem = new BiddingSystem(conn);
 		searchEngine = new SearchEngine(conn);
 		// System.out.println("Hello World! My name is " + getLocalName());
 		addBehaviour(new SimpleBehaviour() {
@@ -68,6 +70,12 @@ public class MatchmakerAgent extends Agent {
 								myAgent.send(reply);
 								// send reply
 								break;
+							case Constants.PLACE_BID:
+								int userId = Integer.parseInt(requestBody.get("userId"));
+								int biddingAmount = Integer.parseInt(requestBody.get("biddingAmount"));
+								int clientId = Integer.parseInt(requestBody.get("clientId"));
+								biddingSystem.placeBid(userId, clientId, biddingAmount);
+								
 							}
 
 						} catch (UnreadableException | IOException e) {
@@ -98,6 +106,8 @@ public class MatchmakerAgent extends Agent {
 			}
 		});
 	}
+	
+	
 
 //	private void sendMsg(String content, String conversationId, int type, Set<AID> receivers) {
 //	    ACLMessage msg = new ACLMessage(type);
