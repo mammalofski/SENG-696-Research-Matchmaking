@@ -1,8 +1,12 @@
 package matchmaking.agents.Matchmaker;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import matchmaking.orm.*;
+//import jade.util.leap.ArrayList;
+import java.util.*;
 
 public class BiddingSystem {
 	private Connection conn;
@@ -20,6 +24,23 @@ public class BiddingSystem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Bid> getBiddings(int userId) {
+		try (Statement statement = conn.createStatement()) {
+			System.out.println("getting biddings from db");
+			String query = "select * from bid where providerId=" + userId;
+			System.out.println("query is " + query + " and userId is " + userId);
+			ResultSet rs = statement.executeQuery(query);
+			System.out.println("after query");
+			ArrayList<Bid> biddings = Bid.serializeBids(rs);
+			return biddings;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

@@ -59,7 +59,7 @@ public class UserGUI extends JFrame {
 		m33.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 
-				BidsListGUI bidsListGUI = new BidsListGUI();
+				BidsListGUI bidsListGUI = new BidsListGUI(systemAgent, user);
 				bidsListGUI.showGui();
 			}
 		});

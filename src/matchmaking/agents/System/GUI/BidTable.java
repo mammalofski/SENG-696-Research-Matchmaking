@@ -3,14 +3,19 @@ package matchmaking.agents.System.GUI;
 import javax.swing.table.AbstractTableModel;
 
 class BidTable extends AbstractTableModel {
-	private String[] columnNames = { "Id", "clientName", "projectName", "amount", "Accept","Reject" };
-
-	private Object[][] data = { { "Id", "clientName", "projectName", "amount", new Boolean(true), new Boolean(false) },
-			{ 1, "Mary", "Campione", new Integer(5), new Boolean(false), new Boolean(null) },
-			{ 2, "Alison", "Huml", new Integer(3), new Boolean(true) , new Boolean(null)},
-			{ 3, "Kathy", "Walrath", new Integer(2), new Boolean(false), new Boolean(null) },
-			{ 4, "Sharon", "Zakhour", new Integer(20), new Boolean(true), new Boolean(null) },
-			{ 5, "Philip", "Milne", new Integer(10), new Boolean(false), new Boolean(null) } };
+	private Object[][] data;
+	private String[] columnNames = { "index", "clientName", "providerName", "amount", "Accept","Reject" };
+//
+//	private Object[][] data = { { "Id", "clientName", "projectName", "amount", new Boolean(true), new Boolean(false) },
+//			{ 1, "Mary", "Campione", new Integer(5), new Boolean(false), new Boolean(null) },
+//			{ 2, "Alison", "Huml", new Integer(3), new Boolean(true) , new Boolean(null)},
+//			{ 3, "Kathy", "Walrath", new Integer(2), new Boolean(false), new Boolean(null) },
+//			{ 4, "Sharon", "Zakhour", new Integer(20), new Boolean(true), new Boolean(null) },
+//			{ 5, "Philip", "Milne", new Integer(10), new Boolean(false), new Boolean(null) } };
+	
+	public BidTable(Object[][] data1) {
+		data = data1;
+	}
 
 	public int getColumnCount() {
 		return columnNames.length;

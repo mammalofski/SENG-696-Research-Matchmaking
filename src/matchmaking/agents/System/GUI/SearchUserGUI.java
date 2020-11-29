@@ -186,19 +186,6 @@ public class SearchUserGUI extends JFrame {
 		panel.add(table);
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
-//		table.setData(data);
-
-//		CustomJTable table = new CustomJTable();
-//		JScrollPane scrollPane = new JScrollPane(table);
-//		table.setFillsViewportHeight(true);
-//		table.setData(data);
-
-//		JTable jt = new JTable(data, column);
-//		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
-		// jt.setBounds(30, 40, 200, 300);
-//		JScrollPane sp = new JScrollPane(table);
-//		 panel.add(sp);
-
 	}
 
 	public void showGui() {

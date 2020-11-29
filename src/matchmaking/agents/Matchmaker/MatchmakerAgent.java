@@ -16,6 +16,7 @@ import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import matchmaking.orm.Bid;
 import matchmaking.orm.Constants;
 import matchmaking.orm.DataBase;
 
@@ -47,6 +48,7 @@ public class MatchmakerAgent extends Agent {
 			public void action() {
 				ACLMessage msg, reply;
 				Hashtable<String, String> requestBody;
+				int userId;
 				System.out.println("in agent matchmaker");
 
 				msg = myAgent.blockingReceive();
@@ -71,10 +73,21 @@ public class MatchmakerAgent extends Agent {
 								// send reply
 								break;
 							case Constants.PLACE_BID:
-								int userId = Integer.parseInt(requestBody.get("userId"));
+								userId = Integer.parseInt(requestBody.get("userId"));
 								int biddingAmount = Integer.parseInt(requestBody.get("biddingAmount"));
 								int clientId = Integer.parseInt(requestBody.get("clientId"));
 								biddingSystem.placeBid(userId, clientId, biddingAmount);
+								break;
+							case Constants.GET_BIDDINGS:
+								userId = Integer.parseInt(requestBody.get("userId"));
+								ArrayList<Bid> biddings = biddingSystem.getBiddings(userId);
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(biddings);
+								myAgent.send(reply);
+								break;
 								
 							}
 
