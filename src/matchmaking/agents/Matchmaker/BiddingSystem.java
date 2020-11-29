@@ -18,7 +18,7 @@ public class BiddingSystem {
 	public void placeBid(int userId, int clientId, int biddingAmount) {
 		try (Statement statement = conn.createStatement()) {
 			System.out.println("creating bid");
-			String query = "insert into bid (clientId, providerId, amount) values(" + clientId + ", " + userId + ", " + biddingAmount + ")";
+			String query = "insert into bid (clientId, providerId, amount, accepted) values(" + clientId + ", " + userId + ", " + biddingAmount + ", 0)";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -29,8 +29,8 @@ public class BiddingSystem {
 	public ArrayList<Bid> getBiddings(int userId) {
 		try (Statement statement = conn.createStatement()) {
 			System.out.println("getting biddings from db");
-			String query = "select * from bid where providerId=" + userId;
-			System.out.println("query is " + query + " and userId is " + userId);
+			String query = "select * from bid where providerId=" + userId + " and accepted<>2";
+			System.out.println("query is " + query + " THE userId is " + userId);
 			ResultSet rs = statement.executeQuery(query);
 			System.out.println("after query");
 			ArrayList<Bid> biddings = Bid.serializeBids(rs);

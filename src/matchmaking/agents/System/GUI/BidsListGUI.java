@@ -49,19 +49,6 @@ public class BidsListGUI extends JFrame {
 		frame1 = new JFrame("BidsListGUI");
 		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame1.setSize(400, 400);
-
-//		JTable table = new JTable(new BidTable());
-//		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-
-//		JScrollPane scrollPane = new JScrollPane(table);
-
-//		table.setFillsViewportHeight(true);
-
-//		frame1.getContentPane().add(table);
-//		frame1.setVisible(true);
-
-//		frame1.getContentPane().add(BorderLayout.CENTER, table);
-		
 		ArrayList<Bid> biddings = getBiddings(user.getId());
 		System.out.println("received the biddings: " + biddings);
 		showInGUI(biddings);
@@ -107,14 +94,10 @@ public class BidsListGUI extends JFrame {
 		String column[] = { "Index", "clientName", "providerName", "amount", "accept", "reject" };
 		Object[][] data = new Object[lenBids][6];
 		Bid tmpBid;
-//		System.out.println("before loop");
-//		for (int j = 0; j < column.length; j++) {
-//			data[0][j] = column[j];
-//		}
 		for (int i = 0; i < lenBids; i++) {
 			tmpBid = biddings.get(i);
 			System.out.println("tmpBid is " + tmpBid);
-			Object rowData[] = { tmpBid.getId(), tmpBid.getClientId(), tmpBid.getProviderId(), tmpBid.getAmount(), tmpBid.getAccepted().equals(true), tmpBid.getAccepted().equals(false)};
+			Object rowData[] = { tmpBid.getId(), tmpBid.getClientId(), tmpBid.getProviderId(), tmpBid.getAmount(), tmpBid.getAccepted().equals(1), tmpBid.getAccepted().equals(2)};
 			System.out.println(rowData);
 			for (int j = 0; j < 6; j++) {
 				data[i][j] = rowData[j];

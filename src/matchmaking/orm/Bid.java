@@ -11,21 +11,15 @@ public class Bid implements java.io.Serializable {
 	private int clientId;
 	private int providerId;
 	private int amount;
-	private Object accepted;
+	private int accepted;
 	
-	public Bid(int bidId1, int projectId1, int clientId1, int providerId1, int amount1, Object accepted1) {
+	public Bid(int bidId1, int projectId1, int clientId1, int providerId1, int amount1, int accepted1) {
 		bidId = bidId1;
 		projectId = projectId1;
 		clientId = clientId1;
 		providerId = providerId1;
 		amount = amount1;
-		accepted = accepted1;
-		if (accepted.equals(1)) 
-			accepted = true;
-		else if (accepted.equals(0))
-			accepted = false;
-		
-		
+		accepted = accepted1; // 2 reject 1 accept 0 null
 	}
 	
 	public static ArrayList<Bid> serializeBids(ResultSet qs) {
