@@ -19,6 +19,7 @@ import jade.lang.acl.UnreadableException;
 import matchmaking.orm.Bid;
 import matchmaking.orm.Constants;
 import matchmaking.orm.DataBase;
+import matchmaking.orm.MatchmakingContract;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,12 +36,14 @@ public class MatchmakerAgent extends Agent {
 	private MatchmackingAgentGUI myGui;
 	private SearchEngine searchEngine;
 	private BiddingSystem biddingSystem;
+	private MatchmakingContractor matchmakingContractor;
 
 	protected void setup() {
 		System.out.println("in agent matchmaker's setup");
 		conn = DataBase.getConnection();
 		biddingSystem = new BiddingSystem(conn);
 		searchEngine = new SearchEngine(conn);
+		matchmakingContractor = new MatchmakingContractor(conn);
 		// System.out.println("Hello World! My name is " + getLocalName());
 		addBehaviour(new SimpleBehaviour() {
 
@@ -88,7 +91,17 @@ public class MatchmakerAgent extends Agent {
 								reply.setContentObject(biddings);
 								myAgent.send(reply);
 								break;
-								
+							case Constants.CREATE_MATCHMAKING_CONTRACT:
+								System.out.println("msg in matchmaker received and in create contract case");
+								String bidId = requestBody.get("bidId");
+								MatchmakingContract contract = matchmakingContractor.createContract(Integer.parseInt(bidId));
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(contract);
+								myAgent.send(reply);
+								break;
 							}
 
 						} catch (UnreadableException | IOException e) {

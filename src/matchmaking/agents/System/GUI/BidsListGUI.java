@@ -104,7 +104,7 @@ public class BidsListGUI extends JFrame {
 			}
 		}
 		
-		JTable table = new JTable(new BidTable(data));
+		JTable table = new JTable(new BidTable(data, systemAgent, user));
 		
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 

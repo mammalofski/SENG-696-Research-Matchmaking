@@ -65,6 +65,10 @@ public class Bid implements java.io.Serializable {
 	public float getAmount() {
 		return amount;
 	}
+	
+//	public float getDescription() {
+//		return description;
+//	}
 
 	public void setProjectId(int projectId) {
 		this.projectId = projectId;

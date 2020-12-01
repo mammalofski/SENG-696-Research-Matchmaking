@@ -29,8 +29,8 @@ public class ClientRateGUI extends JFrame {
 		JButton ok = new JButton("ok");
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				ContractGUI contractGUI = new ContractGUI();
-				contractGUI.showGui();
+//				ContractGUI contractGUI = new ContractGUI();
+//				contractGUI.showGui();
 
 			}
 		});

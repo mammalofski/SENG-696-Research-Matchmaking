@@ -5,6 +5,7 @@ import jade.core.AID;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
 import matchmaking.agents.System.Profiler;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,8 +19,17 @@ import javax.swing.table.TableCellRenderer;
 public class ContractGUI extends JFrame {
 
 	JTextField amountTxt;
+	private SystemAgent systemAgent;
+	private User user;
+	private MatchmakingContract contract;
 
-	public ContractGUI() {
+	public ContractGUI(SystemAgent agent, User user1, MatchmakingContract contract1) {
+		System.out.println("creating the contractGUI");
+		
+		systemAgent = agent;
+		user = user1;
+		contract = contract1;
+		
 
 		JFrame frame = new JFrame("ContractGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,9 +65,11 @@ public class ContractGUI extends JFrame {
 		 * 
 		 * JLabel deadline = new JLabel("Deadline"); p.add(deadline);
 		 */
+		
+		String contractingUserName = contract.getClientId() == user.getId() ? contract.getProviderName() : contract.getClientName();
 
-		String labelcontent = "<html>This is a confirmation that you have accepted the project <br/>" + " ProjectName   "
-				+ "with the amount  " + "  Amount" + "<html>  please note that the deadline of project is <br/>" + "Deadline";
+		String labelcontent = "<html>Do you confrim to accept the contract between you and " + contractingUserName + "<br/>"
+				+ "with the amount  " + contract.getAmount();
 		JLabel content = new JLabel(labelcontent,SwingConstants.CENTER);
 		p.add(content);
 
@@ -67,6 +79,7 @@ public class ContractGUI extends JFrame {
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
 	}
+
 
 	public void showGui() {
 		pack();

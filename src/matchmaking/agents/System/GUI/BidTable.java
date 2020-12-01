@@ -1,10 +1,27 @@
 package matchmaking.agents.System.GUI;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 import javax.swing.table.AbstractTableModel;
+
+import jade.core.AID;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
+import matchmaking.agents.System.SystemAgent;
+import matchmaking.orm.Constants;
+import matchmaking.orm.MatchmakingContract;
+import matchmaking.orm.User;
 
 class BidTable extends AbstractTableModel {
 	private Object[][] data;
 	private String[] columnNames = { "index", "clientName", "providerName", "amount", "Accept","Reject" };
+	private SystemAgent systemAgent;
+	private User user;
+	private ACLMessage msg, reply;
+	private MessageTemplate template;
 //
 //	private Object[][] data = { { "Id", "clientName", "projectName", "amount", new Boolean(true), new Boolean(false) },
 //			{ 1, "Mary", "Campione", new Integer(5), new Boolean(false), new Boolean(null) },
@@ -13,8 +30,11 @@ class BidTable extends AbstractTableModel {
 //			{ 4, "Sharon", "Zakhour", new Integer(20), new Boolean(true), new Boolean(null) },
 //			{ 5, "Philip", "Milne", new Integer(10), new Boolean(false), new Boolean(null) } };
 	
-	public BidTable(Object[][] data1) {
+	public BidTable(Object[][] data1, SystemAgent agent, User user1) {
 		data = data1;
+		systemAgent = agent;
+		user = user1;
+		
 	}
 
 	public int getColumnCount() {
@@ -67,14 +87,50 @@ class BidTable extends AbstractTableModel {
 			System.out.println("edit");
 			data[row][col] = value;
 			fireTableCellUpdated(row, col);
-			ClientRateGUI clientRateGUI=new ClientRateGUI();
-			clientRateGUI.showGui();
+			System.out.println("requesting for contract");
+			MatchmakingContract contract = createContract(data[row][0]);
+			System.out.println("got the contract in bidTable");
+			ContractGUI contractGUI = new ContractGUI(systemAgent, user, contract);
+			System.out.println("after initiating contractGUI");
+//			ClientRateGUI clientRateGUI=new ClientRateGUI();
+			contractGUI.showGui();
 		}
 		if (value.equals(false)) {
 			System.out.println("edit");
 			data[row][col] = value;
 			fireTableCellUpdated(row, col);
 		}
+	}
+	
+	private MatchmakingContract createContract(Object bidId) {
+		// send message to MatchmakerAgent to create a contract
+		
+		try {
+			String bidIdStr = Integer.toString((int) bidId);
+			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("bidId", bidIdStr);
+			msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.CREATE_MATCHMAKING_CONTRACT);
+			msg.setContentObject(requestBody);
+			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+			systemAgent.send(msg);
+			System.out.println("sent the message to matchmaker to create contract");
+
+			// wait for the response
+			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+					MessageTemplate.MatchConversationId(Constants.SEARCH));
+			msg = systemAgent.blockingReceive(template);
+			if (msg != null) { //
+				MatchmakingContract contract = (MatchmakingContract) msg.getContentObject();
+				return contract;
+			}
+		} catch (IOException | UnreadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+		
 	}
 
 }
