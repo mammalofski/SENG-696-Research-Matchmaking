@@ -68,7 +68,7 @@ class BidTable extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears onscreen.
-		if (col > 4) {
+		if (col > 3) {
 
 			String data = getValueAt(row, col).toString();
 			setValueAt(data, row, col);
@@ -104,9 +104,6 @@ class BidTable extends AbstractTableModel {
 			msg.setContentObject(requestBody);
 			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
 			systemAgent.send(msg);
-			System.out.println("edit");
-			data[row][col] = value;
-			fireTableCellUpdated(row, col);
 			System.out.println("sent the message to matchmaker to reject bid");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -121,6 +118,9 @@ class BidTable extends AbstractTableModel {
 				acceptBid(value, row, col);
 			else if (col == 5)
 				rejectBid(value, row, col);
+			
+			data[row][col] = value;
+			fireTableCellUpdated(row, col);
 		}
 		if (value.equals(false)) {
 			// do nothing
