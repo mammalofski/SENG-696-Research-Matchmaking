@@ -68,7 +68,7 @@ class BidTable extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears onscreen.
-		if (col > 3) {
+		if (col > 4) {
 
 			String data = getValueAt(row, col).toString();
 			setValueAt(data, row, col);
@@ -81,24 +81,54 @@ class BidTable extends AbstractTableModel {
 	/**
 	 * Don't need to implement this method unless your table's data can change.
 	 */
+	
+	public void acceptBid(Object value, int row, int col) {
+		System.out.println("edit");
+		data[row][col] = value;
+		fireTableCellUpdated(row, col);
+		System.out.println("requesting for contract");
+		MatchmakingContract contract = createContract(data[row][0]);
+		System.out.println("got the contract in bidTable");
+		ContractGUI contractGUI = new ContractGUI(systemAgent, user, contract);
+		System.out.println("after initiating contractGUI");
+//		ClientRateGUI clientRateGUI=new ClientRateGUI();
+		contractGUI.showGui();
+	}
+	public void rejectBid(Object value, int row, int col) {
+		try {
+			String bidIdStr = Integer.toString((int) data[row][0]);
+			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("bidId", bidIdStr);
+			msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.REJECT_BID);
+			msg.setContentObject(requestBody);
+			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+			systemAgent.send(msg);
+			System.out.println("edit");
+			data[row][col] = value;
+			fireTableCellUpdated(row, col);
+			System.out.println("sent the message to matchmaker to reject bid");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void setValueAt(Object value, int row, int col) {
 		System.out.println("value : " + value);
 		if (value.equals(true)) {
-			System.out.println("edit");
-			data[row][col] = value;
-			fireTableCellUpdated(row, col);
-			System.out.println("requesting for contract");
-			MatchmakingContract contract = createContract(data[row][0]);
-			System.out.println("got the contract in bidTable");
-			ContractGUI contractGUI = new ContractGUI(systemAgent, user, contract);
-			System.out.println("after initiating contractGUI");
-//			ClientRateGUI clientRateGUI=new ClientRateGUI();
-			contractGUI.showGui();
+			if (col == 4)
+				acceptBid(value, row, col);
+			else if (col == 5)
+				rejectBid(value, row, col);
 		}
 		if (value.equals(false)) {
-			System.out.println("edit");
-			data[row][col] = value;
-			fireTableCellUpdated(row, col);
+			// do nothing
+			
+//			System.out.println("edit");
+//			data[row][col] = value;
+//			fireTableCellUpdated(row, col);
+			
 		}
 	}
 	

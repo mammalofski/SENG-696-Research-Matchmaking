@@ -42,5 +42,26 @@ public class BiddingSystem {
 		
 		return null;
 	}
-
+	
+	public void rejectBid(int bidId) {
+		try (Statement statement = conn.createStatement()) {
+			System.out.println("rejecting bid");
+			String query = "update bid set accepted=2 where bidId=" + bidId;
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void acceptBid(int bidId) {
+		try (Statement statement = conn.createStatement()) {
+			System.out.println("accepting bid");
+			String query = "update bid set accepted=1 where bidId=" + bidId;
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

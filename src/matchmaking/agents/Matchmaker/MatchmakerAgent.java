@@ -94,6 +94,7 @@ public class MatchmakerAgent extends Agent {
 							case Constants.CREATE_MATCHMAKING_CONTRACT:
 								System.out.println("msg in matchmaker received and in create contract case");
 								String bidId = requestBody.get("bidId");
+								biddingSystem.acceptBid(Integer.parseInt(bidId));
 								MatchmakingContract contract = matchmakingContractor.createContract(Integer.parseInt(bidId));
 								// send reply
 								System.out.println("sending contract back to systemAgent, contract's provider name is: " + contract.getProviderName());
@@ -112,6 +113,9 @@ public class MatchmakerAgent extends Agent {
 								String acceptor = requestBody.get("acceptor");
 								matchmakingContractor.acceptContract(Integer.parseInt(contractId), acceptor);
 								break;
+							case Constants.REJECT_BID:
+								int bidId2 = Integer.parseInt(requestBody.get("bidId"));
+								biddingSystem.rejectBid(bidId2);
 							}
 
 						} catch (UnreadableException | IOException e) {
