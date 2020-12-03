@@ -96,11 +96,15 @@ public class MatchmakerAgent extends Agent {
 								String bidId = requestBody.get("bidId");
 								MatchmakingContract contract = matchmakingContractor.createContract(Integer.parseInt(bidId));
 								// send reply
+								System.out.println("sending contract back to systemAgent, contract's provider name is: " + contract.getProviderName());
 								reply = msg.createReply();
 								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 								reply.setConversationId(msg.getConversationId());
+								System.out.println("before setContentObject");
 								reply.setContentObject(contract);
+								System.out.println("after setContentObject");
 								myAgent.send(reply);
+								System.out.println("after reply");
 								break;
 							}
 

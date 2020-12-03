@@ -115,13 +115,13 @@ class BidTable extends AbstractTableModel {
 			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
 			systemAgent.send(msg);
 			System.out.println("sent the message to matchmaker to create contract");
-
 			// wait for the response
 			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
-					MessageTemplate.MatchConversationId(Constants.SEARCH));
+					MessageTemplate.MatchConversationId(Constants.CREATE_MATCHMAKING_CONTRACT));
 			msg = systemAgent.blockingReceive(template);
 			if (msg != null) { //
 				MatchmakingContract contract = (MatchmakingContract) msg.getContentObject();
+				System.out.println("contract received in systemAgent ");
 				return contract;
 			}
 		} catch (IOException | UnreadableException e) {
