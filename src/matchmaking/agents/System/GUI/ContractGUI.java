@@ -2,6 +2,7 @@
 package matchmaking.agents.System.GUI;
 
 import jade.core.AID;
+import jade.lang.acl.ACLMessage;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
 import matchmaking.agents.System.Profiler;
@@ -12,6 +13,8 @@ import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.Hashtable;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -22,6 +25,7 @@ public class ContractGUI extends JFrame {
 	private SystemAgent systemAgent;
 	private User user;
 	private MatchmakingContract contract;
+	private ACLMessage msg, reply;
 
 	public ContractGUI(SystemAgent agent, User user1, MatchmakingContract contract1) {
 		System.out.println("creating the contractGUI");
@@ -43,12 +47,30 @@ public class ContractGUI extends JFrame {
 		reject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("the contract has been rejected.");
+				frame.dispose();
 			}
 		});
 
 		accept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				System.out.println("the contract has been accepted.");
+				
+				try {
+					System.out.println("the contract has been accepted.");
+					Hashtable<String, String> requestBody = new Hashtable<String, String>();
+					requestBody.put("contractId", Integer.toString(contract.getId()));
+					requestBody.put("accpetor", user.getuserType() == 2 ? "provider" : "client");
+					msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setConversationId(Constants.ACCEPT_CONTRACT);
+					msg.setContentObject(requestBody);
+					msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+					systemAgent.send(msg);
+					System.out.println("sent the message to matchmaker to accept the contract");
+					frame.dispose();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 		});
 

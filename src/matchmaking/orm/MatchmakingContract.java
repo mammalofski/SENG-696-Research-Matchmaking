@@ -16,7 +16,7 @@ public class MatchmakingContract implements java.io.Serializable {
 	private String clientName;
 
 	public MatchmakingContract(int matchmakingContractId1, int projectId1, int clientId1, int providerId1, int amount1, String date1, int acceptedByClient1, int acceptedByProvider1) {
-		matchmakingContractId = matchmakingContractId;
+		matchmakingContractId = matchmakingContractId1;
 		projectId = projectId1;
 		clientId = clientId1;
 		providerId = providerId;

@@ -106,6 +106,12 @@ public class MatchmakerAgent extends Agent {
 								myAgent.send(reply);
 								System.out.println("after reply");
 								break;
+							case Constants.ACCEPT_CONTRACT:
+								System.out.println("msg in matchmaker received and in accept contract case");
+								String contractId = requestBody.get("contractId");
+								String acceptor = requestBody.get("acceptor");
+								matchmakingContractor.acceptContract(Integer.parseInt(contractId), acceptor);
+								break;
 							}
 
 						} catch (UnreadableException | IOException e) {
