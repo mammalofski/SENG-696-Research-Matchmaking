@@ -1,5 +1,8 @@
 package matchmaking.orm;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MatchmakingContract implements java.io.Serializable {
@@ -9,8 +12,8 @@ public class MatchmakingContract implements java.io.Serializable {
 	private int providerId;
 	private float amount;
 	private String description;
-	private boolean acceptedByClient;
-	private boolean acceptedByProvider;
+	private int acceptedByClient; // 0: undecided, 1:  accepted, 2: rejected
+	private int acceptedByProvider;
 	private String date;
 	private String providerName;
 	private String clientName;
@@ -22,8 +25,33 @@ public class MatchmakingContract implements java.io.Serializable {
 		providerId = providerId;
 		amount = amount1;
 		date = date1;
-		acceptedByClient = acceptedByClient1 == 1;
-		acceptedByProvider = acceptedByProvider1 == 1;
+		acceptedByClient = acceptedByClient1;
+		acceptedByProvider = acceptedByProvider1;
+		
+	}
+	
+	public static ArrayList<MatchmakingContract> serializeContracts(ResultSet qs) {
+		System.out.println("in serializing bids");
+		try {
+			ArrayList<MatchmakingContract> contracts = new ArrayList<MatchmakingContract>();
+			MatchmakingContract tmpContract;
+			while(qs.next()) {
+				tmpContract = new MatchmakingContract(qs.getInt("matchmakingContractId"), 0, qs.getInt("clientId"), qs.getInt("providerId"),
+						qs.getInt("amount"), qs.getString("date"), qs.getInt("acceptedByClient"), qs.getInt("acceptedByProvider"));
+				tmpContract.setProviderName(qs.getString("PNAME"));
+				tmpContract.setClientName(qs.getString("CNAME"));
+				System.out.println("the contract is " + tmpContract);
+				contracts.add(tmpContract);
+			}
+			System.out.println("serialized contracts from db are " + contracts);
+		
+			
+			return contracts;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 		
 	}
 	
@@ -67,11 +95,11 @@ public class MatchmakingContract implements java.io.Serializable {
 		return description;
 	}
 
-	public Boolean getAcceptedByClient() {
+	public int getAcceptedByClient() {
 		return acceptedByClient;
 	}
 
-	public Boolean getAcceptedByProvider() {
+	public int getAcceptedByProvider() {
 		return acceptedByProvider;
 	}
 
@@ -100,11 +128,11 @@ public class MatchmakingContract implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public void setAcceptedByClient(Boolean acceptedByClient) {
+	public void setAcceptedByClient(int acceptedByClient) {
 		this.acceptedByClient = acceptedByClient;
 	}
 
-	public void setAcceptedByProvider(Boolean acceptedByProvider) {
+	public void setAcceptedByProvider(int acceptedByProvider) {
 		this.acceptedByProvider = acceptedByProvider;
 	}
 

@@ -116,6 +116,16 @@ public class MatchmakerAgent extends Agent {
 							case Constants.REJECT_BID:
 								int bidId2 = Integer.parseInt(requestBody.get("bidId"));
 								biddingSystem.rejectBid(bidId2);
+								break;
+							case Constants.GET_CONTRACTS:
+								userId = Integer.parseInt(requestBody.get("userId"));
+								ArrayList<MatchmakingContract> contracts = matchmakingContractor.getContracts(userId);
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(contracts);
+								myAgent.send(reply);
 							}
 
 						} catch (UnreadableException | IOException e) {

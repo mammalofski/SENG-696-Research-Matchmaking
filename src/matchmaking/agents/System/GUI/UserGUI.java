@@ -40,10 +40,23 @@ public class UserGUI extends JFrame {
 		JMenu m2 = new JMenu("UserList");
 		JMenu m3 = new JMenu("Bids");
 		JMenu m4 = new JMenu("projectProgress");
+		JMenu m5 = new JMenu("Contracts");
 		mb.add(m1);
 		mb.add(m2);
 		mb.add(m3);
 		mb.add(m4);
+		mb.add(m5);
+
+		JMenuItem m51 = new JMenuItem("Show Contracts");
+		m5.add(m51);
+		m51.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				ContractsListGUI gui = new ContractsListGUI(systemAgent, user);
+				gui.showGui();
+
+			}
+		});
+
 		JMenuItem m22 = new JMenuItem("Show User List");
 		m2.add(m22);
 		m22.addActionListener(new ActionListener() {
@@ -83,7 +96,6 @@ public class UserGUI extends JFrame {
 				projectProgressGUI.showGui();
 			}
 		});
-		
 
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
@@ -136,11 +148,11 @@ public class UserGUI extends JFrame {
 				profiler.updateProfile(user);
 			}
 		});
-		
+
 		panel.add(validate);
 		panel.add(updateProfileBtn);
 		panel.add(cancel);
-		
+
 		p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(12, 2));
 
@@ -149,20 +161,18 @@ public class UserGUI extends JFrame {
 		nameTxt.setText(user.getName());
 		p.add(name);
 		p.add(nameTxt);
-		
+
 		JLabel userType = new JLabel("userType");
-		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType())); 
+		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType()));
 //		userTypeTxt.setText(Integer.toString(user.getuserType()));
 		p.add(userType);
 		p.add(userTypeLabel);
-		
 
 		JLabel email = new JLabel("email");
 		emailTxt = new JTextField(20);
 		emailTxt.setText(user.getEmail());
 		p.add(email);
 		p.add(emailTxt);
-		
 
 		JLabel hourlyCompensation = new JLabel("hourlyCompensation");
 		hourlyCompensationTxt = new JTextField(20);
@@ -195,7 +205,6 @@ public class UserGUI extends JFrame {
 //
 //		JButton showCv = new JButton("showCv");
 //		p.add(showCv);
-		
 
 //		showCv.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent ev) {
@@ -230,30 +239,29 @@ public class UserGUI extends JFrame {
 //		isPremium.setBounds(100, 100, 50, 50);
 		p.add(accountType);
 		p.add(isPremium);
-		
-		
+
 		JFrame paymentFrame = new JFrame("PaymentGate");
 
 		isPremium.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getSource() == isPremium) {
 					if (e.getStateChange() == 1) { // Creating the
-						
+
 						paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						paymentFrame.setSize(300, 100);
 
 						// Creating the panel at bottom and adding components
 						JPanel panel = new JPanel(); // the panel is not visible in output
-						
+
 						JLabel name = new JLabel("please pay the premium cost.");
 						panel.add(name);
-						
+
 						JButton paymentBtn = new JButton("Pay");
 						panel.add(paymentBtn);
-						
+
 						paymentFrame.getContentPane().add(BorderLayout.CENTER, panel);
 						paymentFrame.setVisible(true);
-						
+
 						paymentBtn.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent ev) {
 								paymentFrame.dispose();
