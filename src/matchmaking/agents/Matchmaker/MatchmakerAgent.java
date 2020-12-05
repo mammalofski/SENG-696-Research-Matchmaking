@@ -126,6 +126,18 @@ public class MatchmakerAgent extends Agent {
 								reply.setConversationId(msg.getConversationId());
 								reply.setContentObject(contracts);
 								myAgent.send(reply);
+								break;
+							case Constants.REJECT_CONTRACT:
+								int contractId2 = Integer.parseInt(requestBody.get("contractId"));
+								String rejector = requestBody.get("rejector");
+								matchmakingContractor.rejectContract(contractId2, rejector);
+								break;
+							case Constants.ACCEPT_MATCHMAKING_CONTRACT:
+								int contractId3 = Integer.parseInt(requestBody.get("contractId"));
+								String acceptor2 = requestBody.get("acceptor");
+								matchmakingContractor.acceptContract(contractId3, acceptor2);
+								// TODO: if both parts have accepted the contract, then initialize the project
+								break;
 							}
 
 						} catch (UnreadableException | IOException e) {

@@ -10,6 +10,8 @@ public class Constants {
 	public static final String ACCEPT_CONTRACT = "accept_contract"; 
 	public static final String REJECT_BID = "reject_bod"; 
 	public static final String GET_CONTRACTS = "get_contracts"; 
+	public static final String REJECT_CONTRACT = "reject_contract"; 
+	public static final String ACCEPT_MATCHMAKING_CONTRACT = "accept_matchmaking_contract"; 
 	
 	
 	
