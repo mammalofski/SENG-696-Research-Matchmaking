@@ -1,6 +1,7 @@
 package matchmaking.agents.Matchmaker;
 
 import matchmaking.orm.ORM;
+import matchmaking.orm.Project;
 import matchmaking.orm.User;
 import matchmaking.agents.System.GUI.*;
 import matchmaking.agents.System.GUI.MatchmackingAgentGUI;
@@ -136,7 +137,16 @@ public class MatchmakerAgent extends Agent {
 								int contractId3 = Integer.parseInt(requestBody.get("contractId"));
 								String acceptor2 = requestBody.get("acceptor");
 								matchmakingContractor.acceptContract(contractId3, acceptor2);
-								// TODO: if both parts have accepted the contract, then initialize the project
+								
+								System.out.println("before contractAcceptedByBothUsers");
+								MatchmakingContract contract1 = matchmakingContractor.contractAcceptedByBothUsers(contractId3);
+								System.out.println("after contractAcceptedByBothUsers the contract is " + contract1);
+								if (contract1 != null) {
+									System.out.println("before createProject");
+									Project project = createProject(contract1);
+//									matchmakingContractor.updateContract(project);
+								}
+								
 								break;
 							}
 
@@ -146,6 +156,32 @@ public class MatchmakerAgent extends Agent {
 
 					}
 				}
+			}
+
+			private Project createProject(MatchmakingContract contract) {
+				ACLMessage msg, reply;
+				try {
+					msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setConversationId(Constants.CREATE_PROJECT);
+					msg.setContentObject(contract);
+					msg.addReceiver(new AID("ProjectManagerAgent", AID.ISLOCALNAME));
+					myAgent.send(msg);
+					System.out.println("sent the message to ProjectManagerAgent to create a project");
+
+					// wait for the response
+					MessageTemplate template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+							MessageTemplate.MatchConversationId(Constants.SEARCH));
+					msg = myAgent.blockingReceive(template);
+					if (msg != null) { //
+						System.out.println("received the project");
+						Project project = (Project) msg.getContentObject();
+						return project;
+					}
+				} catch (IOException | UnreadableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
 			}
 
 			@Override

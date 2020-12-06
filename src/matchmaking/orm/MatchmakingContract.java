@@ -31,7 +31,7 @@ public class MatchmakingContract implements java.io.Serializable {
 	}
 	
 	public static ArrayList<MatchmakingContract> serializeContracts(ResultSet qs) {
-		System.out.println("in serializing bids");
+		System.out.println("in serializing contracts");
 		try {
 			ArrayList<MatchmakingContract> contracts = new ArrayList<MatchmakingContract>();
 			MatchmakingContract tmpContract;
