@@ -87,7 +87,7 @@ private void showInGUI(ArrayList<ChatRoom> chatrooms) {
 			tempChat = chatrooms.get(i);
 			String rowData[] = {Integer.toString(tempChat.getId()), tempChat.getProjectName()};	
 			System.out.println(rowData);
-			for (int j = 0; j < 3; j++) {
+			for (int j = 0; j < 2; j++) {
 				data[i][j] = rowData[j];
 			}
 		}
@@ -97,11 +97,11 @@ private void showInGUI(ArrayList<ChatRoom> chatrooms) {
 		table.setFillsViewportHeight(true);
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("ShowChats").setCellRenderer(buttonRenderer);
-
-		JPanel panel = new JPanel();
-		panel.add(table);
+		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		//JPanel panel = new JPanel();
+		//panel.add(table);
 		// Adding Components to the frame.
-		frame1.getContentPane().add(BorderLayout.SOUTH, panel);
+		frame1.getContentPane().add(BorderLayout.CENTER, table);
 	}
 	public  void showGui() {
 		pack();

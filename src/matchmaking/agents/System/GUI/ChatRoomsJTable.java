@@ -17,7 +17,7 @@ import matchmaking.orm.User;
 public class ChatRoomsJTable extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 
-	private static String[] COLUMN_NAMES = new String[] { "index", "projectName", "enterChatRoom" };
+	private static String[] COLUMN_NAMES = new String[] { "index", "projectName", "ShowChats" };
 	private static Class<?>[] COLUMN_TYPES = new Class<?>[] { Integer.class, String.class, JButton.class };
 	String[][] data;
 	User user;
