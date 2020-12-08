@@ -13,6 +13,8 @@ public class Constants {
 	public static final String REJECT_CONTRACT = "reject_contract"; 
 	public static final String ACCEPT_MATCHMAKING_CONTRACT = "accept_matchmaking_contract"; 
 	public static final String CREATE_PROJECT = "create_project"; 
+	public static final String CREATE_CHATROOM= "create_chatroom"; 
+	public static final String GET_CHATROOMS= "get_chatrooms"; 
 	
 	
 	

@@ -16,6 +16,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import matchmaking.orm.Bid;
+import matchmaking.orm.ChatRoom;
 import matchmaking.orm.Constants;
 import matchmaking.orm.DataBase;
 import matchmaking.orm.MatchmakingContract;
@@ -38,7 +39,7 @@ public class ProjectManagerAgent extends Agent {
 				ACLMessage msg, reply;
 //				Hashtable<String, String> requestBody;
 				int userId;
-				System.out.println("receiving msg in ProjectManagerAgent");
+				System.out.println("Waiting to receive msg in ProjectManagerAgent");
 
 				msg = myAgent.blockingReceive();
 
@@ -60,6 +61,35 @@ public class ProjectManagerAgent extends Agent {
 								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 								reply.setConversationId(msg.getConversationId());
 								reply.setContentObject(project);
+								myAgent.send(reply);
+								// send reply
+								break;
+							case Constants.CREATE_CHATROOM:
+								System.out.println("in CREATE_CHATROOM case");
+								Project project1 = (Project) msg.getContentObject();
+								ChatRoom chatRoom = projectManager.createChatRoom(project1);
+								System.out.println("created everything about chatroom");
+								
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(chatRoom);
+								myAgent.send(reply);
+								// send reply
+								break;
+								
+							case Constants.GET_CHATROOMS:
+								System.out.println("in GET_CHATROOMS case");
+								Hashtable<String, String> requestBody = (Hashtable) msg.getContentObject();
+								int userId1 = Integer.parseInt( requestBody.get("userId"));
+								ArrayList<ChatRoom> chatRooms = projectManager.getChatRooms(userId1);
+								
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(chatRooms);
 								myAgent.send(reply);
 								// send reply
 								break;

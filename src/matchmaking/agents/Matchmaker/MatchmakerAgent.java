@@ -18,6 +18,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import matchmaking.orm.Bid;
+import matchmaking.orm.ChatRoom;
 import matchmaking.orm.Constants;
 import matchmaking.orm.DataBase;
 import matchmaking.orm.MatchmakingContract;
@@ -53,7 +54,7 @@ public class MatchmakerAgent extends Agent {
 				ACLMessage msg, reply;
 				Hashtable<String, String> requestBody;
 				int userId;
-				System.out.println("in agent matchmaker");
+				System.out.println("Waiting to receive msg in MatchmakerAgent");
 
 				msg = myAgent.blockingReceive();
 
@@ -74,7 +75,6 @@ public class MatchmakerAgent extends Agent {
 								reply.setConversationId(msg.getConversationId());
 								reply.setContentObject(users);
 								myAgent.send(reply);
-								// send reply
 								break;
 							case Constants.PLACE_BID:
 								userId = Integer.parseInt(requestBody.get("userId"));
@@ -144,7 +144,9 @@ public class MatchmakerAgent extends Agent {
 								if (contract1 != null) {
 									System.out.println("before createProject");
 									Project project = createProject(contract1);
-//									matchmakingContractor.updateContract(project);
+									System.out.println("before creating chatroom");
+									contract1 = matchmakingContractor.updateContract(project, contract1);
+									ChatRoom chatRoom = createChatRoom(project);
 								}
 								
 								break;
@@ -170,12 +172,38 @@ public class MatchmakerAgent extends Agent {
 
 					// wait for the response
 					MessageTemplate template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
-							MessageTemplate.MatchConversationId(Constants.SEARCH));
+							MessageTemplate.MatchConversationId(Constants.CREATE_PROJECT));
 					msg = myAgent.blockingReceive(template);
 					if (msg != null) { //
 						System.out.println("received the project");
 						Project project = (Project) msg.getContentObject();
 						return project;
+					}
+				} catch (IOException | UnreadableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
+			private ChatRoom createChatRoom(Project project) {
+				ACLMessage msg, reply;
+				try {
+					msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setConversationId(Constants.CREATE_CHATROOM);
+					msg.setContentObject(project);
+					msg.addReceiver(new AID("ProjectManagerAgent", AID.ISLOCALNAME));
+					myAgent.send(msg);
+					System.out.println("sent the message to ProjectManagerAgent to create a chatroom");
+
+					// wait for the response
+					MessageTemplate template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+							MessageTemplate.MatchConversationId(Constants.CREATE_CHATROOM));
+					msg = myAgent.blockingReceive(template);
+					if (msg != null) { //
+						System.out.println("received the chatroom");
+						ChatRoom chatRoom = (ChatRoom) msg.getContentObject();
+						return chatRoom;
 					}
 				} catch (IOException | UnreadableException e) {
 					// TODO Auto-generated catch block
@@ -195,6 +223,7 @@ public class MatchmakerAgent extends Agent {
 		// Make this agent terminate
 		// doDelete();
 	}
+	
 
 	public void updateCatalogue(final String title, final String price) {
 		addBehaviour(new OneShotBehaviour() {

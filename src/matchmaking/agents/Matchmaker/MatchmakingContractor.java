@@ -159,6 +159,20 @@ public class MatchmakingContractor {
 		}
 		return null;
 	}
+	
+	public MatchmakingContract updateContract(Project project, MatchmakingContract contract) {
+		System.out.println("updating contract by project");
+		try (Statement statement = conn.createStatement()) {
+			String query = "update matchmakingContract set projectId=" + project.getId() + " where matchmakingContractId=" + contract.getId() ;
+			statement.executeUpdate(query);
+			contract.setProviderId(project.getId());
+			return contract;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	
 

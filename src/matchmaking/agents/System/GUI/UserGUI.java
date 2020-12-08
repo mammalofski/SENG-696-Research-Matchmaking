@@ -82,8 +82,8 @@ public class UserGUI extends JFrame {
 		m41.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 
-				ChatRoomGUI chatRoomGUI = new ChatRoomGUI();
-				chatRoomGUI.showGui();
+				ChatRoomsGUI chatRoomsGUI = new ChatRoomsGUI(systemAgent, user);
+				chatRoomsGUI.showGui();
 			}
 		});
 

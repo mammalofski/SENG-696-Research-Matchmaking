@@ -4,7 +4,9 @@ package matchmaking.agents.System.GUI;
 import jade.core.AID;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
+import matchmaking.agents.ProjectManager.ProjectManagerAgent;
 import matchmaking.agents.System.Profiler;
+import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,8 +20,16 @@ import javax.swing.table.TableCellRenderer;
 public class ChatRoomGUI extends JFrame {
 
 	JTextField messageTxt;
+	SystemAgent myAgent;
+	User user;
+	int chatRoomId;
 
-	public ChatRoomGUI() {
+	public ChatRoomGUI(SystemAgent agent, User user1, int chatRoomId1) {
+		myAgent = agent;
+		user = user1;
+		chatRoomId = chatRoomId1;
+		
+		// TODO: make a request and fetch the chat room and its messages
 
 		JFrame frame = new JFrame("ChatRoomGUI");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
