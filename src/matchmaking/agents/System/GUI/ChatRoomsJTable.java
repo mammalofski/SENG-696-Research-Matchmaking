@@ -59,8 +59,8 @@ public class ChatRoomsJTable extends AbstractTableModel {
 
 		if (col > 1) {
 
-//			String data1 = "true";
-//			setValueAt(data1, row, col);
+			String data1 = "true";
+			setValueAt(data1, row, col);
 			return true;
 		} else {
 			return false;
@@ -73,8 +73,8 @@ public class ChatRoomsJTable extends AbstractTableModel {
 
 	public void enterChatRoom(String value, int row, int col) {
 		System.out.println("entering chat room");
-		data[row][col] = value;
-		fireTableCellUpdated(row, col);
+//		data[row][col] = value;
+//		fireTableCellUpdated(row, col);
 		int chatRoomId = Integer.parseInt((String) data[row][0]);
 		ChatRoomGUI chatRoomGUI = new ChatRoomGUI(myAgent, user, chatRoomId);
 		chatRoomGUI.showGui();

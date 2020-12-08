@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import matchmaking.orm.ChatRoom;
 import matchmaking.orm.MatchmakingContract;
+import matchmaking.orm.Message;
 import matchmaking.orm.Project;
 
 public class ProjectManager {
@@ -98,6 +101,38 @@ public class ProjectManager {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	public Message createMessage(int userId, int chatRoomId, String messageBody) {
+		try {
+			System.out.println("in createMessage");
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			LocalDateTime now = LocalDateTime.now();
+			Statement statement = conn.createStatement();
+			String query = "insert into message (chatRoomId, senderId, body, date) values (";
+			query += chatRoomId + ", ";
+			query += userId + ", '";
+			query += messageBody + "', '";
+			query += dtf.format(now) + "')";
+			statement.executeUpdate(query);
+			System.out.println("message created");
+
+			ResultSet rs = statement.getGeneratedKeys();
+			int messageId = rs.getInt(1);
+
+			query = "select * from message where messageId=" + messageId;
+			rs = statement.executeQuery(query);
+			if (rs.next()) {
+				Message message = Message.serializeMessage(rs);
+				System.out.println("serialized message successfully");
+				return message;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

@@ -15,6 +15,7 @@ public class Constants {
 	public static final String CREATE_PROJECT = "create_project"; 
 	public static final String CREATE_CHATROOM= "create_chatroom"; 
 	public static final String GET_CHATROOMS= "get_chatrooms"; 
+	public static final String SEND_MESSAGE= "send_message"; 
 	
 	
 	

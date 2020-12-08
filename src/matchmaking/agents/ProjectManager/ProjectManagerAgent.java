@@ -20,6 +20,7 @@ import matchmaking.orm.ChatRoom;
 import matchmaking.orm.Constants;
 import matchmaking.orm.DataBase;
 import matchmaking.orm.MatchmakingContract;
+import matchmaking.orm.Message;
 import matchmaking.orm.Project;
 import matchmaking.orm.User;
 
@@ -91,6 +92,22 @@ public class ProjectManagerAgent extends Agent {
 								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 								reply.setConversationId(msg.getConversationId());
 								reply.setContentObject(chatRooms);
+								myAgent.send(reply);
+								// send reply
+								break;
+							case Constants.SEND_MESSAGE:
+								System.out.println("in SEND_MESSAGE case");
+								Hashtable<String, String> requestBody2 = (Hashtable) msg.getContentObject();
+								int userId2 = Integer.parseInt( requestBody2.get("userId"));
+								int chatRoomId = Integer.parseInt( requestBody2.get("chatRoomId"));
+								String messageBody = requestBody2.get("messageBody");
+								Message message = projectManager.createMessage(userId2, chatRoomId, messageBody);
+								
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(message);
 								myAgent.send(reply);
 								// send reply
 								break;

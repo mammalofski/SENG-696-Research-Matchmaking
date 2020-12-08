@@ -2,6 +2,9 @@
 package matchmaking.agents.System.GUI;
 
 import jade.core.AID;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import matchmaking.orm.*;
 import matchmaking.agents.Matchmaker.MatchmakerAgent;
 import matchmaking.agents.ProjectManager.ProjectManagerAgent;
@@ -13,6 +16,9 @@ import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -22,7 +28,9 @@ public class ChatRoomGUI extends JFrame {
 	JTextField messageTxt;
 	SystemAgent myAgent;
 	User user;
-	int chatRoomId;
+	private int chatRoomId;
+	private String messageText;
+	private MessageTemplate template;
 
 	public ChatRoomGUI(SystemAgent agent, User user1, int chatRoomId1) {
 		myAgent = agent;
@@ -61,6 +69,8 @@ public class ChatRoomGUI extends JFrame {
 		send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("sendmessage");
+				Message message = sendMessage();
+//				addMessageToDialogue(message);
 
 			}
 		});
@@ -90,6 +100,37 @@ public class ChatRoomGUI extends JFrame {
 		int centerY = (int) screenSize.getHeight() / 2;
 		setLocation(centerX - getWidth() / 2, centerY - getHeight() / 2);
 		super.setVisible(true);
+	}
+	
+	public Message sendMessage() {
+		try {
+			ACLMessage msg, reply;
+			System.out.println("getting the chat rooms");
+			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("userId", Integer.toString(user.getId()));
+			requestBody.put("chatRoomId", Integer.toString(chatRoomId));
+			requestBody.put("messageBody", messageTxt.getText().trim());
+			msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.SEND_MESSAGE);
+			msg.setContentObject(requestBody);
+			msg.addReceiver(new AID("ProjectManagerAgent", AID.ISLOCALNAME));
+			myAgent.send(msg);
+			
+			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+					MessageTemplate.MatchConversationId(Constants.SEND_MESSAGE));
+			msg = myAgent.blockingReceive(template);
+			if (msg != null) { //
+				Message message = (Message) msg.getContentObject();
+				return message;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnreadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
