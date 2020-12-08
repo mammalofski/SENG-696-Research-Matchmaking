@@ -91,6 +91,7 @@ class ContractTable extends AbstractTableModel {
 			msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
 			systemAgent.send(msg);
 			System.out.println("sent the message to matchmaker to reject ccontract");
+			System.out.println("LOG: in acceptContract");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

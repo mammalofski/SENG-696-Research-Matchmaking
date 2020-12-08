@@ -53,6 +53,7 @@ public class ProjectManagerAgent extends Agent {
 							case Constants.CREATE_PROJECT:
 								System.out.println("in CREATE_PROJECT case");
 								MatchmakingContract contract = (MatchmakingContract) msg.getContentObject();
+								System.out.println("LOG: provider id is " + contract.getProviderId());
 								Project project = projectManager.createProject(contract);
 								System.out.println("created everything about project");
 								

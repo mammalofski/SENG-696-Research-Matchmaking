@@ -140,6 +140,7 @@ public class MatchmakerAgent extends Agent {
 								
 								System.out.println("before contractAcceptedByBothUsers");
 								MatchmakingContract contract1 = matchmakingContractor.contractAcceptedByBothUsers(contractId3);
+								System.out.println("LOG: contractAcceptedByBothUsers contract " + contract1.getProjectId());
 								System.out.println("after contractAcceptedByBothUsers the contract is " + contract1);
 								if (contract1 != null) {
 									System.out.println("before createProject");
