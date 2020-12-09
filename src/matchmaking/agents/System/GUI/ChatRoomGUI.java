@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 public class ChatRoomGUI extends JFrame {
@@ -31,6 +32,7 @@ public class ChatRoomGUI extends JFrame {
 	private int chatRoomId;
 	private String messageText;
 	private MessageTemplate template;
+	DefaultTableModel tableModel;
 
 	public ChatRoomGUI(SystemAgent agent, User user1, int chatRoomId1) {
 		myAgent = agent;
@@ -44,12 +46,16 @@ public class ChatRoomGUI extends JFrame {
 		frame.setSize(600, 600);
 
 		JPanel messagesPanel = new JPanel(); // the panel is not visible in output
+		
+		ArrayList<Message> messages = getMessages();
+		String data[][] = convertMessagesToData(messages);
 
-		String data[][] = { { "1", "Amit","Amit", "A@gmail.com", "c#" }, { "2", "Jai","Amit", "b@gmail.com", "javascript" },
-				{ "3", "Sachin","Amit", "c@gmail.com", "java" } };
+//		String data[][] = { {"1", "2", "some random message body", "some random date"} };
 
-		String column[] = { "Index", "Provide","Date" , "client", "Date" };
-		JTable jt = new JTable(data, column);
+		String column[] = {"Sender", "Body", "Date"};
+//		JTable jt = new JTable(data, column);
+		tableModel = new DefaultTableModel(data, column); 
+		JTable jt = new JTable(tableModel); 
 		jt.getTableHeader().setDefaultRenderer(new SimpleHeaderRenderer());
 //		//jt.setBounds(30, 40, 200, 300);
 		JScrollPane sp = new JScrollPane(jt);
@@ -70,7 +76,8 @@ public class ChatRoomGUI extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("sendmessage");
 				Message message = sendMessage();
-//				addMessageToDialogue(message);
+				System.out.println("the message in chat room gui is " + message.getBody());
+				addMessageToDialogue(message);
 
 			}
 		});
@@ -102,10 +109,40 @@ public class ChatRoomGUI extends JFrame {
 		super.setVisible(true);
 	}
 	
+	private ArrayList<Message> getMessages() {
+		try {
+			ACLMessage msg, reply;
+			System.out.println("getting the messages");
+			Hashtable<String, String> requestBody = new Hashtable<String, String>();
+			requestBody.put("chatRoomId", Integer.toString(chatRoomId));
+			msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.setConversationId(Constants.GET_MESSAGES);
+			msg.setContentObject(requestBody);
+			msg.addReceiver(new AID("ProjectManagerAgent", AID.ISLOCALNAME));
+			myAgent.send(msg);
+			
+			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+					MessageTemplate.MatchConversationId(Constants.GET_MESSAGES));
+			msg = myAgent.blockingReceive(template);
+			if (msg != null) { //
+				ArrayList<Message> messages = (ArrayList<Message>) msg.getContentObject();
+				return messages;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnreadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
 	public Message sendMessage() {
 		try {
 			ACLMessage msg, reply;
-			System.out.println("getting the chat rooms");
+			System.out.println("sending message");
 			Hashtable<String, String> requestBody = new Hashtable<String, String>();
 			requestBody.put("userId", Integer.toString(user.getId()));
 			requestBody.put("chatRoomId", Integer.toString(chatRoomId));
@@ -131,6 +168,24 @@ public class ChatRoomGUI extends JFrame {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void addMessageToDialogue(Message message) {
+		tableModel.addRow(new Object[] {user.getName(), message.getBody(), message.getDate()});
+	}
+	
+	private String[][] convertMessagesToData(ArrayList<Message> messages) {
+		int lenMessages = messages.size();
+		String[][] data = new String[lenMessages][3];
+		Message tmpMessage;
+		for (int i = 0; i < lenMessages; i++) {
+			tmpMessage = messages.get(i);
+			String rowData[] = {tmpMessage.getSenderName(), tmpMessage.getBody(), tmpMessage.getDate()};
+			for (int j = 0; j < 3; j++) {
+				data[i][j] = rowData[j];
+			}
+		}
+		return data;
 	}
 
 }

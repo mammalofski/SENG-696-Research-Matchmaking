@@ -90,7 +90,8 @@ public class ProjectManager {
 			System.out.println("getting chat rooms from db");
 
 			String query = "SELECT chatRoom.chatRoomId, chatRoom.projectId, j1.name as PNAME, j1.providerId as PID, j1.clientId as CID "
-					+ "from chatRoom LEFT JOIN project j1 ON chatRoom.projectId=j1.projectId where j1.providerId=" + userId + " OR j1.clientId=" + userId;
+					+ "from chatRoom LEFT JOIN project j1 ON chatRoom.projectId=j1.projectId where j1.providerId="
+					+ userId + " OR j1.clientId=" + userId;
 
 			ResultSet rs = statement.executeQuery(query);
 			ArrayList<ChatRoom> chatRooms = ChatRoom.serializeChatRooms(rs);
@@ -107,7 +108,7 @@ public class ProjectManager {
 	public Message createMessage(int userId, int chatRoomId, String messageBody) {
 		try {
 			System.out.println("in createMessage");
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			LocalDateTime now = LocalDateTime.now();
 			Statement statement = conn.createStatement();
 			String query = "insert into message (chatRoomId, senderId, body, date) values (";
@@ -128,6 +129,27 @@ public class ProjectManager {
 				System.out.println("serialized message successfully");
 				return message;
 			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public ArrayList<Message> getMessages(int chatRoomId1) {
+
+		try {
+			System.out.println("in getMessages");
+			Statement statement = conn.createStatement();
+			String query = "SELECT message.messageId, message.body, message.date, message.senderId, message.chatRoomId, j1.name as SNAME from message " + 
+					"LEFT JOIN user j1 ON message.senderId=j1.userId where chatRoomId=" + chatRoomId1;
+//			String query = "select * from message where chatRoomId=" + chatRoomId1;
+			ResultSet rs = statement.executeQuery(query);
+
+			ArrayList<Message> messages = Message.serializeMessages(rs);
+			System.out.println("serialized messages successfully");
+			return messages;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

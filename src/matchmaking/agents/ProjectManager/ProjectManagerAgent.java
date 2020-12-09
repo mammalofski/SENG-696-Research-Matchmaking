@@ -111,6 +111,20 @@ public class ProjectManagerAgent extends Agent {
 								myAgent.send(reply);
 								// send reply
 								break;
+							case Constants.GET_MESSAGES:
+								System.out.println("in GET_MESSAGES case");
+								Hashtable<String, String> requestBody3 = (Hashtable) msg.getContentObject();
+								int chatRoomId1 = Integer.parseInt( requestBody3.get("chatRoomId"));
+								ArrayList<Message> messages = projectManager.getMessages(chatRoomId1);
+								
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(messages);
+								myAgent.send(reply);
+								// send reply
+								break;
 							}
 
 						} catch (UnreadableException | IOException e) {

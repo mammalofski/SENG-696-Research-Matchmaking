@@ -2,6 +2,7 @@ package matchmaking.orm;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Message implements java.io.Serializable {
@@ -14,6 +15,7 @@ public class Message implements java.io.Serializable {
 	private String date;
 	private String recieved;
 	private String seen;
+	private String senderName;
 	
 	public Message(int messageId1, int chatroomId1, int senderId1, String body1, String date1) {
 		messageId = messageId1;
@@ -35,6 +37,31 @@ public class Message implements java.io.Serializable {
 
 		return null;
 
+	}
+	
+	public static ArrayList<Message> serializeMessages(ResultSet rs) {
+		try {
+			ArrayList<Message> messages = new ArrayList<Message>();
+			Message message;
+			while (rs.next()) {
+				message = serializeMessage(rs);
+				message.setSenderName(rs.getString("SNAME"));
+				messages.add(message);
+			}
+			return messages;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void setSenderName(String name) {
+		this.senderName = name;
+	}
+	
+	public String getSenderName() {
+		return senderName;
 	}
 
 	public int getId() {
@@ -67,6 +94,10 @@ public class Message implements java.io.Serializable {
 
 	public void setRecieverId(int recieverId) {
 		this.recieverId = recieverId;
+	}
+	
+	public int getSenderId() {
+		return senderId;
 	}
 
 	public void setSenderId(int senderId) {
