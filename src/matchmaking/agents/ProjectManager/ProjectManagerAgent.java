@@ -19,6 +19,7 @@ import matchmaking.orm.Bid;
 import matchmaking.orm.ChatRoom;
 import matchmaking.orm.Constants;
 import matchmaking.orm.DataBase;
+import matchmaking.orm.Feedback;
 import matchmaking.orm.MatchmakingContract;
 import matchmaking.orm.Message;
 import matchmaking.orm.Project;
@@ -158,8 +159,28 @@ public class ProjectManagerAgent extends Agent {
 								} else if (requestBody5.get("type").equals("approveUpdate")) {
 									projectManager.approveProject(projectId);
 								}
+								break;
+							case Constants.SUBMIT_FEEDBACK:
+								System.out.println("in SUBMIT_FEEDBACK case");
+								Hashtable<String, String> requestBody6 = (Hashtable) msg.getContentObject();
+								int userId5 = Integer.parseInt( requestBody6.get("userId"));
+								int projectId1 = Integer.parseInt( requestBody6.get("projectId"));
+								int rate = Integer.parseInt( requestBody6.get("rate"));
+								String comment = requestBody6.get("comment");
+								projectManager.submitFeedback(userId5, projectId1, rate, comment);
+								break;
+							case Constants.GET_FEEDBACKS:
+								System.out.println("in GET_FEEDBACKS case");
+								Hashtable<String, String> requestBody7 = (Hashtable) msg.getContentObject();
+								int userId6 = Integer.parseInt( requestBody7.get("userId"));
+								ArrayList<Feedback> feedbacks = projectManager.getFeedbacks(userId6);
 								
-								
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(feedbacks);
+								myAgent.send(reply);
 								break;
 							}
 

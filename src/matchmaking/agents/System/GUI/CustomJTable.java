@@ -17,13 +17,13 @@ import matchmaking.orm.User;
 public class CustomJTable extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private static String[] COLUMN_NAMES = new String[] { "index", "email", "clientName", "specialKeywords",
-			"hourlyCompensation", "isPremium", "Place a bid" };
+			"hourlyCompensation", "isPremium", "Place a bid", "ShowRates" };
 	private static Class<?>[] COLUMN_TYPES = new Class<?>[] { Integer.class, String.class, String.class, String.class,
-			Integer.class, Boolean.class, JButton.class };
+			Integer.class, Boolean.class, JButton.class, JButton.class };
 	private String[][] data;
 	private SystemAgent systemAgent;
 	private User user;
-	
+
 	CustomJTable(String[][] data1, SystemAgent agent, User user1) {
 		super();
 		data = data1;
@@ -72,9 +72,13 @@ public class CustomJTable extends AbstractTableModel {
 	 */
 	public void setValueAt(Object value, int row, int col) {
 		System.out.println("value : " + value);
-
-		BidGUI bidGUI = new BidGUI(Integer.parseInt(data[row][0]), systemAgent, user);
-		bidGUI.showGui();
+		if (col == 6) {
+			BidGUI bidGUI = new BidGUI(Integer.parseInt(data[row][0]), systemAgent, user);
+			bidGUI.showGui();
+		} else if (col == 7) {
+			ClientRateGUI clientRateGUI = new ClientRateGUI(systemAgent, user);
+			clientRateGUI.showGui();
+		}
 
 	}
 
@@ -109,6 +113,9 @@ public class CustomJTable extends AbstractTableModel {
 		case 6:
 			final JButton button = new JButton(COLUMN_NAMES[columnIndex]);
 			return button;
+		case 7:
+			final JButton button1 = new JButton(COLUMN_NAMES[columnIndex]);
+			return button1;
 		default:
 			return "";
 

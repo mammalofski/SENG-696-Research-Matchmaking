@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import matchmaking.orm.ChatRoom;
 import matchmaking.orm.Constants;
+import matchmaking.orm.Feedback;
 import matchmaking.orm.MatchmakingContract;
 import matchmaking.orm.Message;
 import matchmaking.orm.Project;
@@ -227,6 +228,56 @@ public class ProjectManager {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void submitFeedback(int userId5, int projectId1, int rate, String comment) {
+		try {
+			System.out.println("in submitFeedback");
+			ResultSet rs;
+			int recieverId = 0;
+			Statement statement = conn.createStatement();
+			String query;
+			// get reciever id
+			query = "select clientId, providerId from project where projectId=" + projectId1;
+			rs = statement.executeQuery(query);
+			if (rs.next()) {
+				recieverId = rs.getInt("clientId") == userId5 ? rs.getInt("providerId") : rs.getInt("clientId");
+				rs.close();
+			}
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			String nowStr = dtf.format(now);
+			query = "insert into feedback (senderId, receiverId, date, rate, comment, projectId) values (";
+			query += userId5 + ", ";
+			query += recieverId + ", '";
+			query += nowStr + "', ";
+			query += rate + ", '";
+			query += comment + "', ";
+			query += projectId1 + ") ";
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public ArrayList<Feedback> getFeedbacks(int userId) {
+		try {
+			System.out.println("in getFeedbacks");
+			Statement statement = conn.createStatement();
+			String query = "SELECT * from feedback where receiverId=" + userId;
+			ResultSet rs = statement.executeQuery(query);
+
+			ArrayList<Feedback> feedbacks = Feedback.serializeFeedbacks(rs);
+			System.out.println("serialized feedbacks successfully");
+			return feedbacks;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

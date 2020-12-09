@@ -19,6 +19,8 @@ public class Constants {
 	public static final String GET_MESSAGES = "get_messages";
 	public static final String GET_PROJECTS = "get_projects";
 	public static final String UPDATE_PROJECT = "update_project";
+	public static final String SUBMIT_FEEDBACK = "submit_feedback";
+	public static final String GET_FEEDBACKS = "get_feedbacks";
 
 	public static class UserTypes {
 		public static final int CLIENT = 1;

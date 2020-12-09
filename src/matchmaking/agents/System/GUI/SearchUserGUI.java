@@ -181,6 +181,7 @@ public class SearchUserGUI extends JFrame {
 		table.setFillsViewportHeight(true);
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
 		table.getColumn("Place a bid").setCellRenderer(buttonRenderer);
+		table.getColumn("ShowRates").setCellRenderer(buttonRenderer);
 
 		JPanel panel = new JPanel();
 		panel.add(table);
