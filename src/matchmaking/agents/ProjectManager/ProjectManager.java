@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import matchmaking.orm.ChatRoom;
+import matchmaking.orm.Constants;
 import matchmaking.orm.MatchmakingContract;
 import matchmaking.orm.Message;
 import matchmaking.orm.Project;
@@ -142,8 +143,8 @@ public class ProjectManager {
 		try {
 			System.out.println("in getMessages");
 			Statement statement = conn.createStatement();
-			String query = "SELECT message.messageId, message.body, message.date, message.senderId, message.chatRoomId, j1.name as SNAME from message " + 
-					"LEFT JOIN user j1 ON message.senderId=j1.userId where chatRoomId=" + chatRoomId1;
+			String query = "SELECT message.messageId, message.body, message.date, message.senderId, message.chatRoomId, j1.name as SNAME from message "
+					+ "LEFT JOIN user j1 ON message.senderId=j1.userId where chatRoomId=" + chatRoomId1;
 //			String query = "select * from message where chatRoomId=" + chatRoomId1;
 			ResultSet rs = statement.executeQuery(query);
 
@@ -156,6 +157,76 @@ public class ProjectManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public ArrayList<Project> getProjects(int userId) {
+		try {
+			System.out.println("in getProjects");
+			Statement statement = conn.createStatement();
+			String query = "SELECT * from project where providerId=" + userId + " or clientId=" + userId;
+			ResultSet rs = statement.executeQuery(query);
+
+			ArrayList<Project> projects = Project.serializeProjects(rs);
+			System.out.println("serialized projects successfully");
+			return projects;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void updateProject(String newDescription, String newDeadline, int newProgress, int projectId) {
+
+		try {
+			System.out.println("in updateProject");
+			Statement statement = conn.createStatement();
+			String query = "update project set ";
+			if (newDescription != "") { // client
+				query += "newDescription='" + newDescription + "'";
+			} else if (newDeadline != "") { // provider
+				query += "deadline='" + newDeadline + "'";
+
+			}
+
+			if (newProgress > 0 && newProgress <= 100) {
+				query += ", progress=" + newProgress;
+				if (newProgress == 100) {
+					query += ", state=" + Constants.ProjectState.DONE;
+				} else {
+					query += ", state=" + Constants.ProjectState.IN_PROGRESS;
+				}
+			}
+
+			query += " where projectId=" + projectId;
+			statement.executeUpdate(query);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void approveProject(int projectId) {
+		try {
+			System.out.println("in approveProject");
+			ResultSet rs;
+			Statement statement = conn.createStatement();
+			String query = "select newDescription from project where projectId=" + projectId;
+			rs = statement.executeQuery(query);
+			if (rs.next()) {
+				String newDescription = rs.getString("newDescription");
+				rs.close();
+				query = "update project set description='" + newDescription + "', newDescription='' where projectId="
+						+ projectId;
+				statement.executeUpdate(query);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

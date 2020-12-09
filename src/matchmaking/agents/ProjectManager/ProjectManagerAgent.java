@@ -125,6 +125,42 @@ public class ProjectManagerAgent extends Agent {
 								myAgent.send(reply);
 								// send reply
 								break;
+							case Constants.GET_PROJECTS:
+								System.out.println("in GET_PROJECTS case");
+								Hashtable<String, String> requestBody4 = (Hashtable) msg.getContentObject();
+								int userId4 = Integer.parseInt( requestBody4.get("userId"));
+								ArrayList<Project> projects = projectManager.getProjects(userId4);
+								
+								// send reply
+								reply = msg.createReply();
+								reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+								reply.setConversationId(msg.getConversationId());
+								reply.setContentObject(projects);
+								myAgent.send(reply);
+								// send reply
+								break;
+							case Constants.UPDATE_PROJECT:
+								System.out.println("in UPDATE_PROJECT case");
+								Hashtable<String, String> requestBody5 = (Hashtable) msg.getContentObject();
+								int projectId = Integer.parseInt( requestBody5.get("projectId"));
+								if (requestBody5.get("type").equals("requestForUpdate")) {
+									int userType = Integer.parseInt( requestBody5.get("requester"));
+									String newDescription = "", newDeadline = "";
+									int newProgress = -1;
+									if (userType == Constants.UserTypes.CLIENT) {
+										newDescription = requestBody5.get("description");
+									} else {
+										newDeadline = requestBody5.get("deadline");
+										newProgress = Integer.parseInt(requestBody5.get("progress"));
+									}
+									
+									projectManager.updateProject(newDescription, newDeadline, newProgress, projectId);
+								} else if (requestBody5.get("type").equals("approveUpdate")) {
+									projectManager.approveProject(projectId);
+								}
+								
+								
+								break;
 							}
 
 						} catch (UnreadableException | IOException e) {

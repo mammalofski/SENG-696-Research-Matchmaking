@@ -77,7 +77,7 @@ public class UserGUI extends JFrame {
 			}
 		});
 
-		JMenuItem m41 = new JMenuItem("Show chat room");
+		JMenuItem m41 = new JMenuItem("Show chat room list");
 		m4.add(m41);
 		m41.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -87,13 +87,13 @@ public class UserGUI extends JFrame {
 			}
 		});
 
-		JMenuItem m42 = new JMenuItem("Show project progress");
+		JMenuItem m42 = new JMenuItem("Show project progress list");
 		m4.add(m42);
 		m42.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 
-				ProjectProgressGUI projectProgressGUI = new ProjectProgressGUI();
-				projectProgressGUI.showGui();
+				ProjectProgressListGUI projectProgressListGUI = new ProjectProgressListGUI(systemAgent, user);
+				projectProgressListGUI.showGui();
 			}
 		});
 
