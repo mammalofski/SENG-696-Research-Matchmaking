@@ -34,20 +34,20 @@ public class SearchEngine {
 				String specialKeywords = (String) requestBody.get("specialKeywords");
 				String website = (String) requestBody.get("website");
 				if (name.length() != 0) {
-					query += "name like '%" + name + "%' and";
+					query += "name like '%" + name + "%' and ";
 				} 
 				if (email.length() != 0) {
-					query += "email like '%" + email + "%' and";
+					query += "email like '%" + email + "%' and ";
 				} 
 				if (specialKeywords.length() != 0) {
-					query += "specialKeywords like '%" + specialKeywords + "%' and";
+					query += "specialKeyword like '%" + specialKeywords + "%' and ";
 				} 
 				if (website.length() != 0) {
 					query += "website like '%" + website + "%'";
 				}
 				// remove the excess and at the end of the query
-				if (query.substring(query.length() - 3, query.length()).equals("and")) {
-					query = query.substring(0, query.length() - 3);
+				if (query.substring(query.length() - 4, query.length()).equals("and ")) {
+					query = query.substring(0, query.length() - 4);
 				}
 			}
 			System.out.println("the query is " + query);

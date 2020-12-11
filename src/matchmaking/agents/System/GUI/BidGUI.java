@@ -20,15 +20,15 @@ import javax.swing.table.TableCellRenderer;
 
 public class BidGUI extends JFrame {
 	
-	private int userId;
+	private int providerId;
 	private ACLMessage msg, reply;
 	Hashtable<String, String> requestBody = new Hashtable<String, String>();
 	SystemAgent systemAgent;
 	private User clientUser;
 
 	JTextField amountTxt;
-	public BidGUI(int userId1, SystemAgent agent, User user1) {
-		userId = userId1; // this is the provider
+	public BidGUI(int providerId1, SystemAgent agent, User user1) {
+		providerId = providerId1; // this is the provider
 		clientUser = user1;  // this is the client placing bid
 		systemAgent = agent;
 		JFrame frame = new JFrame("BidGUI");
@@ -51,9 +51,9 @@ public class BidGUI extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				
 				try {
-					System.out.println("Sace the bid");
+					System.out.println("place the bid");
 					String biddingAmount = amountTxt.getText().trim();
-					requestBody.put("userId", Integer.toString(userId));
+					requestBody.put("providerId", Integer.toString(providerId));
 					requestBody.put("biddingAmount", biddingAmount);
 					requestBody.put("clientId", Integer.toString(clientUser.getId()));
 					msg = new ACLMessage(ACLMessage.REQUEST);

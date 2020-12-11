@@ -77,10 +77,10 @@ public class MatchmakerAgent extends Agent {
 								myAgent.send(reply);
 								break;
 							case Constants.PLACE_BID:
-								userId = Integer.parseInt(requestBody.get("userId"));
-								int biddingAmount = Integer.parseInt(requestBody.get("biddingAmount"));
 								int clientId = Integer.parseInt(requestBody.get("clientId"));
-								biddingSystem.placeBid(userId, clientId, biddingAmount);
+								int biddingAmount = Integer.parseInt(requestBody.get("biddingAmount"));
+								int providerId = Integer.parseInt(requestBody.get("providerId"));
+								biddingSystem.placeBid(clientId, providerId, biddingAmount);
 								break;
 							case Constants.GET_BIDDINGS:
 								userId = Integer.parseInt(requestBody.get("userId"));

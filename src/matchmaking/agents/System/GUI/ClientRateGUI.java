@@ -25,12 +25,14 @@ import javax.swing.table.TableCellRenderer;
 public class ClientRateGUI extends JFrame {
 	private User user;
 	private SystemAgent myAgent;
+	private int targetUserId;
 	
 
-	public ClientRateGUI(SystemAgent agent, User user1) {
+	public ClientRateGUI(SystemAgent agent, User user1, int targetUserId1) {
 		
 		myAgent = agent;
 		user = user1;
+		targetUserId = targetUserId1;
 		
 		JFrame frame = new JFrame("ClientRateGUI");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -83,7 +85,7 @@ public class ClientRateGUI extends JFrame {
 			ACLMessage msg, reply;
 			System.out.println("getting the messages");
 			Hashtable<String, String> requestBody = new Hashtable<String, String>();
-			requestBody.put("userId", Integer.toString(user.getId()));
+			requestBody.put("userId", Integer.toString(targetUserId));
 			msg = new ACLMessage(ACLMessage.REQUEST);
 			msg.setConversationId(Constants.GET_FEEDBACKS);
 			msg.setContentObject(requestBody);

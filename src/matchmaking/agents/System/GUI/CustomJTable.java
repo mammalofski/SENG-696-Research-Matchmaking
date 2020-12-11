@@ -76,7 +76,7 @@ public class CustomJTable extends AbstractTableModel {
 			BidGUI bidGUI = new BidGUI(Integer.parseInt(data[row][0]), systemAgent, user);
 			bidGUI.showGui();
 		} else if (col == 7) {
-			ClientRateGUI clientRateGUI = new ClientRateGUI(systemAgent, user);
+			ClientRateGUI clientRateGUI = new ClientRateGUI(systemAgent, user, Integer.parseInt(data[row][0]));
 			clientRateGUI.showGui();
 		}
 

@@ -15,11 +15,11 @@ public class BiddingSystem {
 		conn = conn1;
 	}
 	
-	public void placeBid(int userId, int clientId, int biddingAmount) {
+	public void placeBid(int clientId, int providerId, int biddingAmount) {
 		System.out.println("placing a bid");
 		try (Statement statement = conn.createStatement()) {
 			System.out.println("creating bid");
-			String query = "insert into bid (clientId, providerId, amount, accepted) values(" + clientId + ", " + userId + ", " + biddingAmount + ", 0)";
+			String query = "insert into bid (clientId, providerId, amount, accepted) values(" + clientId + ", " + providerId + ", " + biddingAmount + ", 0)";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

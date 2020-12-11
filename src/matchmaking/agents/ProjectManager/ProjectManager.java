@@ -266,6 +266,7 @@ public class ProjectManager {
 		try {
 			System.out.println("in getFeedbacks");
 			Statement statement = conn.createStatement();
+			
 			String query = "SELECT * from feedback where receiverId=" + userId;
 			ResultSet rs = statement.executeQuery(query);
 

@@ -47,6 +47,22 @@ public class ContractGUI extends JFrame {
 		reject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("the contract has been rejected.");
+				try {
+					System.out.println("the contract has been rejected.");
+					Hashtable<String, String> requestBody = new Hashtable<String, String>();
+					requestBody.put("contractId", Integer.toString(contract.getId()));
+					requestBody.put("rejector", user.getuserType() == 2 ? "provider" : "client");
+					msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setConversationId(Constants.REJECT_CONTRACT);
+					msg.setContentObject(requestBody);
+					msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+					systemAgent.send(msg);
+					System.out.println("sent the message to matchmaker to reject the contract");
+					frame.dispose();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				frame.dispose();
 			}
 		});

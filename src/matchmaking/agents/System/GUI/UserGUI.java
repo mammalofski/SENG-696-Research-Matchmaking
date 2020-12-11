@@ -112,27 +112,8 @@ public class UserGUI extends JFrame {
 		});
 		validate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				System.out.println("validateUser");
-				user.validate();
-				JFrame validationFrame = new JFrame("Validation");
-				validationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				validationFrame.setSize(300, 100);
-
-				JLabel validationLabel = new JLabel("are you validted? please be honest :)");
-				JButton validationBtn = new JButton("validate");
-
-				validationBtn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent ev) {
-						user.validate();
-						validationFrame.dispose();
-					}
-				});
-				validationFrame.add(validationLabel);
-				validationFrame.add(validationBtn);
-
-				validationFrame.getContentPane().add(BorderLayout.SOUTH, validationBtn);
-				validationFrame.getContentPane().add(BorderLayout.CENTER, validationLabel);
-
+				ValidationGUI validationGUI=new ValidationGUI(user);
+				validationGUI.showGui();
 			}
 		});
 
@@ -221,44 +202,6 @@ public class UserGUI extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-//				try {
-//					Runtime.getRuntime().exec(new String[]{"/usr/bin/open",
-//					        user.getCv()});
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-
-//				File file=new File(user.getCv());
-//				Desktop desktop = Desktop.getDesktop();
-//		        if(file.exists())
-//					try {
-//						desktop.open(file);
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-
-//				JFrame frame = new JFrame("cv");
-//				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//				frame.setSize(300, 300);
-//
-//				JPanel panel = new JPanel();
-//
-//				frame.getContentPane().add(BorderLayout.CENTER, panel);
-//
-//				frame.setVisible(true);
-//				ImageIcon image1 = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
-//				JLabel imageLabel1 = new JLabel(image1);
-//				// imageLabel1.setBounds(10, 10, 10, 10);
-//				imageLabel1.setVisible(true);
-//				panel.add(imageLabel1);
-//				JScrollPane scrollableTextArea = new JScrollPane(imageLabel1);
-//
-//				scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//				scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//
-//				frame.getContentPane().add(scrollableTextArea);
 			}
 
 		});
