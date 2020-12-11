@@ -28,7 +28,7 @@ public class Feedback implements java.io.Serializable {
 
 	public static Feedback serializeFeedback(ResultSet rs) {
 		try {
-			Feedback feedback = new Feedback(rs.getInt("feedbackId"), rs.getInt("projectId"), rs.getInt("recieverId"), 
+			Feedback feedback = new Feedback(rs.getInt("feedbackId"), rs.getInt("projectId"), rs.getInt("receiverId"), 
 					rs.getInt("senderId"), rs.getInt("rate"), rs.getString("date"),
 					rs.getString("comment"));
 			return feedback;
