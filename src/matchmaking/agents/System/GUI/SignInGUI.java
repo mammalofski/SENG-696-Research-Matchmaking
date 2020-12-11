@@ -27,7 +27,7 @@ public class SignInGUI extends JFrame {
 		systemAgent = agent;
 		// Creating the Frame
 		JFrame frame = new JFrame("SignInGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(400, 250);
 
 		

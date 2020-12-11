@@ -35,7 +35,7 @@ public class StartingPointGUI extends JFrame {
 
 		// Creating the Frame
 		JFrame frame = new JFrame("Starting Point");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(300, 100);
 
 		// Creating the panel at bottom and adding components

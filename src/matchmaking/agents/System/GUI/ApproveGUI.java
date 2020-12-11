@@ -10,6 +10,8 @@ import matchmaking.agents.System.SystemAgent;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,23 +21,25 @@ import java.util.Hashtable;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
-public class ContractGUI extends JFrame {
+public class ApproveGUI extends JFrame {
 
 	JTextField amountTxt;
 	private SystemAgent systemAgent;
 	private User user;
 	private MatchmakingContract contract;
 	private ACLMessage msg, reply;
+	private Project project;
+	JLabel descriptionLabel;
 
-	public ContractGUI(SystemAgent agent, User user1, MatchmakingContract contract1) {
+	public ApproveGUI(SystemAgent agent, User user1, Project project1,JLabel descriptionLabel1) {
 		System.out.println("creating the contractGUI");
-		
+
 		systemAgent = agent;
 		user = user1;
-		contract = contract1;
-		
+		project = project1;
+		descriptionLabel=descriptionLabel1;
 
-		JFrame frame = new JFrame("ContractGUI");
+		JFrame frame = new JFrame("ApproveDeadlineGUI");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 300);
 
@@ -53,24 +57,30 @@ public class ContractGUI extends JFrame {
 
 		accept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				
+
 				try {
-					System.out.println("the contract has been accepted.");
+					System.out.println("the project update has been accepted.");
 					Hashtable<String, String> requestBody = new Hashtable<String, String>();
-					requestBody.put("contractId", Integer.toString(contract.getId()));
-					requestBody.put("acceptor", user.getuserType() == 2 ? "provider" : "client");
+					requestBody.put("type", "approveUpdate");
+					requestBody.put("projectId", Integer.toString(project.getId()));
 					msg = new ACLMessage(ACLMessage.REQUEST);
-					msg.setConversationId(Constants.ACCEPT_MATCHMAKING_CONTRACT);
+					msg.setConversationId(Constants.UPDATE_PROJECT);
 					msg.setContentObject(requestBody);
-					msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
+					msg.addReceiver(new AID("ProjectManagerAgent", AID.ISLOCALNAME));
 					systemAgent.send(msg);
-					System.out.println("sent the message to matchmaker to accept the contract");
+					System.out.println("approve update on project");
+					descriptionLabel.addPropertyChangeListener( new PropertyChangeListener(){
+						   @Override
+						   public void propertyChange( PropertyChangeEvent event ){
+							   descriptionLabel.setText(project.getNewDescription() );
+						   }
+						});
 					frame.dispose();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 		});
 
@@ -80,19 +90,9 @@ public class ContractGUI extends JFrame {
 		JPanel p = new JPanel(); // the panel is not visible in output
 		p.setLayout(new GridLayout(1, 1));
 
-		/*
-		 * JLabel projectName = new JLabel("ProjectName"); p.add(projectName);
-		 * 
-		 * JLabel amount = new JLabel("Amount"); p.add(amount);
-		 * 
-		 * JLabel deadline = new JLabel("Deadline"); p.add(deadline);
-		 */
-		
-		String contractingUserName = contract.getClientId() == user.getId() ? contract.getProviderName() : contract.getClientName();
-
-		String labelcontent = "<html>Do you confrim to accept the contract between you and " + contractingUserName + "<br/>"
-				+ "with the amount  " + contract.getAmount();
-		JLabel content = new JLabel(labelcontent,SwingConstants.CENTER);
+		String labelcontent = "<html>The client wishes to update the description to: <br/> "
+				+ project.getNewDescription() + " <br>" + "Do you accept this update on the project?";
+		JLabel content = new JLabel(labelcontent, SwingConstants.CENTER);
 		p.add(content);
 
 		// Adding Components to the frame.
@@ -101,7 +101,6 @@ public class ContractGUI extends JFrame {
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
 	}
-
 
 	public void showGui() {
 		pack();

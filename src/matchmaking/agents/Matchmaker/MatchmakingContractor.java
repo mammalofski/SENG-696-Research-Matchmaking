@@ -129,6 +129,8 @@ public class MatchmakingContractor {
 			String query = "update matchmakingContract set " + updatingAttr + "=1 where matchmakingContractId=" + contractId;
 			System.out.println("in acceptContract query is" + query );
 			statement.executeUpdate(query);
+			statement.close();
+			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,8 +151,12 @@ public class MatchmakingContractor {
 			ArrayList<MatchmakingContract> contracts = MatchmakingContract.serializeContracts(rs);
 			if (contracts.size() == 1) {
 				MatchmakingContract contract = contracts.get(0);
+				statement.close();
+				rs.close();
 				return contract;
 			}
+			statement.close();
+			rs.close();
 			return null;
 			
 		} catch (SQLException e) {

@@ -16,6 +16,7 @@ public class BiddingSystem {
 	}
 	
 	public void placeBid(int userId, int clientId, int biddingAmount) {
+		System.out.println("placing a bid");
 		try (Statement statement = conn.createStatement()) {
 			System.out.println("creating bid");
 			String query = "insert into bid (clientId, providerId, amount, accepted) values(" + clientId + ", " + userId + ", " + biddingAmount + ", 0)";

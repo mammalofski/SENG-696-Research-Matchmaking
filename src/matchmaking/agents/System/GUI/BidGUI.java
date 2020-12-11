@@ -32,7 +32,7 @@ public class BidGUI extends JFrame {
 		clientUser = user1;  // this is the client placing bid
 		systemAgent = agent;
 		JFrame frame = new JFrame("BidGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(300, 100);
 		
 		JPanel panel = new JPanel(); 
@@ -61,6 +61,7 @@ public class BidGUI extends JFrame {
 					msg.setContentObject(requestBody);
 					msg.addReceiver(new AID("MatchmakerAgent", AID.ISLOCALNAME));
 					systemAgent.send(msg);
+					frame.dispose();
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

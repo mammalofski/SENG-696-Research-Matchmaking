@@ -23,7 +23,7 @@ public class Project implements java.io.Serializable {
 		providerId = providerId1;
 		name = name1;
 		description = description1;
-		progress = projectId1;
+		progress = progress1;
 		state = state1;
 		deadline = deadline1;
 	}
@@ -31,6 +31,8 @@ public class Project implements java.io.Serializable {
 	public static Project serializePoject(ResultSet rs) {
 		try {
 			if (rs.next()) {
+				System.out.println("LOG: in serializer: deadline is " + rs.getString("deadline") + "and description is " +rs.getString("description"));
+				
 				Project project = new Project(rs.getInt("projectId"), rs.getInt("clientId"), rs.getInt("providerId"),
 						rs.getString("name"), rs.getString("description"), rs.getInt("progress"), rs.getInt("state"),
 						rs.getString("deadline"));

@@ -33,7 +33,7 @@ public class ClientRateGUI extends JFrame {
 		user = user1;
 		
 		JFrame frame = new JFrame("ClientRateGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 600);
 
 		JPanel panel = new JPanel();

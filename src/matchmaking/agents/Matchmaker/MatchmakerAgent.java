@@ -112,6 +112,7 @@ public class MatchmakerAgent extends Agent {
 								System.out.println("msg in matchmaker received and in accept contract case");
 								String contractId = requestBody.get("contractId");
 								String acceptor = requestBody.get("acceptor");
+								System.out.println("acceptor in case is " + acceptor);
 								matchmakingContractor.acceptContract(Integer.parseInt(contractId), acceptor);
 								break;
 							case Constants.REJECT_BID:
@@ -140,9 +141,10 @@ public class MatchmakerAgent extends Agent {
 								
 								System.out.println("before contractAcceptedByBothUsers");
 								MatchmakingContract contract1 = matchmakingContractor.contractAcceptedByBothUsers(contractId3);
-								System.out.println("LOG: contractAcceptedByBothUsers contract " + contract1.getProjectId());
-								System.out.println("after contractAcceptedByBothUsers the contract is " + contract1);
+								
 								if (contract1 != null) {
+									System.out.println("LOG: contractAcceptedByBothUsers contract " + contract1.getProjectId());
+									System.out.println("after contractAcceptedByBothUsers the contract is " + contract1);
 									System.out.println("before createProject");
 									Project project = createProject(contract1);
 									System.out.println("before creating chatroom");

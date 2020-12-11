@@ -36,7 +36,7 @@ public class MatchmackingAgentGUI extends JFrame {
 
 		// Creating the Frame
 		JFrame frame = new JFrame("Chat Frame");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 400);
 
 		// Creating the MenuBar and adding components
@@ -55,7 +55,7 @@ public class MatchmackingAgentGUI extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("menu item has clicked");
 				JFrame frame1 = new JFrame("My First GUI");
-				frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame1.setSize(300, 300);
 				JButton button1 = new JButton("Button 1");
 				JButton button2 = new JButton("Button 2");

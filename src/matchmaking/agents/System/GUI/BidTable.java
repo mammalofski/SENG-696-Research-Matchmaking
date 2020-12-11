@@ -68,6 +68,7 @@ class BidTable extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears onscreen.
+		
 		if (col > 3) {
 
 			String data = getValueAt(row, col).toString();
@@ -113,6 +114,9 @@ class BidTable extends AbstractTableModel {
 	
 	public void setValueAt(Object value, int row, int col) {
 		System.out.println("value : " + value);
+		if (data[row][4].equals(true) || data[row][5].equals(true))
+			return;
+		
 		if (value.equals(true)) {
 			if (col == 4)
 				acceptBid(value, row, col);

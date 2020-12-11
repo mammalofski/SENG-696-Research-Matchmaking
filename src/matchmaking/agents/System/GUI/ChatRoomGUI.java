@@ -42,7 +42,7 @@ public class ChatRoomGUI extends JFrame {
 		// TODO: make a request and fetch the chat room and its messages
 
 		JFrame frame = new JFrame("ChatRoomGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 600);
 
 		JPanel messagesPanel = new JPanel(); // the panel is not visible in output

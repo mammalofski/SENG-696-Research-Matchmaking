@@ -31,7 +31,7 @@ public class UserGUI extends JFrame {
 		profiler = new Profiler();
 		// Creating the Frame
 		JFrame frame = new JFrame("UserGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 800);
 
 		// Creating the MenuBar and adding components
@@ -114,7 +114,7 @@ public class UserGUI extends JFrame {
 				System.out.println("validateUser");
 				user.validate();
 				JFrame validationFrame = new JFrame("Validation");
-				validationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				validationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				validationFrame.setSize(300, 100);
 
 				JLabel validationLabel = new JLabel("are you validted? please be honest :)");
@@ -148,8 +148,11 @@ public class UserGUI extends JFrame {
 				profiler.updateProfile(user);
 			}
 		});
+		if(user.getuserType()==Constants.UserTypes.PROVIDER) {
+			panel.add(validate);
+		}
 
-		panel.add(validate);
+		
 		panel.add(updateProfileBtn);
 		panel.add(cancel);
 
@@ -163,7 +166,8 @@ public class UserGUI extends JFrame {
 		p.add(nameTxt);
 
 		JLabel userType = new JLabel("userType");
-		JLabel userTypeLabel = new JLabel(Integer.toString(user.getuserType()));
+		String userTypeStr = user.getuserType() == 1 ? "client" : "provider";
+		JLabel userTypeLabel = new JLabel(userTypeStr);
 //		userTypeTxt.setText(Integer.toString(user.getuserType()));
 		p.add(userType);
 		p.add(userTypeLabel);
@@ -192,24 +196,24 @@ public class UserGUI extends JFrame {
 		p.add(website);
 		p.add(websiteTxt);
 
-//		JLabel logo = new JLabel("logo");
-//		p.add(logo);
-//		ImageIcon image = new ImageIcon("/Users/Saeb/Desktop/T2W/samples/download.png");
-//		JLabel imageLabel = new JLabel(image);
-//		imageLabel.setBounds(10, 10, 10, 10);
-//		imageLabel.setVisible(true);
-//		p.add(imageLabel);
+		JLabel logo = new JLabel("logo");
+		p.add(logo);
+		ImageIcon image = new ImageIcon(user.getLogo());
+		JLabel imageLabel = new JLabel(image);
+		imageLabel.setBounds(10, 10, 10, 10);
+		imageLabel.setVisible(true);
+		p.add(imageLabel);
 //
-//		JLabel cv = new JLabel("cv");
-//		p.add(cv);
-//
-//		JButton showCv = new JButton("showCv");
-//		p.add(showCv);
+		JLabel cv = new JLabel("cv");
+		p.add(cv);
+
+		JButton showCv = new JButton("showCv");
+		p.add(showCv);
 
 //		showCv.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent ev) {
 //				JFrame frame = new JFrame("cv");
-//				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //				frame.setSize(300, 300);
 //
 //				JPanel panel = new JPanel();
@@ -247,7 +251,7 @@ public class UserGUI extends JFrame {
 				if (e.getSource() == isPremium) {
 					if (e.getStateChange() == 1) { // Creating the
 
-						paymentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						paymentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						paymentFrame.setSize(300, 100);
 
 						// Creating the panel at bottom and adding components

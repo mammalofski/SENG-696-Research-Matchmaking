@@ -25,6 +25,7 @@ public class ProjectProgressGUI extends JFrame {
 	SystemAgent myAgent;
 	User user;
 	Project project;
+	private JLabel descriptionLabel;
 
 	public ProjectProgressGUI(SystemAgent agent, User user1, Project project1) {
 		myAgent = agent;
@@ -32,13 +33,9 @@ public class ProjectProgressGUI extends JFrame {
 		project = project1;
 
 		JFrame frame = new JFrame("ProjectProgressGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 600);
-		if (user.getuserType() == Constants.UserTypes.PROVIDER && project.getNewDescription() != "") {
-			ApproveGUI approveGui=new ApproveGUI(myAgent,user,project);
-			approveGui.showGui();
-		}
-			
+		
 
 		JPanel panel = new JPanel();
 
@@ -54,9 +51,8 @@ public class ProjectProgressGUI extends JFrame {
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("changeDeadline");
-				
+
 				requestForUpdateProject();
-				
 
 			}
 		});
@@ -71,17 +67,17 @@ public class ProjectProgressGUI extends JFrame {
 		JLabel projectName = new JLabel(project.getName());
 		p.add(name);
 		p.add(projectName);
-		
-		
 
 		JLabel state = new JLabel("State");
 		String stateStr = project.getState() == Constants.ProjectState.DONE ? "Finished" : "In Progress";
 		JLabel projectState = new JLabel(stateStr);
 		p.add(state);
 		p.add(projectState);
+		
+		
 
 		if (user1.getuserType() == Constants.UserTypes.PROVIDER) {
-			
+
 			JLabel progress = new JLabel("Progress");
 			progressTxt = new JTextField(20);
 			progressTxt.setText(Integer.toString(project.getProgress()));
@@ -89,19 +85,24 @@ public class ProjectProgressGUI extends JFrame {
 			p.add(progressTxt);
 			JLabel deadline = new JLabel("Deadline");
 			deadlineTxt = new JTextField(20);
+			deadlineTxt.setText(project.getDeadline());
 			p.add(deadline);
 			p.add(deadlineTxt);
 			JLabel description = new JLabel("description");
-			JLabel descriptionLabel = new JLabel(project.getDescription());
+			descriptionLabel = new JLabel(project.getDescription());
 			p.add(description);
 			p.add(descriptionLabel);
 		} else {
+
+			System.out
+					.println("deadline is " + project.getDeadline() + "and description is " + project.getDescription());
 			JLabel progress = new JLabel("Progress");
-			JLabel progressLabel= new JLabel(Integer.toString(project.getProgress()));
+			JLabel progressLabel = new JLabel(Integer.toString(project.getProgress()));
 			p.add(progress);
 			p.add(progressLabel);
 			JLabel description = new JLabel("description");
 			descriptionTxt = new JTextField(20);
+			descriptionTxt.setText(project.getDescription());
 			p.add(description);
 			p.add(descriptionTxt);
 			JLabel deadline = new JLabel("deadline");
@@ -115,6 +116,12 @@ public class ProjectProgressGUI extends JFrame {
 		;
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
+		
+		if (user.getuserType() == Constants.UserTypes.PROVIDER && !project.getNewDescription().equals("")
+				&& !project.getNewDescription().equals(null)) {
+			ApproveGUI approveGui = new ApproveGUI(myAgent, user, project,descriptionLabel);
+			approveGui.showGui();
+		}
 	}
 
 	protected void requestForUpdateProject() {
@@ -140,7 +147,7 @@ public class ProjectProgressGUI extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void showGui() {

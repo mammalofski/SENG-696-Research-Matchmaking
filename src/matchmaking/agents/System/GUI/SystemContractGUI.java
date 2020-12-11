@@ -19,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import matchmaking.agents.System.SystemAgent;
 import matchmaking.orm.DataBase;
@@ -34,7 +35,7 @@ public class SystemContractGUI extends JFrame {
 
 		// Creating the Frame
 		JFrame frame = new JFrame("System Contract");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(900, 100);
 
 		
@@ -66,9 +67,11 @@ public class SystemContractGUI extends JFrame {
 		
 
 		JPanel p = new JPanel();
+		String labelcontent = "<html>system will get 20 percent on each project.do you agree <br/>"
+				+ "(please pay note that if you disagree system will convert your account to a client)";
+		JLabel content = new JLabel(labelcontent,SwingConstants.CENTER);
 		
-		JLabel name=new JLabel("system will get 20 percent on each project.do you agree(please pay note that if you disagree system will convert your account to a client)");
-		p.add(name);
+		p.add(content);
 		
 		
 		// Adding Components to the frame.

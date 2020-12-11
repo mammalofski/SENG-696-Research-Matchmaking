@@ -18,22 +18,23 @@ public class SignUpGUI extends JFrame implements ActionListener {
 
 	private JTextField nameTxt, userTypeTxt, userNameTxt, passwordTxt, accountTypeTxt, emailTxt, hourlyCompensationTxt,
 			specialKeywordsTxt, websiteTxt, logoTxt, cvTxt;
-	
+
 	private SystemAgent systemAgent;
+	private String logoFilePath;
+	private String cvFilePath;
 
 	public SignUpGUI(SystemAgent agent) {
 		systemAgent = agent;
 		// Creating the Frame
 		JFrame frame = new JFrame("SignUpGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(600, 800);
 
-		
 		// Creating the panel at bottom and adding components
 		JPanel panel = new JPanel(); // the panel is not visible in output
 
 		JButton save = new JButton("save");
-		JButton cancel = new JButton("validate");
+		JButton cancel = new JButton("dismiss");
 
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -50,6 +51,13 @@ public class SignUpGUI extends JFrame implements ActionListener {
 
 		});
 
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				frame.dispose();
+			}
+
+		});
+
 		panel.add(save);
 		panel.add(cancel);
 
@@ -61,7 +69,7 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		p.add(name);
 		p.add(nameTxt);
 
-		JLabel userType = new JLabel("userType");
+		JLabel userType = new JLabel("userType (1 for client, 2 for provider)");
 		userTypeTxt = new JTextField(20);
 		p.add(userType);
 		p.add(userTypeTxt);
@@ -118,13 +126,28 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		p.add(cv);
 		p.add(cvBtn);
 
-		cvBtn.addActionListener(this);
+		cvBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				saveCv();
+			}
+
+		});
 
 		// Adding Components to the frame.
 		frame.getContentPane().add(BorderLayout.SOUTH, panel);
-		
+
 		frame.getContentPane().add(BorderLayout.CENTER, p);
 		frame.setVisible(true);
+	}
+	
+	private void saveCv() {
+		JFileChooser fc = new JFileChooser();
+		int i = fc.showOpenDialog(this);
+		if (i == JFileChooser.APPROVE_OPTION) {
+			File f = fc.getSelectedFile();
+			cvFilePath = f.getPath();
+			
+		}
 	}
 
 	public void saveLogo() {
@@ -132,49 +155,50 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		int i = fc.showOpenDialog(this);
 		if (i == JFileChooser.APPROVE_OPTION) {
 			File f = fc.getSelectedFile();
-			String filepath = f.getPath();
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(filepath));
-				String s1 = "", s2 = "";
-				while ((s1 = br.readLine()) != null) {
-					s2 += s1 + "\n";
-				}
-				System.out.println("this is s1:" + s1);
-				System.out.println("this is s2:" + s2);
-				br.close();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			logoFilePath = f.getPath();
+			
+//			try {
+//				BufferedReader br = new BufferedReader(new FileReader(filepath));
+//				String s1 = "", s2 = "";
+//				while ((s1 = br.readLine()) != null) {
+//					s2 += s1 + "\n";
+//				}
+//				System.out.println("this is s1:" + s1);
+//				System.out.println("this is s2:" + s2);
+//				br.close();
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//			}
 		}
 	}
 
-	public void actionPerformed(ActionEvent ev) {
-		try {
-
-			JFileChooser fc = new JFileChooser();
-			int i = fc.showOpenDialog(this);
-			if (i == JFileChooser.APPROVE_OPTION) {
-				File f = fc.getSelectedFile();
-				String filepath = f.getPath();
-				try {
-					BufferedReader br = new BufferedReader(new FileReader(filepath));
-					String s1 = "", s2 = "";
-					while ((s1 = br.readLine()) != null) {
-						s2 += s1 + "\n";
-					}
-					System.out.println("this is s1:" + s1);
-					System.out.println("this is s2:" + s2);
-					br.close();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(SignUpGUI.this, "Invalid values. " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
+//	public void actionPerformed(ActionEvent ev) {
+//		try {
+//
+//			JFileChooser fc = new JFileChooser();
+//			int i = fc.showOpenDialog(this);
+//			if (i == JFileChooser.APPROVE_OPTION) {
+//				File f = fc.getSelectedFile();
+//				String filepath = f.getPath();
+//				try {
+//					BufferedReader br = new BufferedReader(new FileReader(filepath));
+//					String s1 = "", s2 = "";
+//					while ((s1 = br.readLine()) != null) {
+//						s2 += s1 + "\n";
+//					}
+//					System.out.println("this is s1:" + s1);
+//					System.out.println("this is s2:" + s2);
+//					br.close();
+//				} catch (Exception ex) {
+//					ex.printStackTrace();
+//				}
+//			}
+//
+//		} catch (Exception e) {
+//			JOptionPane.showMessageDialog(SignUpGUI.this, "Invalid values. " + e.getMessage(), "Error",
+//					JOptionPane.ERROR_MESSAGE);
+//		}
+//	}
 
 	private void saveUser() {
 
@@ -191,17 +215,19 @@ public class SignUpGUI extends JFrame implements ActionListener {
 //		String cv = cvTxt.getText().trim();
 
 		System.out.println("this is being saved, name :" + name);
-		User user = new User(name, userType, email, userName, password, false, 0, hourlyCompensation,
-				specialKeywords, "", website, "");
+		User user = new User(name, userType, email, userName, password, false, 0, hourlyCompensation, specialKeywords,
+				logoFilePath, website, cvFilePath);
 
 		user.createUser();
-		
-		UserGUI userGUI=new UserGUI(user, systemAgent);
+
+		UserGUI userGUI = new UserGUI(user, systemAgent);
 		userGUI.showGui();
 
-		/// if user registered
-		SystemContractGUI systemContractGUI = new SystemContractGUI(user);
-		systemContractGUI.showGui();
+		/// if user registered and is provider, then show the contract
+		if (user.getuserType() == Constants.UserTypes.PROVIDER) {
+			SystemContractGUI systemContractGUI = new SystemContractGUI(user);
+			systemContractGUI.showGui();
+		}
 
 	}
 
@@ -212,5 +238,11 @@ public class SignUpGUI extends JFrame implements ActionListener {
 		int centerY = (int) screenSize.getHeight() / 2;
 		setLocation(centerX - getWidth() / 2, centerY - getHeight() / 2);
 		super.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -54,11 +54,11 @@ public class SearchUserGUI extends JFrame {
 
 		// Creating the Frame
 		frame = new JFrame("SearchUserGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(600, 1200);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setSize(600, 900);
 
 		p = new JPanel(); // the panel is not visible in output
-		p.setLayout(new GridLayout(7, 2));
+		p.setLayout(new GridLayout(6 ,2));
 
 		JLabel name = new JLabel("name");
 		nameTxt = new JTextField(20);

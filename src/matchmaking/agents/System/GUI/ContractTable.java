@@ -84,6 +84,7 @@ class ContractTable extends AbstractTableModel {
 			Hashtable<String, String> requestBody = new Hashtable<String, String>();
 			requestBody.put("contractId", contractIdStr);
 			String acceptor = user.getuserType() == Constants.UserTypes.CLIENT ? "client" : "provider";
+			System.out.println("in acceptContract acceptor is " + acceptor);
 			requestBody.put("acceptor", acceptor);
 			msg = new ACLMessage(ACLMessage.REQUEST);
 			msg.setConversationId(Constants.ACCEPT_MATCHMAKING_CONTRACT);

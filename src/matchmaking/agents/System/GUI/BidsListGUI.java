@@ -47,7 +47,8 @@ public class BidsListGUI extends JFrame {
 		systemAgent = agent;
 		user = user1;
 		frame1 = new JFrame("BidsListGUI");
-		frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame1.setSize(400, 400);
 		ArrayList<Bid> biddings = getBiddings(user.getId());
 		System.out.println("received the biddings: " + biddings);

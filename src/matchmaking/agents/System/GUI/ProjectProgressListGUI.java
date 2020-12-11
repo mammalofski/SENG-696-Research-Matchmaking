@@ -1,4 +1,5 @@
 
+
 package matchmaking.agents.System.GUI;
 
 import jade.core.AID;
@@ -23,44 +24,44 @@ import java.util.Hashtable;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
-public class ChatRoomsGUI extends JFrame {
+public class ProjectProgressListGUI extends JFrame {
 	private ACLMessage msg, reply;
 	private MessageTemplate template;
 	JFrame frame1;
 	private User user;
 	private SystemAgent systemAgent;
-	public ChatRoomsGUI (SystemAgent agent,User currentUser)
+	public ProjectProgressListGUI (SystemAgent agent,User currentUser)
 	{
 		user=currentUser;
 		systemAgent=agent;
 		
-		frame1 = new JFrame("Chat Rooms");
+		frame1 = new JFrame("ProjectProgressList");
 		frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame1.setSize(400, 400);
 		
 		frame1.setVisible(true);
 
-		ArrayList<ChatRoom> chatrooms = getChatrooms(user.getId());
-		showInGUI(chatrooms);
+		ArrayList<Project> projects = getProjects(user.getId());
+		showInGUI(projects);
 	}
-private ArrayList<ChatRoom> getChatrooms(int userId) {
+private ArrayList<Project> getProjects(int userId) {
 		
 		try {
-			System.out.println("getting the chat rooms");
+			System.out.println("getting the project");
 			Hashtable<String, String> requestBody = new Hashtable<String, String>();
 			requestBody.put("userId", Integer.toString(userId));
 			msg = new ACLMessage(ACLMessage.REQUEST);
-			msg.setConversationId(Constants.GET_CHATROOMS);
+			msg.setConversationId(Constants.GET_PROJECTS);
 			msg.setContentObject(requestBody);
 			msg.addReceiver(new AID("ProjectManagerAgent", AID.ISLOCALNAME));
 			systemAgent.send(msg);
 			
 			template = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
-					MessageTemplate.MatchConversationId(Constants.GET_CHATROOMS));
+					MessageTemplate.MatchConversationId(Constants.GET_PROJECTS));
 			msg = systemAgent.blockingReceive(template);
 			if (msg != null) { //
-				ArrayList<ChatRoom> chatRooms = (ArrayList<ChatRoom>) msg.getContentObject();
-				return chatRooms;
+				ArrayList<Project> projects = (ArrayList<Project>) msg.getContentObject();
+				return projects;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -74,29 +75,31 @@ private ArrayList<ChatRoom> getChatrooms(int userId) {
 	}
 	
 
-private void showInGUI(ArrayList<ChatRoom> chatrooms) {
+private void showInGUI(ArrayList<Project> projects) {
 		
-		int lenChatRooms = chatrooms.size();
-		System.out.println("lenChatRooms " + lenChatRooms);
-		if (lenChatRooms == 0)
+		int lenprojects = projects.size();
+		System.out.println("lenprojects " + lenprojects);
+		if (lenprojects == 0)
 			return;
 		String column[] = { "Index", "projectName" };
-		String[][] data = new String[lenChatRooms][2];
-		ChatRoom tempChat;
-		for (int i = 0; i < lenChatRooms; i++) {
-			tempChat = chatrooms.get(i);
-			String rowData[] = {Integer.toString(tempChat.getId()), tempChat.getProjectName()};	
+		String[][] data = new String[lenprojects][2];
+		Project tempProject;
+		for (int i = 0; i < lenprojects; i++) {
+			tempProject = projects.get(i);
+			String rowData[] = {Integer.toString(tempProject.getId()), tempProject.getName()};	
 			System.out.println(rowData);
 			for (int j = 0; j < 2; j++) {
 				data[i][j] = rowData[j];
 			}
 		}
 		
-		JTable table = new JTable(new ChatRoomsJTable(data, systemAgent, user));
+		JTable table = new JTable(new ProjectProgressJTable(data, systemAgent, user, projects));
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-		table.getColumn("ShowChats").setCellRenderer(buttonRenderer);
+		table.getColumn("ShowProject").setCellRenderer(buttonRenderer);
+		table.getColumn("RateProject").setCellRenderer(buttonRenderer);
+		
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		//JPanel panel = new JPanel();
 		//panel.add(table);
@@ -113,3 +116,4 @@ private void showInGUI(ArrayList<ChatRoom> chatrooms) {
 	}
 
 }
+
