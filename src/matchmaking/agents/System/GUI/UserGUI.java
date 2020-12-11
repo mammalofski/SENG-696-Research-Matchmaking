@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -148,11 +149,10 @@ public class UserGUI extends JFrame {
 				profiler.updateProfile(user);
 			}
 		});
-		if(user.getuserType()==Constants.UserTypes.PROVIDER) {
+		if (user.getuserType() == Constants.UserTypes.PROVIDER) {
 			panel.add(validate);
 		}
 
-		
 		panel.add(updateProfileBtn);
 		panel.add(cancel);
 
@@ -210,8 +210,35 @@ public class UserGUI extends JFrame {
 		JButton showCv = new JButton("showCv");
 		p.add(showCv);
 
-//		showCv.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent ev) {
+		showCv.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent ev) {
+				
+				try {
+					File file = new File(user.getCv());
+					Desktop.getDesktop().open(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//				try {
+//					Runtime.getRuntime().exec(new String[]{"/usr/bin/open",
+//					        user.getCv()});
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+
+//				File file=new File(user.getCv());
+//				Desktop desktop = Desktop.getDesktop();
+//		        if(file.exists())
+//					try {
+//						desktop.open(file);
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+
 //				JFrame frame = new JFrame("cv");
 //				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //				frame.setSize(300, 300);
@@ -232,9 +259,9 @@ public class UserGUI extends JFrame {
 //				scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 //
 //				frame.getContentPane().add(scrollableTextArea);
-//			}
-//
-//		});
+			}
+
+		});
 
 		JLabel accountType = new JLabel("accountType");
 		isPremium = new JCheckBox("isPremium");
