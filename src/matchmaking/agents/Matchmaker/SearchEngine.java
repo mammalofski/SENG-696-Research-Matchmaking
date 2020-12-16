@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.sql.Connection;
 	
@@ -15,6 +16,11 @@ public class SearchEngine {
 
 	SearchEngine(Connection conn1) {
 		conn = conn1;
+	}
+	
+	private ArrayList<User> sortUsers(ArrayList<User> rawUsers) {
+		Collections.sort(rawUsers, new SortingAlgorithm());
+		return rawUsers;
 	}
 
 	public ArrayList<User> searchUser(Hashtable requestBody) {
@@ -53,31 +59,13 @@ public class SearchEngine {
 			System.out.println("the query is " + query);
 			ResultSet qs = statement.executeQuery(query);
 			users = User.serializeUsers(qs);
-			return users;
+			return sortUsers(users);
+//			return users;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-//		try {
-//			Statement statement = conn.createStatement();
-//			statement.setQueryTimeout(30); // set timeout to 30 sec.
-//			ResultSet qs = statement.executeQuery("select * from user");
-//			while (qs.next()) {
-//				validated = qs.getInt("validated") > 0 ? true : false;
-//				tempUser = new User(qs.getInt("userId"), qs.getString("name"), qs.getInt("userType"),
-//						qs.getString("email"), qs.getString("userName"), qs.getString("password"), validated,
-//						qs.getInt("accountType"), qs.getInt("hourlyCompensation"), qs.getString("specialKeyword"),
-//						qs.getString("logo"), qs.getString("website"), qs.getString("cv"), true);
-//				users.add(tempUser);
-//			}
-//
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			System.out.println("in serializeUser in catch");
-//			e.printStackTrace();
-//		}
-//		return users;
 
 	}
 }

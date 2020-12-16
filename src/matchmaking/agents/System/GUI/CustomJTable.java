@@ -109,7 +109,7 @@ public class CustomJTable extends AbstractTableModel {
 		case 4:
 			return Integer.parseInt(data[rowIndex][columnIndex]);
 		case 5:
-			return data[rowIndex][columnIndex] == "1";
+			return data[rowIndex][columnIndex] == "true";
 		case 6:
 			final JButton button = new JButton(COLUMN_NAMES[columnIndex]);
 			return button;

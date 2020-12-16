@@ -68,6 +68,8 @@ class BidTable extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		// Note that the data/cell address is constant,
 		// no matter where the cell appears onscreen.
+		if (user.getuserType() == Constants.UserTypes.CLIENT)
+			return false;
 		
 		if (col > 3) {
 

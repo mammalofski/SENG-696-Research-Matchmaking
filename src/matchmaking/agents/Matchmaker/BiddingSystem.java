@@ -30,9 +30,20 @@ public class BiddingSystem {
 	public ArrayList<Bid> getBiddings(int userId) {
 		try (Statement statement = conn.createStatement()) {
 			System.out.println("getting biddings from db");
-			String query = "select * from bid where providerId=" + userId + " and accepted<>2";
+			String query;
+			ResultSet rs;
+			query = "select userType from user where userId=" + userId;
+			rs = statement.executeQuery(query);
+			int userType = rs.getInt("userType");
+			rs.close();
+			if (userType == Constants.UserTypes.PROVIDER) {
+				query = "select * from bid where providerId=" + userId + " and accepted<>2";
+			} else {
+				query = "select * from bid where clientId=" + userId;
+			}
+			
 			System.out.println("query is " + query + " THE userId is " + userId);
-			ResultSet rs = statement.executeQuery(query);
+			rs = statement.executeQuery(query);
 			System.out.println("after query");
 			ArrayList<Bid> biddings = Bid.serializeBids(rs);
 			return biddings;
